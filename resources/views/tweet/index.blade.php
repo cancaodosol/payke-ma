@@ -32,7 +32,7 @@
                     <summary>{{ $tweet->content }}</summary>
                     <div>
                         <a href="{{ route('tweet.update.index', ['tweetId' => $tweet->id]) }}" method="post">編集</a>
-                        <form action="{{ route('tweet.delete', ['tweetId' => $tweet->id]) }}" method="delete">
+                        <form action="{{ route('tweet.delete', ['tweetId' => $tweet->id]) }}" method="post">
                             @method('DELETE')
                             @csrf
                             <button type="submit">削除</button>
