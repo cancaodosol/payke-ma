@@ -26,8 +26,13 @@ class CreateRequest extends FormRequest
         ];
     }
 
-    function tweet(): string
+    public function tweet(): string
     {
         return $this->input("tweet");
+    }
+
+    public function userId(): int
+    {
+        return $this->user()->id;
     }
 }

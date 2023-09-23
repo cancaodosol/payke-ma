@@ -17,6 +17,12 @@ sail artisan breeze:install
 sail npm install
 sail npm run dev
 
-# ミドルウェアを追加する
+## ミドルウェアを追加する
 
 sail artisan make:middleware SampleMiddleware
+
+## ログイン機能をつぶやきアプリと連動する
+
+sail artisan make:migration add_user_id_to_tweets
+sail artisan make:seeder UserSeeder
+sail artisan migrate:fresh --seed
