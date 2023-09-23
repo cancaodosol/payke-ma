@@ -16,3 +16,7 @@ sail composer require laravel/breeze
 sail artisan breeze:install
 sail npm install
 sail npm run dev
+
+# ミドルウェアを追加する
+
+sail artisan make:middleware SampleMiddleware
