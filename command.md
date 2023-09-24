@@ -31,3 +31,6 @@ sail artisan migrate:fresh --seed
 
 sail artisan make:test Services/DeployServiceTest --unit
 sail test tests/Unit/Services/DeployServiceTest.php
+
+sail composer require --dev deployer/deployer
+sail php vendor/bin/dep init
