@@ -26,3 +26,8 @@ sail artisan make:middleware SampleMiddleware
 sail artisan make:migration add_user_id_to_tweets
 sail artisan make:seeder UserSeeder
 sail artisan migrate:fresh --seed
+
+## Deployerを試していくよ
+
+sail artisan make:test Services/DeployServiceTest --unit
+sail test tests/Unit/Services/DeployServiceTest.php
