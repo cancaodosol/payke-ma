@@ -3,20 +3,26 @@ namespace Deployer;
 
 require 'recipe/common.php';
 
-// Config
+// // Config
 
-set('repository', 'https://github.com/cancaodosol/docker-laravel-sail.git');
+// set('repository', 'https://github.com/cancaodosol/docker-laravel-sail.git');
 
-add('shared_files', []);
-add('shared_dirs', []);
-add('writable_dirs', []);
+// add('shared_files', []);
+// add('shared_dirs', []);
+// add('writable_dirs', []);
 
 // Hosts
 
-host('hiderin.xyz')
-    ->set('remote_user', 'deployer')
-    ->set('deploy_path', '~/html');
+host('payke_release_test')
+    ->set('hostname', 'hiderin.xyz')
+    ->set('remote_user', 'hirotae')
+    ->set('port', 10022)
+    ->set('identity_file', './.ssh/hideringa_xserver_rsa');
 
-// Hooks
+task('my_task', function () {
+    run('whoami');
+});
 
-after('deploy:failed', 'deploy:unlock');
+// // Hooks
+
+// after('deploy:failed', 'deploy:unlock');
