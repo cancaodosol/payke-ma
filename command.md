@@ -34,3 +34,11 @@ sail test tests/Unit/Services/DeployServiceTest.php
 
 sail composer require --dev deployer/deployer
 sail php vendor/bin/dep init
+
+## Deployerを実行する
+
+### my_taskというタスクを実行する
+sail php vendor/bin/dep my_task
+
+### 引数を渡す
+sail php vendor/bin/dep my_task -v -o current_date="I don't know"
