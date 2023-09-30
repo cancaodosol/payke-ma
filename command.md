@@ -45,3 +45,7 @@ sail php vendor/bin/dep my_task -v -o current_date="I don't know"
 
 ## Sail環境に独自のカスタマイズを入れる
 sail artisan sail:publish
+
+sail down
+sail build
+sail up -d
