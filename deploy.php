@@ -17,11 +17,7 @@ host('payke_release_test')
     ->set('hostname', 'hiderin.xyz')
     ->set('remote_user', 'hirotae')
     ->set('port', 10022)
-    ->set('identity_file', './.ssh/hideringa_xserver_rsa')
-
-set('dir_list', function () {
-    return run('ls hiderin.xyz/public_html -al');
-});
+    ->set('identity_file', './.ssh/hideringa_xserver_rsa');
 
 task('my_task', function () {
     writeln('The {{alias}} is {{hostname}}');
@@ -31,8 +27,20 @@ task('my_task', function () {
 
 set('release_or_current_path', function () {
     return 'hiderin.xyz/public_html';
-    run('whoami');
 });
+
+set('payke_zip_name', function () {
+    return 'payke-ec-752d7ee2ff92.zip';
+});
+
+set('payke_zip_file_path', function () {
+    return '/payke_zips/{{payke_zip_name}}';
+});
+
+task('upload', function () {
+    upload(__DIR__ . '{{payke_zip_file_path}}', '{{release_or_current_path}}');
+});
+    
 
 // // Hooks
 
