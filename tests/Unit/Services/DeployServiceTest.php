@@ -8,11 +8,14 @@ use PHPUnit\Framework\TestCase;
 class DeployServiceTest extends TestCase
 {
     /**
-     * A basic unit test example.
+     * exec test.
      */
-    public function test_test(): void
+    public function test_exec(): void
     {
         $ds = new DeployService();
-        $this->assertEquals($ds->test(), 'ok!');
+        $c1 = 'rsync --version';
+        $o1 = $ds->exec($c1);
+        // print_r($o1);
+        $this->assertEquals($o1[0], 'rsync  version 3.2.7  protocol version 31');
     }
 }
