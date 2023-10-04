@@ -49,8 +49,8 @@ task('deploy_payke', function () {
     upload(__DIR__ . '{{payke_zip_file_path}}', '{{release_path}}');
     run('unzip -u {{release_path}}/{{payke_zip_name}}.zip -d {{release_path}}');
     run('mv {{release_path}}/{{payke_zip_name}} {{release_path}}/{{payke_app_name}}');
-    upload(__DIR__ . '{{payke_env_file_path}}', '{{release_app_root}}/app/Config');
-    upload(__DIR__ . '{{payke_install_file_path}}', '{{release_app_root}}/app/Config');
+    upload(__DIR__ . '{{payke_env_file_path}}', '{{release_app_root}}/app/Config/.env.php');
+    upload(__DIR__ . '{{payke_install_file_path}}', '{{release_app_root}}/app/Config/install.php');
 });
 
 // // Hooks

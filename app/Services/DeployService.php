@@ -30,4 +30,43 @@ class DeployService
         exec($command, $output, $result_code);
         return $output;
     }
+    /**
+     * Create environment file by app/payke_resources/.env.php.
+     *
+     * @param string $file_name
+     * @param array $config
+     *
+     * @return bool
+     */
+    public function create_env_file(string $file_name, array $config)
+    {
+        $base_path = "{__DIR__}/../payke_resources/.env.php";
+        $to_path = "{__DIR__}/../payke_resources/.env_{$file_name}.php";
+
+        $environment = [];
+        foreach ($config as $k => $v) {
+            $name = $k;
+            $environment[$name] = $v;
+        }
+
+        $contents = file_get_contents($base_path);
+        $contents = preg_replace_callback(
+            '/[\'\"]([^\'\"]*)[\'\"]\s*=>\s*[\'\"]?([^\'\"]*)[\'\"]?\s*,/',
+            function (array $matches) use ($environment) {
+                $name = $matches[1];
+                if (isset($environment[$name])) {
+                    $value = $environment[$name];
+                    print(var_export($name, true).' => '.var_export($value, true).',');
+                    return var_export($name, true).' => '.var_export($value, true).',';
+                }
+
+                return $matches[0];
+            },
+            $contents
+        );
+
+        $success = file_put_contents($to_path, $contents);
+
+        return $success ? $to_path : $success;
+    }
 }

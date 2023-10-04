@@ -33,8 +33,34 @@ class DeployServiceTest extends TestCase
             'payke_env_file_path' => '/payke_resources/.env.php',
             'release_path' => 'hiderin.xyz/public_html'
         ];
-        $o1 = $ds->exec_deply($p1);
+    }
+
+    /**
+     * create .env.php test.
+     */
+    public function test_create_env_file(): void
+    {
+        $ds = new DeployService();
+        $n1 = 'new';
+        $c_ori = [
+            'DB_DATASOURCE' => 'Database/Mysql',
+            'DB_HOST' => 'localhost',
+            'DB_PORT' => 3306,
+            'DB_DATABASE' => 'hirotae_payma02',
+            'DB_USERNAME' => 'hirotae_h1de',
+            'DB_PASSWORD' => 'matsui1234',
+            'DB_PREFIX' => ''
+        ];
+        $c1 = [
+            'DB_DATASOURCE' => 'でーたりそーす',
+            'DB_HOST' => 'ろーかるほすと',
+            'DB_PORT' => 1234,
+            'DB_DATABASE' => 'でーたべーす',
+            'DB_USERNAME' => 'ゆ〜ざ〜',
+            'DB_PASSWORD' => 'ぱす',
+            'DB_PREFIX' => 'ぷれふぃっくす'
+        ];
+        $o1 = $ds->create_env_file($n1, $c1);
         print_r($o1);
-        // $this->assertEquals($o1[0], 'rsync  version 3.2.7  protocol version 31');
     }
 }
