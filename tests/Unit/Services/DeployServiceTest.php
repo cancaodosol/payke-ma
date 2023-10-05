@@ -33,6 +33,9 @@ class DeployServiceTest extends TestCase
             'payke_env_file_path' => '/payke_resources/.env.php',
             'release_path' => 'hiderin.xyz/public_html'
         ];
+        $o1 = $ds->exec_deply($p1);
+        print_r($o1);
+        // $this->assertEquals($o1[0], 'rsync  version 3.2.7  protocol version 31');
     }
 
     /**

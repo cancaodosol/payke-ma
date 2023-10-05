@@ -50,6 +50,7 @@ task('deploy_payke', function () {
     run('unzip -u {{release_path}}/{{payke_zip_name}}.zip -d {{release_path}}');
     run('mv {{release_path}}/{{payke_zip_name}} {{release_path}}/{{payke_app_name}}');
     upload(__DIR__ . '{{payke_env_file_path}}', '{{release_app_root}}/app/Config/.env.php');
+    run('{{release_app_root}}/app/Console/cake-for-Xserver Migrations.migration run all --precheck Migrations.PrecheckCondition');
     upload(__DIR__ . '{{payke_install_file_path}}', '{{release_app_root}}/app/Config/install.php');
 });
 
