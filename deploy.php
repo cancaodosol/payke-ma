@@ -1,7 +1,7 @@
 <?php
 namespace Deployer;
 
-require 'recipe/common.php';
+require 'recipe/cakephp.php';
 
 // // Config
 
@@ -19,41 +19,84 @@ host('payke_release_test')
     ->set('port', 10022)
     ->set('identity_file', './.ssh/hideringa_xserver_rsa');
 
-task('my_task', function () {
-    writeln('The {{alias}} is {{hostname}}');
-    writeln('File list: {{dir_list}}');
-    // writeln('What time is it? {{current_date}}');
+set('user_id', 'user_007131');
+set('user_app_name', 'tarotaro7');
+set('deploy_datetime', '20231009_122601');
+set('payke_name', 'payke-ec_v3.22.2');
+
+set('payke_zip_name', 'payke-ec-752d7ee2ff92');
+set('payke_zip_file_path', '/payke_resources/zips/payke-ec-752d7ee2ff92.zip');
+
+set('is_first', '');
+set('payke_install_file_path' ,'/payke_resources/templates/install.php');
+set('payke_env_file_path' ,'/payke_resources/templates/.env.php');
+
+set('resource_dir', '~/hiderin.xyz/payke_resources');
+set('public_html_dir', '~/hiderin.xyz/public_html');
+
+// 引数から作成される値
+set('resource_zips_dir', '{{resource_dir}}/zips');
+set('resource_releases_dir', '{{resource_dir}}/{{user_id}}/releases');
+set('public_app_path' ,'{{public_html_dir}}/{{user_app_name}}');
+
+// CakePHPレシピでの設定情報
+set('release_name', '{{payke_name}}_{{deploy_datetime}}');
+set('deploy_path', '{{resource_dir}}/{{user_id}}');
+set('shared_files', ['app/Config/.env.php', 'app/Config/install.php']);
+set('keep_releases', 7);
+
+function exists_payke_zip(string $path) {
+    return false; // TODO: ちゃんと作る
+}
+
+/**
+ * Update code
+ * 通常版だと、gitリポジトリからアップデートのみだったので、
+ * zipファイルを解凍して使用するように、独自で作成した。
+ */
+task('deploy:update_code', function() {
+    // １．デプロイ対象のpayke.zipを存在チェック。なかったら、資材置き場へアップロード
+    if(!exists_payke_zip('{{payke_zip_name}}.zip'))
+    {
+        run('mkdir -p {{resource_zips_dir}}');
+        upload(__DIR__ . '{{payke_zip_file_path}}', '{{resource_zips_dir}}');
+    }
+
+    // ２．ユーザーごとのディレクトリに、zipファイルを解凍する。
+    run('unzip -u {{resource_zips_dir}}/{{payke_zip_name}}.zip -d {{resource_zips_dir}}');
+    run('rm -rf {{resource_releases_dir}}/{{release_name}}');
+    run('mv {{resource_zips_dir}}/{{payke_zip_name}} {{resource_releases_dir}}/{{release_name}}');
+
+    // ３．sharedファイルをアップロードする。
+    if(get('is_first'))
+    {
+        writeln('設定ファイルをアップロードしていくよ。');
+        upload(__DIR__ . '{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
+        upload(__DIR__ . '{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
+    }
 });
 
-set('release_app_root', function () {
-    return 'hiderin.xyz/public_html/{{payke_app_name}}';
+/**
+ * Create plugins' symlinks
+ */
+task('deploy:init', function () {
+    // run('{{resource_releases_dir}}/{{release_name}}/app/Console/cake-for-Xserver plugin assets symlink');
+})->desc('Initialization');
+
+/**
+ * Run migrations
+ * cake-for-Xserverを使って、マイグレーションを行うように修正
+ */
+task('deploy:run_migrations', function () {
+    run('cd {{resource_releases_dir}}/{{release_name}} && app/Console/cake-for-Xserver Migrations.migration run all --precheck Migrations.PrecheckCondition');
+})->desc('Run migrations');
+
+/**
+ * Symlink to App
+ * リリースしたアプリソースを、資材置き場からpublic_html配下にシンボリックリンク
+ */
+after('deploy:symlink','deploy:symlink:public_app');
+task('deploy:symlink:public_app', function () {
+    run('unlink {{public_app_path}}');
+    run('ln -s {{deploy_path}}/current {{public_app_path}}');
 });
-
-task('upload', function () {
-    upload(__DIR__ . '{{payke_zip_file_path}}', '{{release_path}}');
-});
-
-task('unzip', function () {
-    run('unzip -u {{release_path}}/{{payke_zip_name}}.zip -d {{release_path}}');
-    run('mv {{release_path}}/{{payke_zip_name}} {{release_path}}/{{payke_app_name}}');
-});
-
-task('upload_payke_config', function () {
-    upload(__DIR__ . '{{payke_env_file_path}}', '{{release_app_root}}/app/Config');
-    upload(__DIR__ . '{{payke_install_file_path}}', '{{release_app_root}}/app/Config');
-    // run('{{release_app_root}}/app/Console/cake-for-Xserver plugin load Migrations');
-    // run('{{release_app_root}}/app/Console/cake-for-Xserver migrations migration run all');
-});
-
-task('deploy_payke', function () {
-    upload(__DIR__ . '{{payke_zip_file_path}}', '{{release_path}}');
-    run('unzip -u {{release_path}}/{{payke_zip_name}}.zip -d {{release_path}}');
-    run('mv {{release_path}}/{{payke_zip_name}} {{release_path}}/{{payke_app_name}}');
-    upload(__DIR__ . '{{payke_env_file_path}}', '{{release_app_root}}/app/Config/.env.php');
-    run('{{release_app_root}}/app/Console/cake-for-Xserver Migrations.migration run all --precheck Migrations.PrecheckCondition');
-    upload(__DIR__ . '{{payke_install_file_path}}', '{{release_app_root}}/app/Config/install.php');
-});
-
-// // Hooks
-
-// after('deploy:failed', 'deploy:unlock');
