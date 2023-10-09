@@ -29,8 +29,8 @@ class DeployServiceTest extends TestCase
             'payke_app_name' => 'payke05',
             'payke_zip_name' => 'payke-ec-752d7ee2ff92',
             'payke_zip_file_path' => '/payke_resources/payke-ec-752d7ee2ff92.zip',
-            'payke_install_file_path' => '/payke_resources/install.php',
-            'payke_env_file_path' => '/payke_resources/.env.php',
+            'payke_install_file_path' => '/payke_resources/templates/install.php',
+            'payke_env_file_path' => '/payke_resources/templates/.env.php',
             'release_path' => 'hiderin.xyz/public_html'
         ];
         $o1 = $ds->exec_deply($p1);

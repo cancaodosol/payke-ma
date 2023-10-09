@@ -17,7 +17,7 @@ return array(
     'DB_DATASOURCE' => 'Database/Mysql',
     'DB_HOST' => 'localhost',
     'DB_PORT' => 3306,
-    'DB_DATABASE' => 'hirotae_payma02',
+    'DB_DATABASE' => 'hirotae_payma04',
     'DB_USERNAME' => 'hirotae_h1de',
     'DB_PASSWORD' => 'matsui1234',
     'DB_PREFIX' => '',

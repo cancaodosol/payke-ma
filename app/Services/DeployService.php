@@ -41,8 +41,8 @@ class DeployService
      */
     public function create_env_file(string $file_name, array $config)
     {
-        $base_path = "{__DIR__}/../payke_resources/.env.php";
-        $to_path = "{__DIR__}/../payke_resources/.env_{$file_name}.php";
+        $base_path = "{__DIR__}/../payke_resources/templates/.env.php";
+        $to_path = "{__DIR__}/../payke_resources/tmp/.env_{$file_name}.php";
 
         $environment = [];
         foreach ($config as $k => $v) {
