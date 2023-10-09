@@ -58,8 +58,11 @@ task('deploy:update_code', function() {
     // １．デプロイ対象のpayke.zipを存在チェック。なかったら、資材置き場へアップロード
     if(!exists_payke_zip('{{payke_zip_name}}.zip'))
     {
+        writeln('Payke Zipをアップロードしていくよ。');
         run('mkdir -p {{resource_zips_dir}}');
         upload(__DIR__ . '{{payke_zip_file_path}}', '{{resource_zips_dir}}');
+    } else {
+        writeln('Payke Zipは、あるの使うから大丈夫。');
     }
 
     // ２．ユーザーごとのディレクトリに、zipファイルを解凍する。
