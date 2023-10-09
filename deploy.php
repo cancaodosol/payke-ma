@@ -45,8 +45,14 @@ set('deploy_path', '{{resource_dir}}/{{user_id}}');
 set('shared_files', ['app/Config/.env.php', 'app/Config/install.php']);
 set('keep_releases', 7);
 
-function exists_payke_zip(string $path) {
-    return false; // TODO: ちゃんと作る
+function exists_payke_zip() {
+    $line = run('ls {{resource_zips_dir}}');
+    $files = explode("¥n", $line);
+    foreach($files as $file)
+    {
+        if($file === get('payke_zip_name').'.zip') return true;
+    }
+    return false;
 }
 
 /**
@@ -56,10 +62,10 @@ function exists_payke_zip(string $path) {
  */
 task('deploy:update_code', function() {
     // １．デプロイ対象のpayke.zipを存在チェック。なかったら、資材置き場へアップロード
-    if(!exists_payke_zip('{{payke_zip_name}}.zip'))
+    run('mkdir -p {{resource_zips_dir}}');
+    if(!exists_payke_zip())
     {
         writeln('Payke Zipをアップロードしていくよ。');
-        run('mkdir -p {{resource_zips_dir}}');
         upload(__DIR__ . '{{payke_zip_file_path}}', '{{resource_zips_dir}}');
     } else {
         writeln('Payke Zipは、あるの使うから大丈夫。');
