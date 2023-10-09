@@ -22,7 +22,7 @@ host('payke_release_test')
 set('user_id', 'user_007131');
 set('user_app_name', 'tarotaro7');
 set('deploy_datetime', '20231009_122601');
-set('payke_name', 'payke-ec_v3.22.2');
+set('payke_name', 'payke-ec_v3-22-2');
 
 set('payke_zip_name', 'payke-ec-752d7ee2ff92');
 set('payke_zip_file_path', '/payke_resources/zips/payke-ec-752d7ee2ff92.zip');
