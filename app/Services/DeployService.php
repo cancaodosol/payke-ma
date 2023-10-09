@@ -23,12 +23,13 @@ class DeployService
         return $this->exec($command);
     }
 
-    public function exec(string $command):array
+    public function exec(string $command):bool | array
     {
         $output = [];
         $result_code = -1;
         exec($command, $output, $result_code);
-        return $output;
+        $is_success = $result_code == 0;
+        return $is_success ? $output : $is_success;
     }
     /**
      * Create environment file by app/payke_resources/.env.php.
