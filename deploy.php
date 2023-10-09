@@ -34,9 +34,16 @@ set('payke_env_file_path' ,'/payke_resources/templates/.env.php');
 set('resource_dir', '~/hiderin.xyz/payke_resources');
 set('public_html_dir', '~/hiderin.xyz/public_html');
 
-// 引数から作成される値
+// DB情報
+set('db_host', 'localhost');
+set('db_username', 'hirotae_h1de');
+set('db_password', 'matsui1234');
+set('db_database', 'hirotae_payma04');
+
+// 引数から作成されるディレクトリ情報
 set('resource_zips_dir', '{{resource_dir}}/zips');
 set('resource_releases_dir', '{{resource_dir}}/{{user_id}}/releases');
+set('current_app_path', '{{resource_dir}}/{{user_id}}/current');
 set('public_app_path' ,'{{public_html_dir}}/{{user_app_name}}');
 
 // CakePHPレシピでの設定情報
@@ -54,6 +61,19 @@ function exists_payke_zip() {
     }
     return false;
 }
+
+/**
+ * Database Backup
+ * バージョンの更新の前に、DBのバックアップを取る。
+ */
+before('deploy:release','deploy:release:db_backup');
+task('deploy:release:db_backup', function() {
+    if(!get('is_first'))
+    {
+        writeln('データベースのバックアップを取っておくよ。');
+        run('cd {{current_app_path}} && mysqldump --single-transaction -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} > mysql_{{deploy_datetime}}.dump');
+    }
+});
 
 /**
  * Update code
