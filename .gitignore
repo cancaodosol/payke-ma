@@ -20,3 +20,4 @@ yarn-error.log
 /public/css
 /public/js
 .ssh/hideringa_xserver_rsa
+/payke_resources/tmp/*

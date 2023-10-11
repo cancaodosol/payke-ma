@@ -13,32 +13,32 @@ require 'recipe/cakephp.php';
 
 // Hosts
 
-host('payke_release_test')
-    ->set('hostname', 'hiderin.xyz')
-    ->set('remote_user', 'hirotae')
-    ->set('port', 10022)
-    ->set('identity_file', './.ssh/hideringa_xserver_rsa');
+host('payke_release')
+    ->set('hostname', '{{host_name}}')
+    ->set('remote_user', '{{host_remote_user}}')
+    ->set('port', '{{host_port}}')
+    ->set('identity_file', '{{host_identity_file}}');
 
-set('user_id', 'user_007131');
-set('user_app_name', 'tarotaro7');
-set('deploy_datetime', '20231009_122601');
-set('payke_name', 'payke-ec_v3-22-2');
+// set('user_id', 'user_007131');
+// set('user_app_name', 'tarotaro7');
+// set('deploy_datetime', '20231009_223332');
+// set('payke_name', 'payke-ec_v3-22-3');
 
-set('payke_zip_name', 'payke-ec-752d7ee2ff92');
-set('payke_zip_file_path', '/payke_resources/zips/payke-ec-752d7ee2ff92.zip');
+// set('payke_zip_name', 'payke-ec-cae6ae8bf6d3');
+// set('payke_zip_file_path', '/payke_resources/zips/payke-ec-cae6ae8bf6d3.zip');
 
-set('is_first', '');
-set('payke_install_file_path' ,'/payke_resources/templates/install.php');
-set('payke_env_file_path' ,'/payke_resources/templates/.env.php');
+// set('is_first', '');
+// set('payke_install_file_path' ,'/payke_resources/templates/install.php');
+// set('payke_env_file_path' ,'/payke_resources/templates/.env.php');
 
-set('resource_dir', '~/hiderin.xyz/payke_resources');
-set('public_html_dir', '~/hiderin.xyz/public_html');
+// set('resource_dir', '~/hiderin.xyz/payke_resources');
+// set('public_html_dir', '~/hiderin.xyz/public_html');
 
-// DB情報
-set('db_host', 'localhost');
-set('db_username', 'hirotae_h1de');
-set('db_password', 'matsui1234');
-set('db_database', 'hirotae_payma04');
+// // DB情報
+// set('db_host', 'localhost');
+// set('db_username', 'hirotae_h1de');
+// set('db_password', 'matsui1234');
+// set('db_database', 'hirotae_payma04');
 
 // 引数から作成されるディレクトリ情報
 set('resource_zips_dir', '{{resource_dir}}/zips');
@@ -49,6 +49,7 @@ set('public_app_path' ,'{{public_html_dir}}/{{user_app_name}}');
 // CakePHPレシピでの設定情報
 set('release_name', '{{payke_name}}_{{deploy_datetime}}');
 set('deploy_path', '{{resource_dir}}/{{user_id}}');
+set('shared_dirs', ['app/tmp/logs']);
 set('shared_files', ['app/Config/.env.php', 'app/Config/install.php']);
 set('keep_releases', 7);
 
