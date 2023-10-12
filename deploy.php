@@ -18,6 +18,8 @@ host('payke_release')
     ->set('remote_user', '{{host_remote_user}}')
     ->set('port', '{{host_port}}')
     ->set('identity_file', '{{host_identity_file}}');
+    // 初回のSSH接続は、手作業で接続することで対応する。
+    // ->set('ssh_arguments', [' -o UserKnownHostsFile=/dev/null', ' -o StrictHostKeyChecking=no']);
 
 // set('user_id', 'user_007131');
 // set('user_app_name', 'tarotaro7');
