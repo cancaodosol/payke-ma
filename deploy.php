@@ -53,9 +53,9 @@ set('shared_dirs', ['app/tmp/logs']);
 set('shared_files', ['app/Config/.env.php', 'app/Config/install.php']);
 set('keep_releases', 7);
 
-function exists_payke_zip() {
-    $line = run('ls {{resource_zips_dir}}');
-    $files = explode("¥n", $line);
+function exists_payke_zip() : bool {
+    $line = run('ls -1 {{resource_zips_dir}}');
+    $files = explode("\n", $line);
     foreach($files as $file)
     {
         if($file === get('payke_zip_name').'.zip') return true;
