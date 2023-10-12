@@ -90,8 +90,9 @@ class DeployServiceTest extends TestCase
             'deploy_datetime' => '20231010_123832'
         ];
 
-        // $o1 = $ds->exec_deply_unlock($p1);
+        $o1 = $ds->exec_deply_unlock($p1);
         // print_r($o1);
+        $this->assertEquals($o1[count((array)$o1)-1], 'task deploy:unlock');
     }
 
     /**
@@ -158,7 +159,7 @@ class DeployServiceTest extends TestCase
         ];
 
         $o1 = $ds->deploy($deploy_host, $user, $deploy_db, $payke, false);
-        print_r($o1);
+        // print_r($o1);
         $this->assertEquals($o1[count((array)$o1)-1], '[payke_release] info successfully deployed!');
     }
 }
