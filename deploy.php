@@ -110,6 +110,8 @@ task('deploy:update_code', function() {
  * Create plugins' symlinks
  */
 task('deploy:init', function () {
+    // Plugin内のwebrootを、App本体のwebrootへシンボリックリンクを貼る処理。
+    // しかし、CakePHP3からの実装で、CakePHP2にはないため、この処理は不要。
     // run('{{resource_releases_dir}}/{{release_name}}/app/Console/cake-for-Xserver plugin assets symlink');
 })->desc('Initialization');
 
