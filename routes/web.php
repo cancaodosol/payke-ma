@@ -46,7 +46,10 @@ Route::get('/payke_db', \App\Http\Controllers\PaykeDb\IndexController::class)
 Route::get('/payke_resource', \App\Http\Controllers\PaykeResource\IndexController::class)
     ->name('payke_resource.index');
 
-    Route::middleware('auth')->group(
+Route::get('/payke_user', \App\Http\Controllers\PaykeUser\IndexController::class)
+    ->name('payke_user.index');
+
+Route::middleware('auth')->group(
     function()
     {
         Route::post('/tweet/create', \App\Http\Controllers\Tweet\CreateController::class)

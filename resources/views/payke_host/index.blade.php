@@ -37,14 +37,14 @@
                 </tr>
                 @foreach($host->PaykeDbs as $db)
                 <tr>
-                    <td> ▶︎ </td>
+                    <td>▶︎</td>
                     <td>{{ $db->db_host }}</td>
                     <td>{{ $db->db_username }}</td>
                     <td>{{ $db->db_password }}</td>
                     <td>{{ $db->db_database }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>▶︎</td>
+                    <td>{{ $db->PaykeUser->PaykeResource->payke_name }}</td>
+                    <td>{{ $db->PaykeUser->user_app_name }}</td>
                 </tr>
                 @endforeach
                 @endforeach

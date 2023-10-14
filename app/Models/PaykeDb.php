@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PaykeDb extends Model
 {
     use HasFactory;
+
+    public function PaykeUser()
+    {
+        return $this->hasOne('App\Models\PaykeUser');
+    }
 }

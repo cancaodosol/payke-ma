@@ -21,7 +21,7 @@ host('payke_release')
     // 初回のSSH接続は、手作業で接続することで対応する。
     // ->set('ssh_arguments', [' -o UserKnownHostsFile=/dev/null', ' -o StrictHostKeyChecking=no']);
 
-// set('user_id', 'user_007131');
+// set('user_folder_id', 'user_007131');
 // set('user_app_name', 'tarotaro7');
 // set('deploy_datetime', '20231009_223332');
 // set('payke_name', 'payke-ec_v3-22-3');
@@ -44,13 +44,13 @@ host('payke_release')
 
 // 引数から作成されるディレクトリ情報
 set('resource_zips_dir', '{{resource_dir}}/zips');
-set('resource_releases_dir', '{{resource_dir}}/{{user_id}}/releases');
-set('current_app_path', '{{resource_dir}}/{{user_id}}/current');
+set('resource_releases_dir', '{{resource_dir}}/{{user_folder_id}}/releases');
+set('current_app_path', '{{resource_dir}}/{{user_folder_id}}/current');
 set('public_app_path' ,'{{public_html_dir}}/{{user_app_name}}');
 
 // CakePHPレシピでの設定情報
 set('release_name', '{{payke_name}}_{{deploy_datetime}}');
-set('deploy_path', '{{resource_dir}}/{{user_id}}');
+set('deploy_path', '{{resource_dir}}/{{user_folder_id}}');
 set('shared_dirs', ['app/tmp/logs']);
 set('shared_files', ['app/Config/.env.php', 'app/Config/install.php']);
 set('keep_releases', 7);

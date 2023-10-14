@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PaykeHostsSeeder::class,
             PaykeDbSeeder::class,
             PaykeResourceSeeder::class,
+            PaykeUserSeeder::class,
         ]);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

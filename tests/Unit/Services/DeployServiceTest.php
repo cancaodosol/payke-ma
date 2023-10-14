@@ -34,7 +34,7 @@ class DeployServiceTest extends TestCase
             'resource_dir' => '~/hiderin.xyz/payke_resources',
             'public_html_dir' => '~/hiderin.xyz/public_html',
 
-            'user_id' => 'user_007131',
+            'user_folder_id' => 'user_007131',
             'user_app_name' => 'tarotaro7',
             'is_first' => '',
             'payke_install_file_path' => '/payke_resources/templates/install.php',
@@ -72,7 +72,7 @@ class DeployServiceTest extends TestCase
             'resource_dir' => '~/hiderin.xyz/payke_resources',
             'public_html_dir' => '~/hiderin.xyz/public_html',
 
-            'user_id' => 'user_007131',
+            'user_folder_id' => 'user_007131',
             'user_app_name' => 'tarotaro7',
             'is_first' => '',
             'payke_install_file_path' => '/payke_resources/templates/install.php',
@@ -141,7 +141,7 @@ class DeployServiceTest extends TestCase
         ];
 
         $user = [
-            'user_id' => 'user_007131',
+            'user_folder_id' => 'user_007131',
             'user_app_name' => 'tarotaro7',
         ];
 
