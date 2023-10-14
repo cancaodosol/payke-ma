@@ -52,5 +52,7 @@ sail up -d
 
 ## デプロイ情報登録
 
-sail artisan make:model PaykeHost --mfsc
-sail artisan make:model PaykeDb --mfsc
+sail artisan make:model PaykeHost -mfsc
+sail artisan make:model PaykeDb -mfsc
+sail artisan make:model PaykeResource -mfsc
+sail artisan migrate:refresh --seed

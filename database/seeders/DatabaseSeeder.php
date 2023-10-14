@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TweetsSeeder::class,
             PaykeHostsSeeder::class,
             PaykeDbSeeder::class,
+            PaykeResourceSeeder::class,
         ]);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
