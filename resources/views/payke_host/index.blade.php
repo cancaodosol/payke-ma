@@ -35,6 +35,18 @@
                     <td>{{ $host->resource_dir }}</td>
                     <td>{{ $host->public_html_dir }}</td>
                 </tr>
+                @foreach($host->PaykeDbs as $db)
+                <tr>
+                    <td> ▶︎ </td>
+                    <td>{{ $db->db_host }}</td>
+                    <td>{{ $db->db_username }}</td>
+                    <td>{{ $db->db_password }}</td>
+                    <td>{{ $db->db_database }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @endforeach
                 @endforeach
         </table>
     </body>

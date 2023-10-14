@@ -40,6 +40,9 @@ Route::get('/tweet', \App\Http\Controllers\Tweet\IndexController::class)
 Route::get('/payke_host', \App\Http\Controllers\PaykeHost\IndexController::class)
     ->name('payke_host.index');
 
+Route::get('/payke_db', \App\Http\Controllers\PaykeDb\IndexController::class)
+    ->name('payke_db.index');
+
 Route::middleware('auth')->group(
     function()
     {
