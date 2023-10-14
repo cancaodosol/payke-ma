@@ -49,3 +49,7 @@ sail artisan sail:publish
 sail down
 sail build
 sail up -d
+
+## デプロイ情報登録
+
+sail artisan make:model PaykeHost --all

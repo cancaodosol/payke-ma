@@ -37,6 +37,9 @@ Route::get('/sample/{id}', [\App\Http\Controllers\Sample\IndexController::class,
 Route::get('/tweet', \App\Http\Controllers\Tweet\IndexController::class)
     ->name('tweet.index');
 
+Route::get('/payke_host', \App\Http\Controllers\PaykeHost\IndexController::class)
+    ->name('payke_host.index');
+
 Route::middleware('auth')->group(
     function()
     {
