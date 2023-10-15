@@ -13,7 +13,10 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $hosts = PaykeHost::all();
+        // $hosts = PaykeHost::all();
+        $hosts = PaykeHost::with(['PaykeDbs' => function($db) {
+            $db->orderBy('db_database','asc');
+        }])->get();
         return view('payke_host.index', ['hosts' => $hosts]);
     }
 }
