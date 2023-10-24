@@ -56,3 +56,5 @@ sail artisan make:model PaykeHost -mfsc
 sail artisan make:model PaykeDb -mfsc
 sail artisan make:model PaykeResource -mfsc
 sail artisan migrate:refresh --seed
+
+insert into payke_dbs values (null, 0, 1, 'localhost', 'hirotae_h1de', 'matsui1234', 'hirotae_payma03', '2023-10-14 14:13:24', '2023-10-14 14:13:24');
