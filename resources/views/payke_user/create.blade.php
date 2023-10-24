@@ -4,8 +4,8 @@
     @csrf
     <div class="space-y-12 sm:space-y-16">
         <div>
-        <h2 class="text-base font-semibold leading-7 text-gray-900">Payke環境 新規作成</h2>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">この画面では、新規利用者のPayke環境作成を行います。</p>
+        <h2 class="ml-20 text-base font-semibold leading-7 text-gray-900">Payke環境 新規作成</h2>
+        <p class="ml-20 mt-1 max-w-2xl text-sm leading-6 text-gray-600">この画面では、新規利用者のPayke環境作成を行います。</p>
 
         @if(session('feedback.success'))
             <p style="color: green">{{ session('feedback.success') }}</p>
