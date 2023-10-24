@@ -1,4 +1,4 @@
-<x-layouts.basepage title="Payke環境 新規登録" current="新規作成">
+<x-layouts.basepage title="Payke環境 新規作成" current="新規作成">
     <form action="{{ route('payke_user.create.post') }}", method="post">
     @method('POST')
     @csrf
