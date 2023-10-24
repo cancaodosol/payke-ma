@@ -1,58 +1,30 @@
-<!doctype html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-            content="width=device-width, user-scalable=no, initial-scale=1.0,
-            maximum-scale=1.0, minimum-slace=1.0">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <title>Payke環境 新規登録</title>
-    </head>
-    <body>
-        <h1>Payke環境 新規登録</h1>
+<x-layouts.basepage title="Payke環境 新規登録" current="新規作成">
+    <form action="{{ route('payke_user.create.post') }}", method="post">
+    @method('POST')
+    @csrf
+    <div class="space-y-12 sm:space-y-16">
         <div>
-            <a href="{{ route('payke_host.index') }}">戻る</a>
-            <p>登録情報</p>
-            @if(session('feedback.success'))
-                <p style="color: green">{{ session('feedback.success') }}</p>
-            @endif
-            <form action="{{ route('payke_user.create.post') }}", method="post">
-                @method('POST')
-                @csrf
-                <label for="user_name">利用者名</label>
-                <input name="user_name"/>
-                <br><br>
-                <label for="email_address">メールアドレス</label>
-                <input name="email_address"/>
-                <br><br>
-                <label for="payke_app_name">APP名</label>
-                <input name="payke_app_name"/>
-                <br><br>
-                <label for="payke_host_db">サーバー / DB</label>
-                <select name="payke_host_db">
-                    @foreach ($host_dbs as $host_db)
-                        <option value="{{ $host_db['id'] }}">{{ $host_db['name'] }}</option>
-                    @endforeach
-                </select>
-                <br><br>
-                <label for="payke_resource">Payke</label>
-                <select name="payke_resource">
-                    @foreach ($resources as $resource)
-                        <option value="{{ $resource->id }}">{{ $resource->payke_name }}</option>
-                    @endforeach
-                </select>
-                <br><br>
-                <label for="can_affi">アフィリ機能</label>
-                <input name="can_affi" type="checkbox"/>
-                <br><br>
-                <label for="memo">メモ</label>
-                <textarea type="text" name="memo"></textarea>
-                <br><br>
-                @error('payke_user')
-                <p style="color:red;">{{ $message }}</p>
-                @enderror
-                <button type="submit">新規登録</button>
-            </form>
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Payke環境 新規作成</h2>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">この画面では、新規利用者のPayke環境作成を行います。</p>
+
+        @if(session('feedback.success'))
+            <p style="color: green">{{ session('feedback.success') }}</p>
+        @endif
+
+        <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
+            <x-forms.list name="payke_host_db" label="サーバー / DB" :list="$host_dbs"/>
+            <x-forms.list name="payke_resource" label="Paykeバージョン" :list="$resources"/>
+            <x-forms.input name="payke_app_name" label="APP名" explain="この名前が、サブディレクトリ名となります。"/>
+            <x-forms.checkbox name="comments" label="アフィリエイト機能" cbText="有効にする"/>
+            <x-forms.input name="user_name" label="利用者名" explain="管理画面に表示する名前です。"/>
+            <x-forms.input name="email_address" label="メールアドレス" example="xxxxx@xxxxx.com"/>
+            <x-forms.textarea name="memo" label="メモ"/>
         </div>
-    </body>
-</html>
+        </div>
+    </div>
+    <!-- 保存ボタン -->
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+        <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">新規作成する</button>
+    </div>
+    </form>
+</x-layouts.basepage>

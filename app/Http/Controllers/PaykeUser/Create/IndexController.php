@@ -20,6 +20,9 @@ class IndexController extends Controller
             $db->orderBy('db_database','asc');
         }])->get();
         $resources = PaykeResource::orderBy('payke_name', 'ASC')->get();
+        $resources = array_map(function($x){
+            return ["id" => $x['id'], "name" => $x['payke_name']];
+        }, $resources->toarray());
 
         // MEMO: HostとDBは、一連なので、同じ項目として扱う。
         //       登録IDは、登録時に分裂させる。
