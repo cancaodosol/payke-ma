@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use App\Models\Deploy;
+use App\Models\PaykeDb;
+use App\Models\PaykeHost;
+use App\Models\PaykeResource;
+use App\Models\PaykeUser;
 
 class DeployService
 {
@@ -82,7 +86,7 @@ class DeployService
         return $success ? "/payke_resources/tmp/.env_{$file_name}.php" : "";
     }
 
-    public function deploy(array $host, array $user, array $db, array $payke, bool $is_first = false)
+    public function deploy(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, bool $is_first = false)
     {
         $datetime = date("Ymd_His");
 
@@ -99,10 +103,39 @@ class DeployService
             'DB_PASSWORD' => $db['db_password'],
             'DB_PREFIX' => ''
         ];
+
         $env_file_name = $user['user_id'].'_'.$datetime;
         $user['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
 
-        $params = array_merge($host, $user, $db, $payke); 
+
+        $aHost = [
+            'hostname' => $host->hostname,
+            'remote_user' => $host->remote_user,
+            'port' => $host->port,
+            'identity_file' => $host->identity_file,
+            'resource_dir' => $host->resource_dir,
+            'public_html_dir' => $host->public_html_dir
+        ];
+
+        $aUser = [
+            'user_folder_id' => $user->user_folder_id,
+            'user_app_name' => $user->user_app_name
+        ];
+
+        $aDb = [
+            'db_host' => $db->db_host,
+            'db_username' => $db->db_username,
+            'db_password' => $db->db_password,
+            'db_database' => $db->db_database
+        ];
+
+        $aPayke = [
+            'payke_name' => $payke->payke_name,
+            'payke_zip_name' => $payke->payke_zip_name,
+            'payke_zip_file_path' => $payke->payke_zip_file_path
+        ];
+
+        $params = array_merge($aHost, $aUser, $aDb, $aPayke); 
         $params['deploy_datetime'] = $datetime;
 
         $result = $this->exec_deply($params);

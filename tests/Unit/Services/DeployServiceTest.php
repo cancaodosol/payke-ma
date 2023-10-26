@@ -2,6 +2,10 @@
 
 namespace Tests\Unit\Services;
 
+use App\Models\PaykeDb;
+use App\Models\PaykeHost;
+use App\Models\PaykeResource;
+use App\Models\PaykeUser;
 use App\Services\DeployService;
 use PHPUnit\Framework\TestCase;
 
@@ -131,34 +135,30 @@ class DeployServiceTest extends TestCase
     {
         $ds = new DeployService();
 
-        $deploy_host = [
-            'hostname' => 'hiderin.xyz',
-            'remote_user' => 'hirotae',
-            'port' => 10022,
-            'identity_file' => './.ssh/hideringa_xserver_rsa',
-            'resource_dir' => '~/hiderin.xyz/payke_resources',
-            'public_html_dir' => '~/hiderin.xyz/public_html'
-        ];
+        $host = new PaykeHost();
+        $host->hostname = 'hiderin.xyz';
+        $host->remote_user = 'hirotae';
+        $host->port = 10022;
+        $host->identity_file = './.ssh/hideringa_xserver_rsa';
+        $host->resource_dir = '~/hiderin.xyz/payke_resources';
+        $host->public_html_dir = '~/hiderin.xyz/public_html';
 
-        $user = [
-            'user_folder_id' => 'user_007131',
-            'user_app_name' => 'tarotaro7',
-        ];
+        $user = new PaykeUser();
+        $user->user_folder_id = 'user_007131';
+        $user->user_app_name = 'tarotaro7';
 
-        $deploy_db = [
-            'db_host' => 'localhost',
-            'db_username' => 'hirotae_h1de',
-            'db_password' => 'matsui1234',
-            'db_database' => 'hirotae_payma04'
-        ];
+        $db = new PaykeDb();
+        $db->db_host = 'localhost';
+        $db->db_username = 'hirotae_h1de';
+        $db->db_password = 'matsui1234';
+        $db->db_database = 'hirotae_payma04';
 
-        $payke = [
-            'payke_name' => 'payke-ec_v3-22-3',
-            'payke_zip_name' => 'payke-ec-cae6ae8bf6d3',
-            'payke_zip_file_path' => '/payke_resources/zips/payke-ec-cae6ae8bf6d3.zip'
-        ];
+        $payke = new PaykeResource();
+        $payke->payke_name = 'payke-ec_v3-22-3';
+        $payke->payke_zip_name = 'payke-ec-cae6ae8bf6d3';
+        $payke->payke_zip_file_path = '/payke_resources/zips/payke-ec-cae6ae8bf6d3.zip';
 
-        $o1 = $ds->deploy($deploy_host, $user, $deploy_db, $payke, false);
+        $o1 = $ds->deploy($host, $user, $db, $payke, false);
         // print_r($o1);
         $this->assertEquals($o1[count((array)$o1)-1], '[payke_release] info successfully deployed!');
     }
