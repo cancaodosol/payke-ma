@@ -21,27 +21,6 @@ host('payke_release')
     // 初回のSSH接続は、手作業で接続することで対応する。
     // ->set('ssh_arguments', [' -o UserKnownHostsFile=/dev/null', ' -o StrictHostKeyChecking=no']);
 
-// set('user_folder_id', 'user_007131');
-// set('user_app_name', 'tarotaro7');
-// set('deploy_datetime', '20231009_223332');
-// set('payke_name', 'payke-ec_v3-22-3');
-
-// set('payke_zip_name', 'payke-ec-cae6ae8bf6d3');
-// set('payke_zip_file_path', '/payke_resources/zips/payke-ec-cae6ae8bf6d3.zip');
-
-// set('is_first', '');
-// set('payke_install_file_path' ,'/payke_resources/templates/install.php');
-// set('payke_env_file_path' ,'/payke_resources/templates/.env.php');
-
-// set('resource_dir', '~/hiderin.xyz/payke_resources');
-// set('public_html_dir', '~/hiderin.xyz/public_html');
-
-// // DB情報
-// set('db_host', 'localhost');
-// set('db_username', 'hirotae_h1de');
-// set('db_password', 'matsui1234');
-// set('db_database', 'hirotae_payma04');
-
 // 引数から作成されるディレクトリ情報
 set('resource_zips_dir', '{{resource_dir}}/zips');
 set('resource_releases_dir', '{{resource_dir}}/{{user_folder_id}}/releases');
@@ -103,6 +82,7 @@ task('deploy:update_code', function() {
     if(get('is_first'))
     {
         writeln('設定ファイルをアップロードしていくよ。');
+        run('mkdir -p {{deploy_path}}/shared/app/Config/');
         upload(__DIR__ . '{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
         upload(__DIR__ . '{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
     }
@@ -131,6 +111,6 @@ task('deploy:run_migrations', function () {
  */
 after('deploy:symlink','deploy:symlink:public_app');
 task('deploy:symlink:public_app', function () {
-    run('unlink {{public_app_path}}');
+    run('unlink {{public_app_path}} || echo unexists.');
     run('ln -s {{deploy_path}}/current {{public_app_path}}');
 });

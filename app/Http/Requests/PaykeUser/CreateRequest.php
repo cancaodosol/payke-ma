@@ -22,25 +22,12 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'payke_host_db' => 'required',
+            'payke_resource' => 'required',
+            'payke_app_name' => 'required',
             'user_name' => 'required',
-            'email_address' => '',
-            'payke_app_name' => ''
+            'email_address' => 'required'
         ];
-    }
-
-    public function userName(): string
-    {
-        return $this->intput('user_name');
-    }
-
-    public function emailAddress(): string
-    {
-        return $this->intput('email_address');
-    }
-
-    public function paykeAppName(): string
-    {
-        return $this->intput('payke_app_name');
     }
 
     public function paykeHostId(): int
@@ -55,16 +42,31 @@ class CreateRequest extends FormRequest
 
     public function paykeResourceId(): int
     {
-        return (int)$this->intput('payke_resource');
+        return (int)$this->input('payke_resource');
     }
 
-    public function can_affi(): bool
+    public function paykeAppName(): string
     {
-        return (bool)$this->intput('can_affi');
+        return $this->input('payke_app_name');
+    }
+
+    public function enableAffiliate(): bool
+    {
+        return (bool)$this->input('enable_affiliate');
+    }
+
+    public function userName(): string
+    {
+        return $this->input('user_name');
+    }
+
+    public function emailAddress(): string
+    {
+        return $this->input('email_address');
     }
 
     public function memo(): string
     {
-        return $this->intput('memo');
+        return $this->input('memo') ?? "";
     }
 }

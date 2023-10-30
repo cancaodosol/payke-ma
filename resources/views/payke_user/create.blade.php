@@ -19,8 +19,8 @@
         <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <x-forms.list name="payke_host_db" label="サーバー / DB" :list="$host_dbs" addPageLink="{{ route('payke_user.index') }}"/>
             <x-forms.list name="payke_resource" label="Paykeバージョン" :list="$resources" addPageLink="{{ route('payke_user.index') }}"/>
-            <x-forms.input name="payke_app_name" label="APP名"  example="例) tarotaro7" explain="この名前が、サブディレクトリ名となります。"/>
-            <x-forms.checkbox name="comments" label="アフィリエイト機能" cbText="有効にする"/>
+            <x-forms.input name="payke_app_name" label="公開アプリ名"  example="例) tarotaro7" explain="この名前が、サブディレクトリ名となります。"/>
+            <x-forms.checkbox name="enable_affiliate" label="アフィリエイト機能" cbText="有効にする"/>
             <x-forms.input name="user_name" label="利用者名" explain="管理画面に表示する名前です。"/>
             <x-forms.input name="email_address" label="メールアドレス" example="xxxxx@xxxxx.com"/>
             <x-forms.textarea name="memo" label="メモ"/>

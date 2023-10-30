@@ -25,7 +25,7 @@ class DeployService
             $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
             $params_string = "{$params_string} -o {$key}={$value_string}";
         }
-        $command = "php vendor/bin/dep deploy{$params_string}";
+        $command = "cd ../ && php vendor/bin/dep deploy{$params_string}";
         return $this->exec($command);
     }
 
@@ -37,7 +37,7 @@ class DeployService
             $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
             $params_string = "{$params_string} -o {$key}={$value_string}";
         }
-        $command = "php vendor/bin/dep deploy:unlock{$params_string}";
+        $command = "cd ../ && php vendor/bin/dep deploy:unlock{$params_string}";
         return $this->exec($command);
     }
 
@@ -58,8 +58,8 @@ class DeployService
      */
     public function create_env_file(string $file_name, array $config): string
     {
-        $base_path = "{__DIR__}/../payke_resources/templates/.env.php";
-        $to_path = "{__DIR__}/../payke_resources/tmp/.env_{$file_name}.php";
+        $base_path = dirname(__FILE__)."/../../payke_resources/templates/.env.php";
+        $to_path = dirname(__FILE__)."/../../payke_resources/tmp/.env_{$file_name}.php";
 
         $environment = [];
         foreach ($config as $k => $v) {
@@ -86,27 +86,10 @@ class DeployService
         return $success ? "/payke_resources/tmp/.env_{$file_name}.php" : "";
     }
 
-    public function deploy(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, bool $is_first = false)
+    public function deploy(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, array &$outLog, bool $is_first = false): bool
     {
+        // Modelでもらった情報を、配列に詰め直す。
         $datetime = date("Ymd_His");
-
-        // デプロイが初回の場合は、デプロイ先に設定ファイルなどを送る。
-        $user['is_first'] = $is_first ? '1' : '';
-        $user['payke_install_file_path'] = $this->payke_install_file_path;
-
-        $env = [
-            'DB_DATASOURCE' => 'Database/Mysql',
-            'DB_HOST' => $db['db_host'],
-            'DB_PORT' => 3306,
-            'DB_DATABASE' => $db['db_database'],
-            'DB_USERNAME' => $db['db_username'],
-            'DB_PASSWORD' => $db['db_password'],
-            'DB_PREFIX' => ''
-        ];
-
-        $env_file_name = $user['user_id'].'_'.$datetime;
-        $user['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
-
 
         $aHost = [
             'hostname' => $host->hostname,
@@ -135,10 +118,31 @@ class DeployService
             'payke_zip_file_path' => $payke->payke_zip_file_path
         ];
 
+        // デプロイが初回の場合は、デプロイ先に設定ファイルなどを送る。
+        $aUser['is_first'] = $is_first ? '1' : '';
+        $aUser['payke_install_file_path'] = $this->payke_install_file_path;
+
+        $env = [
+            'DB_DATASOURCE' => 'Database/Mysql',
+            'DB_HOST' => $db['db_host'],
+            'DB_PORT' => 3306,
+            'DB_DATABASE' => $db['db_database'],
+            'DB_USERNAME' => $db['db_username'],
+            'DB_PASSWORD' => $db['db_password'],
+            'DB_PREFIX' => ''
+        ];
+
+        $env_file_name = $aUser['user_folder_id'].'_'.$datetime;
+        $aUser['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
+
+        // ここまでに作成したものを、１つの配列にまとめる。
         $params = array_merge($aHost, $aUser, $aDb, $aPayke); 
         $params['deploy_datetime'] = $datetime;
 
-        $result = $this->exec_deply($params);
-        return $result;
+        $unlock = $this->exec_deply_unlock($params);
+        // dd($unlock);
+        $outLog = $this->exec_deply($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
+        return $is_success;
     }
 }
