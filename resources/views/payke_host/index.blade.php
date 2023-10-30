@@ -2,7 +2,7 @@
         <div class="sm:flex sm:items-center">
             <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">リソース一覧</h1>
-            <p class="mt-2 text-sm text-gray-700">サーバー、データベースの一覧を表示します。</p>
+            <p class="mt-2 text-sm text-gray-700">サーバー、データベースの一覧です。</p>
             </div>
             <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">

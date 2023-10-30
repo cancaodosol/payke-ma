@@ -14,7 +14,6 @@ class IndexController extends Controller
     public function __invoke(Request $request)
     {
         $users = PaykeUser::all();
-        dd($users);
         return view('payke_user.index', ['users' => $users]);
     }
 }
