@@ -17,6 +17,7 @@ class PaykeResourceFactory extends Factory
     public function definition(): array
     {
         return [
+            'version' => 'v3.22.3',
             'payke_name' => 'payke-ec_v3-22-3',
             'payke_zip_name' => 'payke-ec-cae6ae8bf6d3',
             'payke_zip_file_path' => '/payke_resources/zips/payke-ec-cae6ae8bf6d3.zip'

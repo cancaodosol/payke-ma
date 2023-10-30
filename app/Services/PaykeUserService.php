@@ -14,6 +14,8 @@ class PaykeUserService
         $user->status = PaykeUser::STATUS__BEFORE_SETTING;
         $user->PaykeHost->status = PaykeHost::STATUS__IN_USE;
         $user->PaykeDb->status = PaykeDb::STATUS__IN_USE;
+        $url = "https://{$user->PaykeHost->hostname}/{$user->user_app_name}/admin/users";
+        $user->app_url = $url;
         $user->save();
         $user->PaykeHost->save();
         $user->PaykeDb->save();
@@ -28,7 +30,6 @@ class PaykeUserService
     public function save_has_error(PaykeUser $user, string $error): void
     {
         $user->status = PaykeUser::STATUS__HAS_ERROR;
-        $user->memo = $user->memo."\n". $error;
         $user->save();
     }
 }
