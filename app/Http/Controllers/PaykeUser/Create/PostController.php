@@ -40,11 +40,10 @@ class PostController extends Controller
         if($is_success)
         {
             $service->save_active($user);
+            return view('common.result', ["title" => "成功！", "message" => "Payke のデプロイに成功しました！"]);
         } else {
             $service->save_has_error($user,  implode("\n", $outLog));
+            return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
         }
-
-        dd($outLog);
-        return redirect()->route('tweet.index');
     }
 }

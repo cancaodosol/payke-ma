@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Deploy;
+use App\Models\DeployLog;
 use App\Models\PaykeDb;
 use App\Models\PaykeHost;
 use App\Models\PaykeResource;
@@ -131,7 +132,6 @@ class DeployService
             'DB_PASSWORD' => $db['db_password'],
             'DB_PREFIX' => ''
         ];
-
         $env_file_name = $aUser['user_folder_id'].'_'.$datetime;
         $aUser['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
 
@@ -139,10 +139,78 @@ class DeployService
         $params = array_merge($aHost, $aUser, $aDb, $aPayke); 
         $params['deploy_datetime'] = $datetime;
 
-        $unlock = $this->exec_deply_unlock($params);
-        // dd($unlock);
+        $logService = new DeployLogService();
         $outLog = $this->exec_deply($params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
+
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "Payke {$payke->version}のデプロイに成功しました。";
+            $logService->write_ok_log($user, $payke, $message, $params_string, $outLog);
+        }else{
+            $message = "Payke {$payke->version}のデプロイに失敗しました。";
+            $logService->write_error_log($user, $payke, $message, $params_string, $outLog);
+        }
+
         return $is_success;
+    }
+
+    public function unlock(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, array &$outLog): bool
+    {
+        $aHost = [
+            'hostname' => $host->hostname,
+            'remote_user' => $host->remote_user,
+            'port' => $host->port,
+            'identity_file' => $host->identity_file,
+            'resource_dir' => $host->resource_dir,
+            'public_html_dir' => $host->public_html_dir
+        ];
+
+        $aUser = [
+            'user_folder_id' => $user->user_folder_id,
+            'user_app_name' => $user->user_app_name
+        ];
+
+        $aDb = [
+            'db_host' => $db->db_host,
+            'db_username' => $db->db_username,
+            'db_password' => $db->db_password,
+            'db_database' => $db->db_database
+        ];
+
+        $aPayke = [
+            'payke_name' => $payke->payke_name,
+            'payke_zip_name' => $payke->payke_zip_name,
+            'payke_zip_file_path' => $payke->payke_zip_file_path
+        ];
+
+        // ここまでに作成したものを、１つの配列にまとめる。
+        $params = array_merge($aHost, $aUser, $aDb, $aPayke);
+
+        $logService = new DeployLogService();
+        $outLog = $this->exec_deply_unlock($params);
+        $is_success = $outLog[count((array)$outLog)-1] == 'task deploy:unlock';
+
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "Deployerのアンロックに成功しました。";
+            $logService->write_ok_log($user, $payke, $message, $params_string, $outLog);
+        }else{
+            $message = "Deployerのアンロックに失敗しました。";
+            $logService->write_error_log($user, $payke, $message, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    private function create_params_string(array $params)
+    {
+        $params_string = '';
+        foreach($params as $key => $value)
+        {
+            $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
+            $params_string = "{$params_string} -o {$key}={$value_string}";
+        }
+        return $params_string;
     }
 }
