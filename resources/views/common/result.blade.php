@@ -19,7 +19,7 @@
             <h1 class="text-base font-semibold leading-6 text-gray-900">{{ $message }}</h1>
         </div>
     </div>
-    <div class="mt-5">
+    <div class="mt-5 text-sm">
         <div hidden>{{ $no = 0 }}</div>
         @foreach(($info ?? []) as $row)
             <li>[{{ ++$no }}] {{ $row }}</li>
