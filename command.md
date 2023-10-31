@@ -58,3 +58,9 @@ sail artisan make:model PaykeResource -mfsc
 sail artisan migrate:refresh --seed
 
 insert into payke_dbs values (null, 0, 1, 'localhost', 'hirotae_h1de', 'matsui1234', 'hirotae_payma03', '2023-10-14 14:13:24', '2023-10-14 14:13:24');
+
+## マイグレーション
+
+$table->renameColumn('id', 'id_stnk');
+$table->integer('name')->nullable()->change(); //Null許容するように変更
+$table->integer('name')->change(); //Null許容しないに変更

@@ -144,12 +144,13 @@ class DeployService
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
 
         $params_string = $this->create_params_string($params);
+        $title = "{$payke->version} 更新";
         if($is_success){
             $message = "Payke {$payke->version}のデプロイに成功しました。";
-            $logService->write_ok_log($user, $payke, $message, $params_string, $outLog);
+            $logService->write_version_log($user, $title, $message, $payke, $params_string, $outLog);
         }else{
             $message = "Payke {$payke->version}のデプロイに失敗しました。";
-            $logService->write_error_log($user, $payke, $message, $params_string, $outLog);
+            $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
         }
 
         return $is_success;
@@ -194,10 +195,10 @@ class DeployService
         $params_string = $this->create_params_string($params);
         if($is_success){
             $message = "Deployerのアンロックに成功しました。";
-            $logService->write_ok_log($user, $payke, $message, $params_string, $outLog);
+            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
         }else{
             $message = "Deployerのアンロックに失敗しました。";
-            $logService->write_error_log($user, $payke, $message, $params_string, $outLog);
+            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
         }
 
         return $is_success;
