@@ -52,6 +52,9 @@ Route::get('/payke_user', \App\Http\Controllers\PaykeUser\IndexController::class
 Route::get('/payke_user/create', \App\Http\Controllers\PaykeUser\Create\IndexController::class)
     ->name('payke_user.create');
 
+Route::post('/payke_user/create/post', \App\Http\Controllers\PaykeUser\Create\PostController::class)
+    ->name('payke_user.create.post');
+
 Route::get('/deploy_log/{userId}', \App\Http\Controllers\DeployLog\IndexController::class)
     ->name('deploy_log.index');
 
