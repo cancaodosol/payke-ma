@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\TimeHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +24,12 @@ class DeployLog extends Model
     {
         if($this->deployer_log == "") return [];
         return explode("\n", $this->deployer_log);
+    }
+
+    public function getDiffTime() : string
+    {
+        $th = new TimeHelper();
+        $now = time();
+        return $th->to_diff_string($now, strtotime($this->created_at));
     }
 }

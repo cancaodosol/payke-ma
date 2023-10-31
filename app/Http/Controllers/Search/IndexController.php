@@ -22,13 +22,8 @@ class IndexController extends Controller
             case ':hosts' :
                 return redirect()->route('payke_host.index');
             case ':logs' :
-                $deployLogs = DeployLog::all();
-                $logs = [];
-                foreach($deployLogs as $dl)
-                {
-                    $logs[] = "{$dl->created_at} >> {$dl->status}: [{$dl->payke_version}] {$dl->message}";
-                }
-                dd($logs);
+                $deployLog = DeployLog::all()[0];
+                dd($deployLog->getDiffTime());
             case ':logs_view' :
                 $deployLogs = DeployLog::all()->sortByDesc('created_at');
                 return view('deploy_log.index', ["logs" => $deployLogs]);

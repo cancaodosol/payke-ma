@@ -30,8 +30,8 @@
                         <span class="font-medium text-gray-900">{{ $log->title }}</span>
                         {{ $log->message }}
                     </p>
-                    <time datetime="2023-01-24T09:12" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
-                        {{ $log->created_at }}
+                    <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
+                        {{ $log->getDiffTime() }}
                     </time>
                 </li>
                 @else
@@ -62,8 +62,8 @@
                                 <span class="font-medium text-gray-900">{{ $log->title }}</span>
                                 {{ $log->message }}
                             </div>
-                            <time datetime="2023-01-23T15:56" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
-                                {{ $log->created_at }}
+                            <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
+                                {{ $log->getDiffTime() }}
                             </time>
                         </div>
                         <details>
