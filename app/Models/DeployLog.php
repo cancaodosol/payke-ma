@@ -18,4 +18,10 @@ class DeployLog extends Model
     public function is_warm() { return $this->type == DeployLog::TYPE__WARM; }
     public function is_error() { return $this->type == DeployLog::TYPE__ERROR; }
     public function is_other_info() { return $this->type == DeployLog::TYPE__OTHER_INFO; }
+
+    public function getLogArray() : array
+    {
+        if($this->deployer_log == "") return [];
+        return explode("\n", $this->deployer_log);
+    }
 }

@@ -32,6 +32,7 @@
                 <tr>
                     <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0">{{ $no++ }}</td>
                     <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
+                        <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
                         @if($user->is_active())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                             <div class="flex-none rounded-full p-1 text-green-400 bg-green-400/10">
@@ -75,6 +76,7 @@
                             <div class="text-xs">未設置</div>
                         </div>
                         @endif
+                        </a>
                     </td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $user->user_name }}</td>
