@@ -21,6 +21,8 @@ class IndexController extends Controller
                 return redirect()->route('payke_user.create');
             case ':hosts' :
                 return redirect()->route('payke_host.index');
+            case ':newpayke' :
+                return view('payke_resource.create');
             case ':logs' :
                 $deployLog = DeployLog::all()[0];
                 dd($deployLog->getDiffTime());

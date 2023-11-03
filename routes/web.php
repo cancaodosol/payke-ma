@@ -46,6 +46,9 @@ Route::get('/payke_db', \App\Http\Controllers\PaykeDb\IndexController::class)
 Route::get('/payke_resource', \App\Http\Controllers\PaykeResource\IndexController::class)
     ->name('payke_resource.index');
 
+Route::post('/payke_resource/create', \App\Http\Controllers\PaykeResource\Create\PostController::class)
+    ->name('payke_resource.create.post');
+
 Route::get('/payke_user', \App\Http\Controllers\PaykeUser\IndexController::class)
     ->name('payke_user.index');
 
