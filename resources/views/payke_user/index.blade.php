@@ -21,6 +21,8 @@
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">アフィリ機能</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">現バージョン</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">更新可能</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">メモ</th>
                     <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
                         <span class="sr-only">詳細</span>
                     </th>
@@ -78,7 +80,7 @@
                         @endif
                         </a>
                     </td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
+                    <td class="whitespace-nowrap px-2 py-2 text-sm text-blue-500 underline"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $user->user_name }}</td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
                         @if($user->enable_affiliate)
@@ -88,8 +90,10 @@
                         @endif
                     </td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</td>
+                    <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900"></td>
+                    <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 truncate">メモの１行分だけ</td>
                     <td class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, AAPS0L</span></a>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-900">詳細<span class="sr-only">, AAPS0L</span></a>
                     </td>
                 </tr>
                 @endforeach

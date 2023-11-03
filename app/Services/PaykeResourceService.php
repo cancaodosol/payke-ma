@@ -21,6 +21,11 @@ class PaykeResourceService
         $resource->save();
     }
 
+    public function find_by_id(int $id)
+    {
+        return PaykeResource::where('id', $id)->firstOrFail();
+    }
+
     public function find_all()
     {
         return PaykeResource::orderByRaw('version_x DESC, version_y DESC, version_z DESC, payke_name DESC')->get();

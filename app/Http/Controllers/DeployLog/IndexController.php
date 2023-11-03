@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePaykeDbRequest;
 use App\Models\DeployLog;
 use App\Models\PaykeDb;
 use App\Services\DeployLogService;
+use App\Services\PaykeResourceService;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -19,6 +20,10 @@ class IndexController extends Controller
     {
         $service = new DeployLogService();
         $logs = $service->find_by_user_id($userId);
-        return view('deploy_log.index', ['logs' => $logs]);
+
+        $rService = new PaykeResourceService();
+        $resources = $rService->find_all_to_array();
+
+        return view('deploy_log.index', ['user_id' => $userId, 'logs' => $logs, 'resources' => $resources]);
     }
 }

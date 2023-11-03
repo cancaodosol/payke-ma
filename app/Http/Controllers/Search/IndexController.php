@@ -27,8 +27,14 @@ class IndexController extends Controller
                 $deployLog = DeployLog::all()[0];
                 dd($deployLog->getDiffTime());
             case ':logs_view' :
-                $deployLogs = DeployLog::all()->sortByDesc('created_at');
-                return view('deploy_log.index', ["logs" => $deployLogs]);
+                if(count($searchWords) > 1)
+                {
+                    $deployLog = DeployLog::where('id', $searchWords[1])->firstOrFail();
+                    dd($deployLog);
+                }else{
+                    $deployLogs = DeployLog::all()->sortByDesc('created_at');
+                    dd($deployLogs);
+                }
             case ':unlock' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deploy = new DeployService();

@@ -32,4 +32,9 @@ class PaykeUserService
         $user->status = PaykeUser::STATUS__HAS_ERROR;
         $user->save();
     }
+
+    public function find_by_id(int $id)
+    {
+        return PaykeUser::where('id', $id)->firstOrFail();
+    }
 }
