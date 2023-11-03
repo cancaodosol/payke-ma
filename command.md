@@ -64,3 +64,5 @@ insert into payke_dbs values (null, 0, 1, 'localhost', 'hirotae_h1de', 'matsui12
 $table->renameColumn('id', 'id_stnk');
 $table->integer('name')->nullable()->change(); //Null許容するように変更
 $table->integer('name')->change(); //Null許容しないに変更
+$table->integer('version_x')->after('version');
+$table->dropColumn('user_id');

@@ -6,7 +6,6 @@ use ZipArchive;
 
 class ZipReadHelper
 {
-
     public string $root_dir;
     public function __construct()
     {

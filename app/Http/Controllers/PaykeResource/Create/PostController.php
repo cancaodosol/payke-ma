@@ -28,6 +28,6 @@ class PostController extends Controller
         $payke_zip_file_path = "storage/app/payke_resources/zips/{$file_name}";
         $service->save($payke_zip_file_path);
 
-        return redirect('/');
+        return redirect()->route('payke_user.index');
     }
 }

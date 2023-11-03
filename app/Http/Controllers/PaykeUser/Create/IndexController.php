@@ -19,7 +19,7 @@ class IndexController extends Controller
         $hosts = PaykeHost::with(['PaykeDbs' => function($db) {
             $db->orderBy('db_database','asc');
         }])->get();
-        $resources = PaykeResource::orderBy('payke_name', 'ASC')->get();
+        $resources = PaykeResource::orderByRaw('version_x DESC, version_y DESC, version_z DESC, payke_name DESC')->get();
         $resources = array_map(function($x){
             return ["id" => $x['id'], "name" => $x['payke_name']];
         }, $resources->toarray());
