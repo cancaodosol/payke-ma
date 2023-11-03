@@ -21,6 +21,9 @@ host('payke_release')
     // 初回のSSH接続は、手作業で接続することで対応する。
     // ->set('ssh_arguments', [' -o UserKnownHostsFile=/dev/null', ' -o StrictHostKeyChecking=no']);
 
+// パスの起点を決めておく。
+set('root_dir', dirname(__FILE__).'/');
+
 // 引数から作成されるディレクトリ情報
 set('resource_zips_dir', '{{resource_dir}}/zips');
 set('resource_releases_dir', '{{resource_dir}}/{{user_folder_id}}/releases');
@@ -68,7 +71,7 @@ task('deploy:update_code', function() {
     if(!exists_payke_zip())
     {
         writeln('Payke Zipをアップロードしていくよ。');
-        upload(__DIR__ . '{{payke_zip_file_path}}', '{{resource_zips_dir}}');
+        upload('{{root_dir}}{{payke_zip_file_path}}', '{{resource_zips_dir}}');
     } else {
         writeln('Payke Zipは、あるの使うから大丈夫。');
     }
@@ -83,8 +86,8 @@ task('deploy:update_code', function() {
     {
         writeln('設定ファイルをアップロードしていくよ。');
         run('mkdir -p {{deploy_path}}/shared/app/Config/');
-        upload(__DIR__ . '{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
-        upload(__DIR__ . '{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
+        upload('{{root_dir}}{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
+        upload('{{root_dir}}{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
     }
 });
 

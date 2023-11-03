@@ -125,7 +125,7 @@ class DeployServiceTest extends TestCase
             'DB_PREFIX' => 'ぷれふぃっくす'
         ];
         $o1 = $ds->create_env_file($n1, $c_ori);
-        // print_r($o1);
+        $this->assertEquals("storage/app/payke_resources/tmp/.env_new.php", $o1);
     }
 
     /**
@@ -154,12 +154,13 @@ class DeployServiceTest extends TestCase
         $db->db_database = 'hirotae_payma04';
 
         $payke = new PaykeResource();
-        $payke->payke_name = 'payke-ec_v3-22-3';
-        $payke->payke_zip_name = 'payke-ec-cae6ae8bf6d3';
-        $payke->payke_zip_file_path = '/payke_resources/zips/payke-ec-cae6ae8bf6d3.zip';
+        $payke->payke_name = 'ayke-ec_v3-23-1';
+        $payke->payke_zip_name = 'payke-ec-6d979f64ed30';
+        $payke->payke_zip_file_path = '/storage/app/payke_resources/zips/payke-ec-6d979f64ed30.zip';
 
-        $o1 = $ds->deploy($host, $user, $db, $payke, false);
-        // print_r($o1);
-        $this->assertEquals($o1[count((array)$o1)-1], '[payke_release] info successfully deployed!');
+        $l1 = [];
+        $o1 = $ds->deploy($host, $user, $db, $payke, $l1, true);
+        print_r($l1);
+        $this->assertTrue($o1);
     }
 }

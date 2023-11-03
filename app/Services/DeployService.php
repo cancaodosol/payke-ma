@@ -11,7 +11,16 @@ use App\Models\PaykeUser;
 
 class DeployService
 {
-    public string $payke_install_file_path = '/payke_resources/templates/install.php';
+    private string $payke_install_file_path;
+    private string $root_dir;
+    private string $resource_dir;
+
+    public function __construct()
+    {
+        $this->root_dir = dirname(__FILE__)."/../../";
+        $this->resource_dir = "storage/app/payke_resources/";
+        $this->payke_install_file_path = "{$this->resource_dir}templates/install.php";
+    }
 
     public function test():string
     {
@@ -26,7 +35,7 @@ class DeployService
             $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
             $params_string = "{$params_string} -o {$key}={$value_string}";
         }
-        $command = "cd ../ && php vendor/bin/dep deploy{$params_string}";
+        $command = "cd {$this->root_dir} && php vendor/bin/dep deploy{$params_string}";
         return $this->exec($command);
     }
 
@@ -38,7 +47,7 @@ class DeployService
             $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
             $params_string = "{$params_string} -o {$key}={$value_string}";
         }
-        $command = "cd ../ && php vendor/bin/dep deploy:unlock{$params_string}";
+        $command = "cd {$this->root_dir} && php vendor/bin/dep deploy:unlock{$params_string}";
         return $this->exec($command);
     }
 
@@ -59,8 +68,8 @@ class DeployService
      */
     public function create_env_file(string $file_name, array $config): string
     {
-        $base_path = dirname(__FILE__)."/../../payke_resources/templates/.env.php";
-        $to_path = dirname(__FILE__)."/../../payke_resources/tmp/.env_{$file_name}.php";
+        $base_path = "{$this->root_dir}{$this->resource_dir}templates/.env.php";
+        $to_path = "{$this->root_dir}{$this->resource_dir}tmp/.env_{$file_name}.php";
 
         $environment = [];
         foreach ($config as $k => $v) {
@@ -84,7 +93,7 @@ class DeployService
 
         $success = file_put_contents($to_path, $contents);
 
-        return $success ? "/payke_resources/tmp/.env_{$file_name}.php" : "";
+        return $success ? "{$this->resource_dir}tmp/.env_{$file_name}.php" : "";
     }
 
     public function deploy(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, array &$outLog, bool $is_first = false): bool
@@ -120,10 +129,10 @@ class DeployService
         $title = "{$payke->version} 更新";
         if($is_success){
             $message = "Payke {$payke->version}のデプロイに成功しました。";
-            $logService->write_version_log($user, $title, $message, $payke, $params_string, $outLog);
+            // $logService->write_version_log($user, $title, $message, $payke, $params_string, $outLog);
         }else{
             $message = "Payke {$payke->version}のデプロイに失敗しました。";
-            $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
+            // $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
         }
 
         return $is_success;
@@ -142,10 +151,10 @@ class DeployService
         $params_string = $this->create_params_string($params);
         if($is_success){
             $message = "Deployerのアンロックに成功しました。";
-            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
+            // $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
         }else{
             $message = "Deployerのアンロックに失敗しました。";
-            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
+            // $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
         }
 
         return $is_success;
