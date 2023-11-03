@@ -16,16 +16,7 @@ class PostController extends Controller
      */
     public function __invoke(CreateRequest $request)
     {
-        $user = new PaykeUser();
-        $user->payke_host_id = $request->paykeHostId();
-        $user->payke_db_id = $request->paykeDbId();
-        $user->payke_resource_id = $request->paykeResourceId();
-        $user->user_folder_id = "user_{$request->paykeHostId()}_{$request->paykeDbId()}";
-        $user->user_app_name = $request->paykeAppName();
-        $user->enable_affiliate = $request->enableAffiliate();
-        $user->user_name = $request->userName();
-        $user->email_address = $request->emailAddress();
-        $user->memo = $request->memo();
+        $user = $request->to_payke_user();
 
         // いったん、ここでユーザーは登録する。
         // 指定したDBは、このタイミングで使用中にする。デプロイエラーが起こっても、そのDBは確保。

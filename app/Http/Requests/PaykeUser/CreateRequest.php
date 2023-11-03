@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\PaykeUser;
 
+use App\Models\PaykeUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRequest extends FormRequest
@@ -68,5 +69,22 @@ class CreateRequest extends FormRequest
     public function memo(): string
     {
         return $this->input('memo') ?? "";
+    }
+
+    public function to_payke_user(): PaykeUser
+    {
+        $user = new PaykeUser();
+
+        $user->payke_host_id = $this->paykeHostId();
+        $user->payke_db_id = $this->paykeDbId();
+        $user->payke_resource_id = $this->paykeResourceId();
+        $user->user_folder_id = "user_{$this->paykeHostId()}_{$this->paykeDbId()}";
+        $user->user_app_name = $this->paykeAppName();
+        $user->enable_affiliate = $this->enableAffiliate();
+        $user->user_name = $this->userName();
+        $user->email_address = $this->emailAddress();
+        $user->memo = $this->memo();
+
+        return $user;
     }
 }

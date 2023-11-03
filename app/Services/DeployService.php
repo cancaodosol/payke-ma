@@ -105,6 +105,12 @@ class DeployService
         $params['deploy_datetime'] = $datetime;
 
         // デプロイが初回の場合は、デプロイ先に設定ファイルなどを送る。
+        $logService = new DeployLogService();
+        if($is_first)
+        {
+            $message = "新規作成しました。";
+            $logService->write_other_log($user, "新規作成", $message);
+        }
         $params['is_first'] = $is_first ? '1' : '';
         $params['payke_install_file_path'] = $this->payke_install_file_path;
 
@@ -121,7 +127,6 @@ class DeployService
         $params['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
 
         // デプロイを実行す。
-        $logService = new DeployLogService();
         $outLog = $this->exec_deply($params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
 
@@ -129,10 +134,10 @@ class DeployService
         $title = "{$payke->version} 更新";
         if($is_success){
             $message = "Payke {$payke->version}のデプロイに成功しました。";
-            // $logService->write_version_log($user, $title, $message, $payke, $params_string, $outLog);
+            $logService->write_version_log($user, $title, $message, $payke, $params_string, $outLog);
         }else{
             $message = "Payke {$payke->version}のデプロイに失敗しました。";
-            // $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
+            $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
         }
 
         return $is_success;

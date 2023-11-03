@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PaykeHost;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaykeHost;
+use App\Services\PaykeHostService;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -13,10 +14,8 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // $hosts = PaykeHost::all();
-        $hosts = PaykeHost::with(['PaykeDbs' => function($db) {
-            $db->orderBy('db_database','asc');
-        }])->get();
+        $service = new PaykeHostService();
+        $hosts = $service->find_all();
         return view('payke_host.index', ['hosts' => $hosts]);
     }
 }

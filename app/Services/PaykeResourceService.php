@@ -20,4 +20,18 @@ class PaykeResourceService
 
         $resource->save();
     }
+
+    public function find_all()
+    {
+        return PaykeResource::orderByRaw('version_x DESC, version_y DESC, version_z DESC, payke_name DESC')->get();
+    }
+
+    // MEMO : 画面で使いやすいように加工してある。
+    public function find_all_to_array(): array
+    {
+        $resources = $this->find_all();
+        return array_map(function($x){
+            return ["id" => $x['id'], "name" => $x['payke_name']];
+        }, $resources->toarray());
+    }
 }

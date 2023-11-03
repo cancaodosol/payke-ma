@@ -7,6 +7,7 @@ use App\Http\Requests\StorePaykeDbRequest;
 use App\Http\Requests\UpdatePaykeDbRequest;
 use App\Models\DeployLog;
 use App\Models\PaykeDb;
+use App\Services\DeployLogService;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -16,7 +17,8 @@ class IndexController extends Controller
      */
     public function __invoke(int $userId)
     {
-        $logs = DeployLog::where('user_id', $userId)->get();
+        $service = new DeployLogService();
+        $logs = $service->find_by_user_id($userId);
         return view('deploy_log.index', ['logs' => $logs]);
     }
 }
