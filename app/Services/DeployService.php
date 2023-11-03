@@ -90,38 +90,14 @@ class DeployService
     public function deploy(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, array &$outLog, bool $is_first = false): bool
     {
         // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($host, $user, $db, $payke);
+
         $datetime = date("Ymd_His");
-
-        $aHost = [
-            'hostname' => $host->hostname,
-            'remote_user' => $host->remote_user,
-            'port' => $host->port,
-            'identity_file' => $host->identity_file,
-            'resource_dir' => $host->resource_dir,
-            'public_html_dir' => $host->public_html_dir
-        ];
-
-        $aUser = [
-            'user_folder_id' => $user->user_folder_id,
-            'user_app_name' => $user->user_app_name
-        ];
-
-        $aDb = [
-            'db_host' => $db->db_host,
-            'db_username' => $db->db_username,
-            'db_password' => $db->db_password,
-            'db_database' => $db->db_database
-        ];
-
-        $aPayke = [
-            'payke_name' => $payke->payke_name,
-            'payke_zip_name' => $payke->payke_zip_name,
-            'payke_zip_file_path' => $payke->payke_zip_file_path
-        ];
+        $params['deploy_datetime'] = $datetime;
 
         // デプロイが初回の場合は、デプロイ先に設定ファイルなどを送る。
-        $aUser['is_first'] = $is_first ? '1' : '';
-        $aUser['payke_install_file_path'] = $this->payke_install_file_path;
+        $params['is_first'] = $is_first ? '1' : '';
+        $params['payke_install_file_path'] = $this->payke_install_file_path;
 
         $env = [
             'DB_DATASOURCE' => 'Database/Mysql',
@@ -132,13 +108,10 @@ class DeployService
             'DB_PASSWORD' => $db['db_password'],
             'DB_PREFIX' => ''
         ];
-        $env_file_name = $aUser['user_folder_id'].'_'.$datetime;
-        $aUser['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
+        $env_file_name = "{$user->user_folder_id}_{$datetime}";
+        $params['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
 
-        // ここまでに作成したものを、１つの配列にまとめる。
-        $params = array_merge($aHost, $aUser, $aDb, $aPayke); 
-        $params['deploy_datetime'] = $datetime;
-
+        // デプロイを実行す。
         $logService = new DeployLogService();
         $outLog = $this->exec_deply($params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
@@ -157,6 +130,28 @@ class DeployService
     }
 
     public function unlock(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, array &$outLog): bool
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($host, $user, $db, $payke);
+
+        // アンロックを実行す。
+        $logService = new DeployLogService();
+        $outLog = $this->exec_deply_unlock($params);
+        $is_success = $outLog[count((array)$outLog)-1] == 'task deploy:unlock';
+
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "Deployerのアンロックに成功しました。";
+            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
+        }else{
+            $message = "Deployerのアンロックに失敗しました。";
+            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    private function model_to_params(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke): array
     {
         $aHost = [
             'hostname' => $host->hostname,
@@ -185,23 +180,7 @@ class DeployService
             'payke_zip_file_path' => $payke->payke_zip_file_path
         ];
 
-        // ここまでに作成したものを、１つの配列にまとめる。
-        $params = array_merge($aHost, $aUser, $aDb, $aPayke);
-
-        $logService = new DeployLogService();
-        $outLog = $this->exec_deply_unlock($params);
-        $is_success = $outLog[count((array)$outLog)-1] == 'task deploy:unlock';
-
-        $params_string = $this->create_params_string($params);
-        if($is_success){
-            $message = "Deployerのアンロックに成功しました。";
-            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
-        }else{
-            $message = "Deployerのアンロックに失敗しました。";
-            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
-        }
-
-        return $is_success;
+        return array_merge($aHost, $aUser, $aDb, $aPayke);
     }
 
     private function create_params_string(array $params)
