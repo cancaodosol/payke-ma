@@ -31,6 +31,7 @@ class IndexController extends Controller
         {
             foreach($host->PaykeDbs as $db)
             {
+                if($db->status != PaykeDb::STATUS__READY) continue;
                 array_push($host_dbs, ["id" => "{$host->id}_{$db->id}", "name" => "{$host->name} / {$db->db_database}"]);
             }
         }
