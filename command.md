@@ -66,3 +66,5 @@ $table->integer('name')->nullable()->change(); //Null許容するように変更
 $table->integer('name')->change(); //Null許容しないに変更
 $table->integer('version_x')->after('version');
 $table->dropColumn('user_id');
+
+update payke_users set status = 1, user_name = 'PAYKE TARO' where id = 1;

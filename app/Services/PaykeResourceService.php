@@ -11,7 +11,7 @@ class PaykeResourceService
     {
         $resource = new PaykeResource();
 
-        $version = (new ZipReadHelper())->get_payke_version($payke_zip_file_path);
+        $version = (new ZipReadHelper())->read_payke_version($payke_zip_file_path);
 
         $resource->set_version($version);
         $resource->set_name($version);
@@ -36,7 +36,7 @@ class PaykeResourceService
     {
         $resources = $this->find_all();
         return array_map(function($x){
-            return ["id" => $x['id'], "name" => $x['payke_name']];
+            return ["id" => $x['id'], "name" => $x['version']];
         }, $resources->toarray());
     }
 }

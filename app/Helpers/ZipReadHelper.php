@@ -14,7 +14,7 @@ class ZipReadHelper
 
     // 参考記事：https://symfoware.blog.fc2.com/blog-entry-1891.html
     // 公式Doc：https://www.php.net/manual/ja/class.ziparchive.php
-    public function get_payke_version($targetZipPath)
+    public function read_payke_version($targetZipPath)
     {
         $config_file_name = '/app/Config/constants.php';
 

@@ -13,10 +13,10 @@ class ZipReadHelperTest extends TestCase
     public function test_exec(): void
     {
         $zh = new ZipReadHelper();
-        $r1 = $zh->get_payke_version("./payke_resources/zips/payke-ec-cae6ae8bf6d3.zip");
+        $r1 = $zh->read_payke_version("./payke_resources/zips/payke-ec-cae6ae8bf6d3.zip");
         $this->assertEquals("v3.22.2", $r1);
 
-        $r2 = $zh->get_payke_version("./payke_resources/zips/payke-ec-752d7ee2ff92.zip");
+        $r2 = $zh->read_payke_version("./payke_resources/zips/payke-ec-752d7ee2ff92.zip");
         $this->assertEquals("v3.21.7.1", $r2);
 
         $vs = explode(".", $r2);
@@ -25,7 +25,7 @@ class ZipReadHelperTest extends TestCase
         $vz = $vs[2];
         print("{$r2} ---> x {$vx}  y {$vy}  z {$vz}");
 
-        $r3 = $zh->get_payke_version("./storage/app/payke_resources/zips/payke-ec-6d979f64ed30.zip");
+        $r3 = $zh->read_payke_version("./storage/app/payke_resources/zips/payke-ec-6d979f64ed30.zip");
         $this->assertEquals("v3.23.1", $r3);
     }
 }
