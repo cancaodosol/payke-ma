@@ -52,4 +52,34 @@ class ZipReadHelper
         }
         return $version;
     }
+
+    public function read_payke_migrations($targetZipPath)
+    {
+        $migration_dir = '/app/Config/Migration/';
+
+        $migrations = [];
+        $zip = new ZipArchive();
+        if(!$zip->open($this->root_dir.$targetZipPath))
+        {
+            return $migrations;
+        }
+
+        // マイグレーションファイル名を取得する。
+        // MEMO : $i == 0 は、Migrationフォルダ自体なので、飛ばして探索する。
+        for($i = 0; $i < $zip->numFiles; $i++)
+        {
+            if(strpos($zip->getNameIndex($i), $migration_dir))
+            {
+                $filename = pathinfo($zip->getNameIndex($i), PATHINFO_FILENAME);
+                $extension = pathinfo($zip->getNameIndex($i), PATHINFO_EXTENSION);
+                if($extension !== "php") continue;
+                $id = explode("_", $filename)[0];
+                $migrations[] = "{$id}, {$filename}";
+            }
+        }
+
+        sort($migrations);
+
+        return $migrations;
+    }
 }
