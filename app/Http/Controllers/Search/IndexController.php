@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
 use App\Services\DeployService;
+use App\Services\PaykeUserService;
 use Illuminate\Http\Request;
 
 use function Laravel\Prompts\search;
@@ -49,6 +50,16 @@ class IndexController extends Controller
                 $logs = [];
                 $deploy->unlock($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $logs);
                 dd($logs);
+            case ':open_affi' :
+                $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                $service = new PaykeUserService();
+                $ret = $service->open_affiliate($user);
+                return redirect()->route('payke_user.index');
+            case ':close_affi' :
+                $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                $service = new PaykeUserService();
+                $ret = $service->close_affiliate($user);
+                return redirect()->route('payke_user.index');
             case ':test' :
                 return view('common.result', ["title" => "成功！", "message" => "Payke v3.23.1 のデプロイに成功しました！",
                     "info" => ["task deploy:info",

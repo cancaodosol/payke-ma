@@ -21,6 +21,38 @@ class PaykeUserService
         $user->PaykeDb->save();
     }
 
+    public function open_affiliate(PaykeUser $user): void
+    {
+        $dService = new DeployService();
+        $log = [];
+        $is_success = $dService->open_affiliate($user->PaykeHost, $user, $log);
+        if($is_success)
+        {
+            $user->enable_affiliate = 1; // true: 1
+            $user->save();
+        }
+        else
+        {
+            $this->save_has_error($user, "アフィリエイト機能の有効化に失敗しました。");
+        }
+    }
+
+    public function close_affiliate(PaykeUser $user): void
+    {
+        $dService = new DeployService();
+        $log = [];
+        $is_success = $dService->close_affiliate($user->PaykeHost, $user, $log);
+        if($is_success)
+        {
+            $user->enable_affiliate = 0; // false: 1
+            $user->save();
+        }
+        else
+        {
+            $this->save_has_error($user, "アフィリエイト機能の無効化に失敗しました。");
+        }
+    }
+
     public function save_active(PaykeUser $user): void
     {
         $user->status = PaykeUser::STATUS__ACTIVE;

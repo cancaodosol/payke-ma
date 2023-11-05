@@ -68,3 +68,5 @@ $table->integer('version_x')->after('version');
 $table->dropColumn('user_id');
 
 update payke_users set status = 1, user_name = 'PAYKE TARO' where id = 1;
+
+show columns from payke_users;

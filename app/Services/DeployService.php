@@ -142,6 +142,9 @@ class DeployService
         $env_file_name = "{$user->user_folder_id}_{$datetime}";
         $params['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
 
+        $params['payke_ini_file_path'] = $user->enable_affiliate == 1 ? 
+            $this->payke_ini_file_path___affiliate_on : $this->payke_ini_file_path___affiliate_off;
+
         // デプロイを実行す。
         $outLog = $this->exec_deply($params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
