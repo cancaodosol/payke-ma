@@ -29,11 +29,19 @@ class IndexController extends Controller
             case ':logs_view' :
                 if(count($searchWords) > 1)
                 {
-                    $deployLog = DeployLog::where('id', $searchWords[1])->firstOrFail();
-                    dd($deployLog);
+                    $ll = DeployLog::where('id', $searchWords[1])->firstOrFail();
+                    dd([
+                        "main" => "{$ll->created_at}   [{$ll->id}({$ll->type})] :   [{$ll->user_id}: {$ll->user_name}] {$ll->title}    {$ll->message}",
+                        "log" => $ll->deployer_log
+                    ]);
                 }else{
                     $deployLogs = DeployLog::all()->sortByDesc('created_at');
-                    dd($deployLogs);
+                    $logs = [];
+                    foreach($deployLogs as $ll)
+                    {
+                        $logs[] = "{$ll->created_at}   [{$ll->id}({$ll->type})] :   [{$ll->user_id}: {$ll->user_name}] {$ll->title}    {$ll->message}";
+                    }
+                    dd($logs);
                 }
             case ':unlock' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
