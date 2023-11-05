@@ -163,4 +163,33 @@ class DeployServiceTest extends TestCase
         print_r($l1);
         $this->assertTrue($o1);
     }
+
+    /**
+     * set_to_affiliate_on test.
+     */
+    public function test_opan_close_affiliate(): void
+    {
+        $ds = new DeployService();
+
+        $host = new PaykeHost();
+        $host->hostname = 'hiderin.xyz';
+        $host->remote_user = 'hirotae';
+        $host->port = 10022;
+        $host->identity_file = './.ssh/hideringa_xserver_rsa';
+        $host->resource_dir = '~/hiderin.xyz/payke_resources';
+        $host->public_html_dir = '~/hiderin.xyz/public_html';
+
+        $user = new PaykeUser();
+        $user->user_folder_id = 'user_007131';
+        $user->user_app_name = 'tarotaro7';
+
+        $l1 = [];
+        $o1 = $ds->open_affiliate($host, $user, $l1);
+        // print_r($l1);
+        $this->assertTrue($o1);
+        // $l2 = [];
+        // $this->assertTrue($o1);
+        // $o2 = $ds->close_affiliate($host, $user, $l2);
+        // print_r($o2);
+    }
 }

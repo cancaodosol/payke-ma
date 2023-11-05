@@ -34,7 +34,7 @@ set('public_app_path' ,'{{public_html_dir}}/{{user_app_name}}');
 set('release_name', '{{payke_name}}_{{deploy_datetime}}');
 set('deploy_path', '{{resource_dir}}/{{user_folder_id}}');
 set('shared_dirs', ['app/tmp/logs']);
-set('shared_files', ['app/Config/.env.php', 'app/Config/install.php']);
+set('shared_files', ['app/Config/.env.php', 'app/Config/install.php', 'app/Config/paykeec.ini']);
 set('keep_releases', 7);
 
 function exists_payke_zip() : bool {
@@ -88,6 +88,7 @@ task('deploy:update_code', function() {
         run('mkdir -p {{deploy_path}}/shared/app/Config/');
         upload('{{root_dir}}{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
         upload('{{root_dir}}{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
+        upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
     }
 });
 
@@ -116,4 +117,13 @@ after('deploy:symlink','deploy:symlink:public_app');
 task('deploy:symlink:public_app', function () {
     run('unlink {{public_app_path}} || echo unexists.');
     run('ln -s {{deploy_path}}/current {{public_app_path}}');
+});
+
+/**
+ * Setting Payke Ini
+ * アフィリエイト機能の有効/無効を制御するため、設定ファイルを更新する。
+ */
+task('set_ini', function () {
+    upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
+    writeln('ok!');
 });

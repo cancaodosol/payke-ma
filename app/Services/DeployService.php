@@ -12,6 +12,8 @@ use App\Models\PaykeUser;
 class DeployService
 {
     private string $payke_install_file_path;
+    private string $payke_ini_file_path___affiliate_on;
+    private string $payke_ini_file_path___affiliate_off;
     private string $root_dir;
     private string $resource_dir;
 
@@ -20,6 +22,8 @@ class DeployService
         $this->root_dir = dirname(__FILE__)."/../../";
         $this->resource_dir = "storage/app/payke_resources/";
         $this->payke_install_file_path = "{$this->resource_dir}templates/install.php";
+        $this->payke_ini_file_path___affiliate_on = "{$this->resource_dir}templates/paykeec___affiliate_on.ini";
+        $this->payke_ini_file_path___affiliate_off = "{$this->resource_dir}templates/paykeec___affiliate_off.ini";
     }
 
     public function test():string
@@ -48,6 +52,18 @@ class DeployService
             $params_string = "{$params_string} -o {$key}={$value_string}";
         }
         $command = "cd {$this->root_dir} && php vendor/bin/dep deploy:unlock{$params_string}";
+        return $this->exec($command);
+    }
+
+    public function exec_set_ini(array $params): array
+    {
+        $params_string = '';
+        foreach($params as $key => $value)
+        {
+            $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
+            $params_string = "{$params_string} -o {$key}={$value_string}";
+        }
+        $command = "cd {$this->root_dir} && php vendor/bin/dep set_ini{$params_string}";
         return $this->exec($command);
     }
 
@@ -160,6 +176,58 @@ class DeployService
         }else{
             $message = "Deployerのアンロックに失敗しました。";
             $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * Paykeのアフィリエイト機能を有効にする。
+     */
+    public function open_affiliate(PaykeHost $host, PaykeUser $user, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($host, $user, new PaykeDb(), new PaykeResource());
+        $params['payke_ini_file_path'] = $this->payke_ini_file_path___affiliate_on;
+
+        // デプロイを実行す。
+        $outLog = $this->exec_set_ini($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "アフィリエイト機能を有効にしました。";
+            $logService->write_other_log($user, 'アフィリエイト有効', $message, null, $params_string, $outLog);
+        }else{
+            $message = "アフィリエイト機能を有効にするのに、失敗しました。";
+            $logService->write_other_log($user, 'アフィリエイト有効失敗', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * Paykeのアフィリエイト機能を無効にする。
+     */
+    public function close_affiliate(PaykeHost $host, PaykeUser $user, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($host, $user, new PaykeDb(), new PaykeResource());
+        $params['payke_ini_file_path'] = $this->payke_ini_file_path___affiliate_off;
+
+        // デプロイを実行す。
+        $outLog = $this->exec_set_ini($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "アフィリエイト機能を無効にしました。";
+            $logService->write_other_log($user, 'アフィリエイト無効', $message, null, $params_string, $outLog);
+        }else{
+            $message = "アフィリエイト機能を無効にするのに、失敗しました。";
+            $logService->write_other_log($user, 'アフィリエイト無効失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;
