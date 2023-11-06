@@ -46,6 +46,9 @@ Route::get('/payke_db', \App\Http\Controllers\PaykeDb\IndexController::class)
 Route::get('/payke_resource', \App\Http\Controllers\PaykeResource\IndexController::class)
     ->name('payke_resource.index');
 
+Route::get('/payke_resource/create', \App\Http\Controllers\PaykeResource\Create\IndexController::class)
+    ->name('payke_resource.creaete');
+
 Route::post('/payke_resource/create', \App\Http\Controllers\PaykeResource\Create\PostController::class)
     ->name('payke_resource.create.post');
 
@@ -61,7 +64,7 @@ Route::post('/payke_user/create/post', \App\Http\Controllers\PaykeUser\Create\Po
 Route::post('/payke_user/version/up', \App\Http\Controllers\PaykeUser\Version\UpController::class)
     ->name('payke_user.version.up');
 
-    Route::get('/deploy_log/{userId}', \App\Http\Controllers\DeployLog\IndexController::class)
+Route::get('/deploy_log/{userId}', \App\Http\Controllers\DeployLog\IndexController::class)
     ->name('deploy_log.index');
 
 Route::post('/search', \App\Http\Controllers\Search\IndexController::class)
