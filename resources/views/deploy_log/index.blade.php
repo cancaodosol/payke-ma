@@ -1,5 +1,5 @@
 <x-layouts.basepage title="Paykeアップデート履歴" current="Paykeアップデート履歴">
-    <div class="mb-3">
+    <div class="mb-10">
         <div class="">
             <h1 class="text-base font-semibold leading-6 text-gray-900">Paykeアップデート</h1>
         </div>
@@ -12,6 +12,9 @@
             </div>
         </form>
     </div>
+    <div class="mt-10 mb-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
+    </div>
+
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">アップデート履歴</h1>
