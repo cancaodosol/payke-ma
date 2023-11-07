@@ -5,12 +5,12 @@
             <p class="mt-2 text-sm text-gray-700">サーバー、データベースの一覧です。</p>
             </div>
             <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <button type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
-                ＋ サーバー</button>
+            <a href="{{ route('payke_host.create') }}" type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
+                ＋ サーバー</a>
             </div>
             <div class="mt-4 sm:ml-2 sm:mt-0 sm:flex-none">
-            <button type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
-                ＋ データベース</button>
+            <a href="{{ route('payke_db.create') }}" type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
+                ＋ データベース</a>
             </div>
         </div>
         <div class="mt-8 flow-root">
@@ -44,18 +44,6 @@
                                 </div>
                                 <div class="text-xs">使用中</div>
                             </div>
-                            <!-- <div class="flex items-center justify-end gap-x-2 sm:justify-start">
-                                <div class="flex-none rounded-full p-1 text-yellow-400 bg-yellow-400/10">
-                                    <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
-                                </div>
-                                <div class="text-xs">管理停止</div>
-                            </div>
-                            <div class="flex items-center justify-end gap-x-2 sm:justify-start">
-                                <div class="flex-none rounded-full p-1 text-rose-500 bg-rose-500/10">
-                                    <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
-                                </div>
-                                <div class="text-xs">管理・販売停止</div>
-                            </div> -->
                             @elseif($db->status == 0)
                             <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                                 <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">

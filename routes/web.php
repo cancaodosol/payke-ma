@@ -40,8 +40,20 @@ Route::get('/tweet', \App\Http\Controllers\Tweet\IndexController::class)
 Route::get('/payke_host', \App\Http\Controllers\PaykeHost\IndexController::class)
     ->name('payke_host.index');
 
+Route::get('/payke_host/create', \App\Http\Controllers\PaykeHost\Create\IndexController::class)
+    ->name('payke_host.create');
+
+Route::post('/payke_host/create', \App\Http\Controllers\PaykeHost\Create\PostController::class)
+    ->name('payke_host.create.post');
+
 Route::get('/payke_db', \App\Http\Controllers\PaykeDb\IndexController::class)
     ->name('payke_db.index');
+
+Route::get('/payke_db/create', \App\Http\Controllers\PaykeDb\Create\IndexController::class)
+    ->name('payke_db.create');
+
+Route::post('/payke_db/create', \App\Http\Controllers\PaykeDb\Create\PostController::class)
+    ->name('payke_db.create.post');
 
 Route::get('/payke_resource', \App\Http\Controllers\PaykeResource\IndexController::class)
     ->name('payke_resource.index');

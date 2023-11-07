@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
 use App\Services\DeployService;
+use App\Services\PaykeHostService;
 use App\Services\PaykeUserService;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,12 @@ class IndexController extends Controller
         {
             case ':newuser' :
                 return redirect()->route('payke_user.create');
-            case ':hosts' :
-                return redirect()->route('payke_host.index');
+            case ':newhost' :
+                return view('payke_host.create');
+            case ':newdb' :
+                $hostService = new PaykeHostService();
+                $hosts = $hostService->find_all_to_array();
+                return view('payke_db.create', ["hosts" => $hosts]);
             case ':newpayke' :
                 return view('payke_resource.create');
             case ':logs' :
