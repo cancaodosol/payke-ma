@@ -17,13 +17,9 @@
         @endif
 
         <div class="mt-5 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
-            <x-forms.file name="file-upload" label="Payke Zipファイル"/>
+            <x-forms.file name="payke-zip" label="Payke Zipファイル" addSubmit="新規登録する"/>
         </div>
         </div>
-    </div>
-    <!-- 保存ボタン -->
-    <div class="mt-6 flex items-center justify-end gap-x-6">
-        <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">新規登録する</button>
     </div>
     </form>
 </x-layouts.basepage>
