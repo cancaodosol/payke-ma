@@ -3,7 +3,11 @@
     <div class="mt-2 sm:col-span-2 sm:mt-0">
         <select id="{{ $name }}" name="{{ $name }}" autocomplete="{{ $name }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
         @foreach ($list as $item)
-            <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+            @if($item['id'] == (old($name) ?? $value ?? ''))
+                <option value="{{ $item['id'] }}" selected>{{ $item['name'] }}</option>
+            @else
+                <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+            @endif
         @endforeach
         </select>
     </div>

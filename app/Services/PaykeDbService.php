@@ -9,7 +9,12 @@ class PaykeDbService
 {
     public function find_all()
     {
-        return PaykeDb::all()->orderBy('db_database','asc')->get();;
+        return PaykeDb::all()->orderBy('db_database','asc')->get();
+    }
+
+    public function find_by_id(int $id)
+    {
+        return PaykeDb::where('id', $id)->firstOrFail();
     }
 
     public function find_ready_host_dbs()
