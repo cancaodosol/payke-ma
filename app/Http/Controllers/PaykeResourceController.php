@@ -1,17 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\PaykeResource\Create;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaykeResource\CreateRequest;
 use App\Services\PaykeResourceService;
+use Illuminate\Http\Request;
 
-class PostController extends Controller
+class PaykeResourceController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(CreateRequest $request)
+    public function view_all(Request $request)
+    {
+        $service = new PaykeResourceService();
+        $resources = $service->find_all();
+        dd($resources);
+        return view('payke_resource.index', ['resources' => $resources]);
+    }
+
+    public function view_add(Request $request)
+    {
+        return view('payke_resource.create');
+    }
+
+    public function post_add(CreateRequest $request)
     {
         // アップロードされたファイル名を取得
         $file_name = $request->paykeZip()->getClientOriginalName();
@@ -26,5 +37,15 @@ class PostController extends Controller
         $service->save($payke_zip_file_path);
 
         return redirect()->route('payke_user.index');
+    }
+
+    public function view_edit(int $id)
+    {
+        return;
+    }
+
+    public function post_edit(Request $request)
+    {
+        return;
     }
 }

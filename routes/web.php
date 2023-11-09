@@ -62,28 +62,28 @@ Route::get('/payke_db/e/{id}', [\App\Http\Controllers\PaykeDbController::class, 
 Route::post('/payke_db/e', [\App\Http\Controllers\PaykeDbController::class, 'post_edit'])
     ->name('payke_db.edit.post');
 
-Route::get('/payke_resource', \App\Http\Controllers\PaykeResource\IndexController::class)
+Route::get('/payke_resource', [\App\Http\Controllers\PaykeResourceController::class, 'view_all'])
     ->name('payke_resource.index');
 
-Route::get('/payke_resource/create', \App\Http\Controllers\PaykeResource\Create\IndexController::class)
+Route::get('/payke_resource/create', [\App\Http\Controllers\PaykeResourceController::class, 'view_add'])
     ->name('payke_resource.creaete');
 
-Route::post('/payke_resource/create', \App\Http\Controllers\PaykeResource\Create\PostController::class)
+Route::post('/payke_resource/create', [\App\Http\Controllers\PaykeResourceController::class, 'post_add'])
     ->name('payke_resource.create.post');
 
-Route::get('/payke_user', \App\Http\Controllers\PaykeUser\IndexController::class)
+Route::get('/payke_user', [\App\Http\Controllers\PaykeUserController::class, 'view_all'])
     ->name('payke_user.index');
 
-Route::get('/payke_user/p/{userId}', \App\Http\Controllers\PaykeUser\ProfileController::class)
+Route::get('/payke_user/p/{userId}', [\App\Http\Controllers\PaykeUserController::class, 'view_one'])
     ->name('payke_user.profile');
 
-Route::get('/payke_user/create', \App\Http\Controllers\PaykeUser\Create\IndexController::class)
+Route::get('/payke_user/create', [\App\Http\Controllers\PaykeUserController::class, 'view_add'])
     ->name('payke_user.create');
 
-Route::post('/payke_user/create/post', \App\Http\Controllers\PaykeUser\Create\PostController::class)
+Route::post('/payke_user/create/post', [\App\Http\Controllers\PaykeUserController::class, 'edit_add'])
     ->name('payke_user.create.post');
 
-Route::post('/payke_user/version/up', \App\Http\Controllers\PaykeUser\Version\UpController::class)
+Route::post('/payke_user/version/up', [\App\Http\Controllers\PaykeController::class, 'post_edit_version'])
     ->name('payke_user.version.up');
 
 Route::get('/deploy_log/{userId}', \App\Http\Controllers\DeployLog\IndexController::class)
