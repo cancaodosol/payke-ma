@@ -26,47 +26,39 @@ class DeployService
         $this->payke_ini_file_path___affiliate_off = "{$this->resource_dir}templates/paykeec___affiliate_off.ini";
     }
 
-    public function test():string
-    {
-        return 'ok!';
-    }
-
+    /** 
+     * デプロイ処理をコマンド実行
+     **/
     public function exec_deply(array $params): array
     {
-        $params_string = '';
-        foreach($params as $key => $value)
-        {
-            $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
-            $params_string = "{$params_string} -o {$key}={$value_string}";
-        }
+        $params_string = $this->create_params_string($params);
         $command = "cd {$this->root_dir} && php vendor/bin/dep deploy{$params_string}";
         return $this->exec($command);
     }
 
+    /** 
+     * アンロック処理をコマンド実行
+     **/
     public function exec_deply_unlock(array $params): array
     {
-        $params_string = '';
-        foreach($params as $key => $value)
-        {
-            $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
-            $params_string = "{$params_string} -o {$key}={$value_string}";
-        }
+        $params_string = $this->create_params_string($params);
         $command = "cd {$this->root_dir} && php vendor/bin/dep deploy:unlock{$params_string}";
         return $this->exec($command);
     }
 
+    /** 
+     * 設定ファイルのセット処理をコマンド実行
+     **/
     public function exec_set_ini(array $params): array
     {
-        $params_string = '';
-        foreach($params as $key => $value)
-        {
-            $value_string = is_numeric($value) ? (string)$value : '"'.$value.'"';
-            $params_string = "{$params_string} -o {$key}={$value_string}";
-        }
+        $params_string = $this->create_params_string($params);
         $command = "cd {$this->root_dir} && php vendor/bin/dep set_ini{$params_string}";
         return $this->exec($command);
     }
 
+    /** 
+     * phpからlinuxコマンドを実行する処理
+     **/
     public function exec(string $command): array
     {
         $output = [];
@@ -74,8 +66,9 @@ class DeployService
         exec($command, $output, $result_code);
         return $output;
     }
+
     /**
-     * Create environment file by app/payke_resources/.env.php.
+     * デプロイするデータベース情報をもとに、.env.phpファイルを作成する。
      *
      * @param string $file_name
      * @param array $config
@@ -112,6 +105,9 @@ class DeployService
         return $success ? "{$this->resource_dir}tmp/.env_{$file_name}.php" : "";
     }
 
+    /** 
+     * Model情報から、デプロイを実行する。
+     **/
     public function deploy(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, array &$outLog, bool $is_first = false): bool
     {
         // Modelでもらった情報を、配列に詰め直す。
@@ -162,6 +158,9 @@ class DeployService
         return $is_success;
     }
 
+    /** 
+     * Model情報から、アンロックを実行する。
+     **/
     public function unlock(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, array &$outLog): bool
     {
         // Modelでもらった情報を、配列に詰め直す。
