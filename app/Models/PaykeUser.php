@@ -37,4 +37,18 @@ class PaykeUser extends Model
     public function is_disable_admin_and_sales() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES; }
     public function is_delete() { return $this->status == PaykeUser::STATUS__DELETE; }
     public function has_error() { return $this->status == PaykeUser::STATUS__HAS_ERROR; }
+
+    protected $fillable = [
+        'status'
+        ,'payke_host_id'
+        ,'payke_db_id'
+        ,'payke_resource_id'
+        ,'user_folder_id'
+        ,'user_app_name'
+        ,'app_url'
+        ,'enable_affiliate'
+        ,'user_name'
+        ,'email_address'
+        ,'memo'
+    ];
 }

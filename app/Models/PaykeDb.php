@@ -17,4 +17,13 @@ class PaykeDb extends Model
     {
         return $this->hasOne('App\Models\PaykeUser');
     }
+
+    protected $fillable = [
+        'status'
+        ,'payke_host_id'
+        ,'db_host'
+        ,'db_username'
+        ,'db_password'
+        ,'db_database'
+    ];
 }

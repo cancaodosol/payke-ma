@@ -29,4 +29,15 @@ class PaykeResource extends Model
     {
         $this->payke_name = "payke-ec_".str_replace('.', '-', $version);
     }
+
+    protected $fillable = [
+        'version'
+        ,'version_x'
+        ,'version_y'
+        ,'version_z'
+        ,'payke_name'
+        ,'payke_zip_name'
+        ,'payke_zip_file_path'
+        ,'memo'
+    ];
 }
