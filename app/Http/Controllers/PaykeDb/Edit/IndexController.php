@@ -17,7 +17,8 @@ class IndexController extends Controller
         $hostService = new PaykeHostService();
         $hosts = $hostService->find_all_to_array();
         $dbService = new PaykeDbService();
+        $statuses = $dbService->get_statuses($id);
         $db = $dbService->find_by_id($id);
-        return view('payke_db.edit', ["hosts" => $hosts, "db" => $db]);
+        return view('payke_db.edit', ["hosts" => $hosts, "statuses" => $statuses, "db" => $db]);
     }
 }

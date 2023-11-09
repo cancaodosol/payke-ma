@@ -55,6 +55,12 @@ Route::get('/payke_db/create', \App\Http\Controllers\PaykeDb\Create\IndexControl
 Route::post('/payke_db/create', \App\Http\Controllers\PaykeDb\Create\PostController::class)
     ->name('payke_db.create.post');
 
+Route::get('/payke_db/e/{id}', \App\Http\Controllers\PaykeDb\Edit\IndexController::class)
+    ->name('payke_db.edit');
+
+Route::post('/payke_db/e', \App\Http\Controllers\PaykeDb\Edit\PostController::class)
+    ->name('payke_db.edit.post');
+
 Route::get('/payke_resource', \App\Http\Controllers\PaykeResource\IndexController::class)
     ->name('payke_resource.index');
 
@@ -66,6 +72,9 @@ Route::post('/payke_resource/create', \App\Http\Controllers\PaykeResource\Create
 
 Route::get('/payke_user', \App\Http\Controllers\PaykeUser\IndexController::class)
     ->name('payke_user.index');
+
+Route::get('/payke_user/p/{userId}', \App\Http\Controllers\PaykeUser\ProfileController::class)
+    ->name('payke_user.profile');
 
 Route::get('/payke_user/create', \App\Http\Controllers\PaykeUser\Create\IndexController::class)
     ->name('payke_user.create');

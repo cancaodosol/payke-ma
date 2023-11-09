@@ -9,7 +9,7 @@ class PaykeDbService
 {
     public function find_all()
     {
-        return PaykeDb::all()->orderBy('db_database','asc')->get();
+        return PaykeDb::all();
     }
 
     public function find_by_id(int $id)
@@ -28,5 +28,27 @@ class PaykeDbService
             }
         }
         return $host_dbs;
+    }
+
+    public function get_statuses()
+    {
+        $statuses = [
+            ["id" => PaykeDb::STATUS__READY, "name" => "空き"],
+            ["id" => PaykeDb::STATUS__IN_USE, "name" => "使用中"],
+            ["id" => PaykeDb::STATUS__DELETE, "name" => "削除済"]
+        ];
+        return $statuses;
+    }
+
+    public function add(PaykeDb $db)
+    {
+        $db->status = PaykeDb::STATUS__READY;
+        $db->save();
+    }
+
+    public function edit(int $id, array $values)
+    {
+        $db = $this->find_by_id($id);
+        $db->update($values);
     }
 }
