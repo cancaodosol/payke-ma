@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\PaykeHostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+Route::redirect('/', '/payke_user');
 
 Route::get('/sample', [\App\Http\Controllers\Sample\IndexController::class, 'show']);
 Route::get('/sample/{id}', [\App\Http\Controllers\Sample\IndexController::class, 'showId']);
@@ -38,34 +38,34 @@ Route::get('/sample/{id}', [\App\Http\Controllers\Sample\IndexController::class,
 Route::get('/tweet', \App\Http\Controllers\Tweet\IndexController::class)
     ->name('tweet.index');
 
-Route::get('/payke_host', [PaykeHostController::class ,'view_all'])
+Route::get('/payke_host', [App\Http\Controllers\PaykeHostController::class ,'view_all'])
     ->name('payke_host.index');
 
-Route::get('/payke_host/create', [PaykeHostController::class ,'view_add'])
+Route::get('/payke_host/create', [App\Http\Controllers\PaykeHostController::class ,'view_add'])
     ->name('payke_host.create');
 
-Route::post('/payke_host/create', [PaykeHostController::class ,'post_add'])
+Route::post('/payke_host/create', [App\Http\Controllers\PaykeHostController::class ,'post_add'])
     ->name('payke_host.create.post');
 
-Route::get('/payke_host/e/{id}', [PaykeHostController::class ,'view_edit'])
+Route::get('/payke_host/e/{id}', [App\Http\Controllers\PaykeHostController::class ,'view_edit'])
     ->name('payke_host.edit');
 
-Route::post('/payke_host/edit', [PaykeHostController::class ,'post_edit'])
+Route::post('/payke_host/edit', [App\Http\Controllers\PaykeHostController::class ,'post_edit'])
     ->name('payke_host.edit.post');
 
-Route::get('/payke_db', \App\Http\Controllers\PaykeDb\IndexController::class)
+Route::get('/payke_db', [\App\Http\Controllers\PaykeDbController::class, 'view_all'])
     ->name('payke_db.index');
 
-Route::get('/payke_db/create', \App\Http\Controllers\PaykeDb\Create\IndexController::class)
+Route::get('/payke_db/create', [\App\Http\Controllers\PaykeDbController::class, 'view_add'])
     ->name('payke_db.create');
 
-Route::post('/payke_db/create', \App\Http\Controllers\PaykeDb\Create\PostController::class)
+Route::post('/payke_db/create', [\App\Http\Controllers\PaykeDbController::class, 'post_add'])
     ->name('payke_db.create.post');
 
-Route::get('/payke_db/e/{id}', \App\Http\Controllers\PaykeDb\Edit\IndexController::class)
+Route::get('/payke_db/e/{id}', [\App\Http\Controllers\PaykeDbController::class, 'view_edit'])
     ->name('payke_db.edit');
 
-Route::post('/payke_db/e', \App\Http\Controllers\PaykeDb\Edit\PostController::class)
+Route::post('/payke_db/e', [\App\Http\Controllers\PaykeDbController::class, 'post_edit'])
     ->name('payke_db.edit.post');
 
 Route::get('/payke_resource', \App\Http\Controllers\PaykeResource\IndexController::class)
