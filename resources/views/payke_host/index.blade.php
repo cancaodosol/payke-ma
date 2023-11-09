@@ -17,7 +17,12 @@
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                 @foreach($hosts as $host)
-                <h2 class="mt-4 text-base font-semibold leading-6 text-gray-900">・{{ $host->name }} ({{ $host->hostname }}、{{ $host->public_html_dir }})</h2>
+                <h2 class="mt-4 text-base font-semibold leading-6 text-gray-900">
+                    ・{{ $host->name }} ({{ $host->hostname }}、{{ $host->public_html_dir }})
+                    <a href="{{ route('payke_host.edit', ['id' => $host->id]) }}" class="text-indigo-600 hover:text-indigo-900">
+                        編集<span class="sr-only">, AAPS0L</span>
+                    </a>
+                </h2>
                 <table class="min-w-full divide-y divide-gray-300">
                 <thead>
                     <tr>

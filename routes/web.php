@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaykeHostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,14 +38,20 @@ Route::get('/sample/{id}', [\App\Http\Controllers\Sample\IndexController::class,
 Route::get('/tweet', \App\Http\Controllers\Tweet\IndexController::class)
     ->name('tweet.index');
 
-Route::get('/payke_host', \App\Http\Controllers\PaykeHost\IndexController::class)
+Route::get('/payke_host', [PaykeHostController::class ,'view_all'])
     ->name('payke_host.index');
 
-Route::get('/payke_host/create', \App\Http\Controllers\PaykeHost\Create\IndexController::class)
+Route::get('/payke_host/create', [PaykeHostController::class ,'view_add'])
     ->name('payke_host.create');
 
-Route::post('/payke_host/create', \App\Http\Controllers\PaykeHost\Create\PostController::class)
+Route::post('/payke_host/create', [PaykeHostController::class ,'post_add'])
     ->name('payke_host.create.post');
+
+Route::get('/payke_host/e/{id}', [PaykeHostController::class ,'view_edit'])
+    ->name('payke_host.edit');
+
+Route::post('/payke_host/edit', [PaykeHostController::class ,'post_edit'])
+    ->name('payke_host.edit.post');
 
 Route::get('/payke_db', \App\Http\Controllers\PaykeDb\IndexController::class)
     ->name('payke_db.index');
