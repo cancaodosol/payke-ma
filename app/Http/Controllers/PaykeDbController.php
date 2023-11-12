@@ -32,7 +32,8 @@ class PaykeDbController extends Controller
         $service = new PaykeDbService();
         $service->add($db);
 
-        return view('common.result', ["title" => "成功！", "message" => "データベースを新規登録しました。"]);
+        $hosts = (new PaykeHostService())->find_all();
+        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "データベース情報を新規登録しました。"]);
     }
 
     public function view_edit(int $id)
@@ -50,6 +51,8 @@ class PaykeDbController extends Controller
         $id = $request->input('id');
         $service = new PaykeDbService();
         $service->edit($id, $request->all());
-        return view('common.result', ["title" => "成功！", "message" => "データベースを更新しました。"]);
+
+        $hosts = (new PaykeHostService())->find_all();
+        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "データベース情報を更新しました。"]);
     }
 }

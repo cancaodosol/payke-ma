@@ -39,7 +39,8 @@ class PaykeHostController extends Controller
 
         $service->add($host);
 
-        return view('common.result', ["title" => "成功！", "message" => "サーバー情報を新規登録しました。"]);
+        $hosts = $service->find_all();
+        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "サーバー情報を新規登録しました。"]);
     }
 
     public function view_edit(int $id)
@@ -71,6 +72,7 @@ class PaykeHostController extends Controller
 
         $service->edit($id, $data);
 
-        return view('common.result', ["title" => "成功！", "message" => "サーバー情報を更新しました。"]);
+        $hosts = $service->find_all();
+        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "サーバー情報を更新しました。"]);
     }
 }
