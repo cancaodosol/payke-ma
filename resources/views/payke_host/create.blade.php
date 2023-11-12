@@ -1,15 +1,15 @@
-<x-layouts.basepage title="リリース先サーバー 新規登録" current="リリース先サーバー 新規登録">
+<x-layouts.basepage title="サーバー 新規登録" current="サーバー 新規登録">
 
     @if ($errors->any())
         <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
     @endif
 
-    <form action="{{ route('payke_user.create.post') }}", method="post">
+    <form action="{{ route('payke_host.create.post') }}", method="post" enctype="multipart/form-data">
     @method('POST')
     @csrf
     <div class="space-y-12 sm:space-y-16">
         <div>
-        <h2 class="text-base font-semibold leading-7 text-gray-900">リリース先サーバー 新規登録</h2>
+        <h2 class="text-base font-semibold leading-7 text-gray-900">サーバー 新規登録</h2>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Paykeのリリース先サーバーを新規登録します。</p>
 
         @if(session('feedback.success'))

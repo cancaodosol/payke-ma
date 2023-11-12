@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaykeDb\CreateRequest;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
 use Illuminate\Http\Request;
@@ -24,14 +25,14 @@ class PaykeDbController extends Controller
         return view('payke_db.create', ["hosts" => $hosts]);
     }
 
-    public function post_add(Request $request)
+    public function post_add(CreateRequest $request)
     {
         $db = $request->to_payke_db();
 
         $service = new PaykeDbService();
         $service->add($db);
 
-        return redirect()->route('payke_host.index');
+        return view('common.result', ["title" => "成功！", "message" => "データベースを新規登録しました。"]);
     }
 
     public function view_edit(int $id)
@@ -44,11 +45,11 @@ class PaykeDbController extends Controller
         return view('payke_db.edit', ["hosts" => $hosts, "statuses" => $statuses, "db" => $db]);
     }
 
-    public function post_edit(Request $request)
+    public function post_edit(CreateRequest $request)
     {
         $id = $request->input('id');
         $service = new PaykeDbService();
         $service->edit($id, $request->all());
-        return redirect()->route('payke_host.index');
+        return view('common.result', ["title" => "成功！", "message" => "データベースを更新しました。"]);
     }
 }

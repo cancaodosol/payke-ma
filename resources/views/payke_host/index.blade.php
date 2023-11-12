@@ -13,11 +13,11 @@
                 ＋ データベース</a>
             </div>
         </div>
-        <div class="mt-8 flow-root">
+        <div class="flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                 @foreach($hosts as $host)
-                <h2 class="mt-4 text-base font-semibold leading-6 text-gray-900">
+                <h2 class="mt-10 text-base font-semibold leading-6 text-gray-900">
                     ・{{ $host->name }} ({{ $host->hostname }}、{{ $host->public_html_dir }})
                     <a href="{{ route('payke_host.edit', ['id' => $host->id]) }}" class="text-indigo-600 hover:text-indigo-900">
                         編集<span class="sr-only">, AAPS0L</span>
@@ -31,6 +31,7 @@
                         <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">ホスト</th>
                         <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">ユーザー名</th>
                         <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">テーブル名</th>
+                        <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
                         <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
                             <span class="sr-only">詳細</span>
                         </th>
@@ -61,6 +62,7 @@
                         <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $db->db_host }}</td>
                         <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{{ $db->db_username }}</td>
                         <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $db->db_database }}</td>
+                        <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $db->PaykeUser ? '>> '.$db->PaykeUser->user_name : ''}}</td>
                         <td class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                             <a href="{{ route('payke_db.edit', ['id' => $db->id]) }}" class="text-indigo-600 hover:text-indigo-900">
                                 編集<span class="sr-only">, AAPS0L</span>

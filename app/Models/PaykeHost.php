@@ -28,4 +28,14 @@ class PaykeHost extends Model
         ,'resource_dir'
         ,'public_html_dir'
     ];
+
+    const validation_rules = [
+        'name' => 'required'
+        ,'hostname' => 'required'
+        ,'remote_user' => 'required'
+        ,'port' => 'required'
+        ,'identity_file' =>'required'
+        ,'resource_dir' => 'required'
+        ,'public_html_dir' => 'required'
+    ];
 }

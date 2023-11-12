@@ -1,15 +1,15 @@
-<x-layouts.basepage title="リリース先サーバー 編集" current="リリース先サーバー 編集">
+<x-layouts.basepage title="サーバー 編集" current="サーバー 編集">
 
     @if ($errors->any())
         <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
     @endif
 
-    <form action="{{ route('payke_host.edit.post') }}", method="post">
+    <form action="{{ route('payke_host.edit.post') }}", method="post" enctype="multipart/form-data">
     @method('POST')
     @csrf
     <div class="space-y-12 sm:space-y-16">
         <div>
-        <h2 class="text-base font-semibold leading-7 text-gray-900">リリース先サーバー 編集</h2>
+        <h2 class="text-base font-semibold leading-7 text-gray-900">サーバー 編集</h2>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Paykeのリリース先サーバーを編集します。</p>
 
         @if(session('feedback.success'))
@@ -23,7 +23,9 @@
             <x-forms.input name="hostname" value="{{ $host->hostname }}" label="ホスト名" example="payke-ec.jp"/>
             <x-forms.input name="remote_user" value="{{ $host->remote_user }}" label="ユーザー名"/>
             <x-forms.input name="port" value="{{ $host->port }}" label="ポート番号" example="10022"/>
-            <x-forms.file name="identity_file" value="{{ $host->identity_file }}" label="公開鍵" explain="※ 一度目のSSH接続は、手動で行う必要があります。"/>
+            <input type="hidden" name="identity_file" value="{{ $host->identity_file }}"/>
+            <x-forms.file name="identity_file___edit" label="公開鍵" explain="{{ $host->identity_file }}"/>
+            <x-forms.input name="resource_dir" value="{{ $host->resource_dir }}" label="リソース管理フォルダ" example="~/payke-ec.jp/payke_resources"/>
             <x-forms.input name="public_html_dir" value="{{ $host->public_html_dir }}" label="Payke公開フォルダ" example="~/hiderin.xyz/public_html"/>
         </div>
         </div>

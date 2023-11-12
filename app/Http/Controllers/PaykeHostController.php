@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaykeHost\CreateRequest;
 use App\Services\PaykeHostService;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,23 @@ class PaykeHostController extends Controller
         return view('payke_host.create');
     }
 
-    public function post_add(Request $request)
+    public function post_add(CreateRequest $request)
     {
-        return view('payke_host.index');
+        $host = $request->to_payke_host();
+
+        // アップロードされたファイル名を取得
+        $file_name = $request->identityFile()->getClientOriginalName();
+
+        // 取得したファイル名で保存
+        $request->identityFile()->storeAs('.ssh', $file_name);
+
+        // データベースへ保存
+        $service = new PaykeHostService();
+        $host->identity_file = "storage/app/.ssh/{$file_name}";
+
+        $service->add($host);
+
+        return view('common.result', ["title" => "成功！", "message" => "サーバー情報を新規登録しました。"]);
     }
 
     public function view_edit(int $id)
@@ -35,8 +50,27 @@ class PaykeHostController extends Controller
         return view('payke_host.edit', ["host" => $host, "statuses" => $statuses]);
     }
 
-    public function post_edit(Request $request)
+    public function post_edit(CreateRequest $request)
     {
-        return view('payke_host.index');
+        // データベースへ保存
+        $service = new PaykeHostService();
+        $id = $request->input('id');
+        $data = $request->all();
+
+        // 公開鍵の変更があったら、更新する。
+        if($request->identityFile___edit())
+        {
+            // アップロードされたファイル名を取得
+            $file_name = $request->identityFile___edit()->getClientOriginalName();
+    
+            // 取得したファイル名で保存
+            $request->identityFile___edit()->storeAs('.ssh', $file_name);
+
+            $data['identity_file'] = "storage/app/.ssh/{$file_name}";
+        }
+
+        $service->edit($id, $data);
+
+        return view('common.result', ["title" => "成功！", "message" => "サーバー情報を更新しました。"]);
     }
 }
