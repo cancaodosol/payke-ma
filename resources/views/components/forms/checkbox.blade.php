@@ -2,7 +2,7 @@
     <fieldset>
     <legend class="sr-only">{{ $label }}</legend>
     <div class="sm:grid sm:grid-cols-6 sm:gap-4 sm:py-3">
-        <div class="text-sm text-right leading-6 text-gray-900" aria-hidden="true">{{ $label }}</div>
+        <div class="text-sm lg:text-right leading-6 text-gray-900" aria-hidden="true">{{ $label }}</div>
         <div class="mt-4 sm:col-span-5 sm:mt-0">
         <div class="max-w-lg space-y-6">
             <div class="relative flex gap-x-3">
