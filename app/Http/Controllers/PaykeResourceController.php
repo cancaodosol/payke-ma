@@ -13,13 +13,7 @@ class PaykeResourceController extends Controller
     {
         $service = new PaykeResourceService();
         $resources = $service->find_all();
-        dd($resources);
-        return view('payke_resource.index', ['resources' => $resources]);
-    }
-
-    public function view_add(Request $request)
-    {
-        return view('payke_resource.create');
+        return view('payke_resource.index', ['paykes' => $resources]);
     }
 
     public function post_add(CreateRequest $request)

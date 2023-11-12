@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Helpers\TimeHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PaykeResource extends Model
 {
     use HasFactory;
+
+    public function PaykeUsers()
+    {
+        return $this->hasMany('App\Models\PaykeUser');
+    }
  
     // versionは、v3.21.7のカタチを想定。
     // MEMO : varison_zが 7.1とかの場合は、画面から修正してもらう。
@@ -40,4 +46,11 @@ class PaykeResource extends Model
         ,'payke_zip_file_path'
         ,'memo'
     ];
+
+    public function diff_time_from_now() : string
+    {
+        $th = new TimeHelper();
+        $now = time();
+        return $th->to_diff_string($now, strtotime($this->created_at));
+    }
 }
