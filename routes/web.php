@@ -80,7 +80,7 @@ Route::get('/payke_user/p/{userId}', [\App\Http\Controllers\PaykeUserController:
 Route::get('/payke_user/create', [\App\Http\Controllers\PaykeUserController::class, 'view_add'])
     ->name('payke_user.create');
 
-Route::post('/payke_user/create/post', [\App\Http\Controllers\PaykeUserController::class, 'edit_add'])
+Route::post('/payke_user/create/post', [\App\Http\Controllers\PaykeUserController::class, 'post_add'])
     ->name('payke_user.create.post');
 
 Route::post('/payke_user/version/up', [\App\Http\Controllers\PaykeController::class, 'post_edit_version'])

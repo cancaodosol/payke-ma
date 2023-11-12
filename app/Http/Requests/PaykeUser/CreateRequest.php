@@ -22,13 +22,7 @@ class CreateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'payke_host_db' => 'required',
-            'payke_resource' => 'required',
-            'payke_app_name' => 'required',
-            'user_name' => 'required',
-            'email_address' => 'required'
-        ];
+        return PaykeUser::validation_rules;
     }
 
     public function paykeHostId(): int

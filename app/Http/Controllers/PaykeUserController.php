@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaykeUser\CreateRequest;
 use App\Models\PaykeUser;
 use App\Services\DeployService;
 use App\Services\PaykeDbService;
@@ -39,7 +40,7 @@ class PaykeUserController extends Controller
         return view('payke_user.create', ["host_dbs" => $host_dbs, "resources" => $resources]);
     }
 
-    public function post_add(Request $request)
+    public function post_add(CreateRequest $request)
     {
         $user = $request->to_payke_user();
 
@@ -68,7 +69,7 @@ class PaykeUserController extends Controller
         return;
     }
 
-    public function post_edit(Request $request)
+    public function post_edit(CreateRequest $request)
     {
         return;
     }

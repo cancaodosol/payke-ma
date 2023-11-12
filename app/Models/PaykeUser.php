@@ -51,4 +51,12 @@ class PaykeUser extends Model
         ,'email_address'
         ,'memo'
     ];
+
+    const validation_rules = [
+        'payke_host_db' => 'required'
+        ,'payke_resource' => 'required'
+        ,'payke_app_name' => 'required'
+        ,'user_name' => 'required'
+        ,'email_address' => 'required'
+    ];
 }
