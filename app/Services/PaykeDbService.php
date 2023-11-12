@@ -22,7 +22,10 @@ class PaykeDbService
         $host_dbs = [];
         $hosts = PaykeHost::orderBy('id', 'ASC')->get();
         foreach ($hosts as $host) {
-            $dbs = PaykeDb::where('status', PaykeDb::STATUS__READY)->orderBy('db_database','asc')->get();
+            $dbs = PaykeDb::where(([
+                ['payke_host_id', '=', $host->id],
+                ['status', '=', PaykeDb::STATUS__READY],
+              ]))->orderBy('db_database','asc')->get();
             foreach ($dbs as $db) {
                 array_push($host_dbs, ["id" => "{$host->id}_{$db->id}", "name" => "{$host->name} / {$db->db_database}"]);
             }
