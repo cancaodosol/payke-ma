@@ -39,4 +39,10 @@ class PaykeResourceService
             return ["id" => $x['id'], "name" => $x['version']];
         }, $resources->toarray());
     }
+
+    public function get_version_by_id(int $id): string
+    {
+        $resource = $this->find_by_id($id);
+        return $resource->version;
+    }
 }

@@ -203,7 +203,7 @@ class DeployService
             $logService->write_other_log($user, 'アフィリエイト有効', $message, null, $params_string, $outLog);
         }else{
             $message = "アフィリエイト機能を有効にするのに、失敗しました。";
-            $logService->write_other_log($user, 'アフィリエイト有効失敗', $message, null, $params_string, $outLog);
+            $logService->write_error_log($user, 'アフィリエイト有効失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;
@@ -229,7 +229,7 @@ class DeployService
             $logService->write_other_log($user, 'アフィリエイト無効', $message, null, $params_string, $outLog);
         }else{
             $message = "アフィリエイト機能を無効にするのに、失敗しました。";
-            $logService->write_other_log($user, 'アフィリエイト無効失敗', $message, null, $params_string, $outLog);
+            $logService->write_error_log($user, 'アフィリエイト無効失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;

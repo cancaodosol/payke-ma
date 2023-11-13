@@ -91,9 +91,11 @@
                     </td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900"></td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 truncate">メモの１行分だけ</td>
+                    <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 truncate"></td>
                     <td class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">詳細<span class="sr-only">, AAPS0L</span></a>
+                        <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
+                            詳細<span class="sr-only">, AAPS0L</span>
+                        </a>
                     </td>
                 </tr>
                 @endforeach

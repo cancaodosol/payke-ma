@@ -27,57 +27,35 @@ class CreateRequest extends FormRequest
 
     public function paykeHostId(): int
     {
-        return (int)explode("_", $this->input("payke_host_db"))[0];
+        return (int)explode("_", $this->input("payke_host_db_id"))[0];
     }
 
     public function paykeDbId(): int
     {
-        return (int)explode("_", $this->input("payke_host_db"))[1];
+        return (int)explode("_", $this->input("payke_host_db_id"))[1];
     }
 
     public function paykeResourceId(): int
     {
-        return (int)$this->input('payke_resource');
-    }
-
-    public function paykeAppName(): string
-    {
-        return $this->input('payke_app_name');
-    }
-
-    public function enableAffiliate(): bool
-    {
-        return (bool)$this->input('enable_affiliate');
-    }
-
-    public function userName(): string
-    {
-        return $this->input('user_name');
-    }
-
-    public function emailAddress(): string
-    {
-        return $this->input('email_address');
-    }
-
-    public function memo(): string
-    {
-        return $this->input('memo') ?? "";
+        return (int)$this->input('payke_resource_id');
     }
 
     public function to_payke_user(): PaykeUser
     {
         $user = new PaykeUser();
 
+        if($this->input("id")) $user->id = $this->input("id");
+        if($this->input("status") !== null) $user->status = $this->input("status");
         $user->payke_host_id = $this->paykeHostId();
         $user->payke_db_id = $this->paykeDbId();
-        $user->payke_resource_id = $this->paykeResourceId();
-        $user->user_folder_id = "user_{$this->paykeHostId()}_{$this->paykeDbId()}";
-        $user->user_app_name = $this->paykeAppName();
-        $user->enable_affiliate = $this->enableAffiliate();
-        $user->user_name = $this->userName();
-        $user->email_address = $this->emailAddress();
-        $user->memo = $this->memo();
+        $user->payke_resource_id = $this->input('payke_resource_id');
+        $user->user_app_name = $this->input('user_app_name');
+        $user->set_user_folder_id($this->paykeHostId(), $this->paykeDbId());
+        $user->set_app_url($user->PaykeHost->hostname, $user->user_app_name);
+        $user->enable_affiliate = (bool)$this->input('enable_affiliate');
+        $user->user_name = $this->input('user_name');
+        $user->email_address = $this->input('email_address');
+        $user->memo = $this->input('memo') ?? "";
 
         return $user;
     }

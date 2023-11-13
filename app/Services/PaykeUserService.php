@@ -6,19 +6,92 @@ use App\Models\PaykeHost;
 use App\Models\PaykeResource;
 use App\Models\PaykeDb;
 use App\Models\PaykeUser;
+use App\Services\DeployService;
+use App\Services\DeployLogService;
 
 class PaykeUserService
 {
     public function save_init(PaykeUser $user): void
     {
         $user->status = PaykeUser::STATUS__BEFORE_SETTING;
-        $user->PaykeHost->status = PaykeHost::STATUS__IN_USE;
+        $user->PaykeHost->status = PaykeHost::STATUS__READY;
         $user->PaykeDb->status = PaykeDb::STATUS__IN_USE;
-        $url = "https://{$user->PaykeHost->hostname}/{$user->user_app_name}/admin/users";
-        $user->app_url = $url;
         $user->save();
         $user->PaykeHost->save();
         $user->PaykeDb->save();
+    }
+
+    public function edit(int $id, PaykeUser $newUser): void
+    {
+        $currentUser = $this->find_by_id($id);
+
+        $logService = new DeployLogService();
+        $deployService = new DeployService();
+        if($newUser->status != $currentUser->status)
+        {
+            // ログ：ステータスを〇〇から、〇〇へ変更しました。
+            $currentStatusName = PaykeUser::STATUS_NAMES[$currentUser->status];
+            $newStatusName = PaykeUser::STATUS_NAMES[$newUser->status];
+            $message = "ステータスを「{$currentStatusName}」から「{$newStatusName}」へ変更しました。";
+            $logService->write_other_log($currentUser, "ステータス変更（手動）", $message);
+        }
+
+        if($newUser->payke_resource_id != $currentUser->payke_resource_id)
+        {
+            // ログ：Paykeバージョンを〇〇から、〇〇へ変更しました。
+            $service = new PaykeResourceService();
+            $currentVersion = $service->get_version_by_id($currentUser->payke_resource_id);
+            $newVersion = $service->get_version_by_id($newUser->payke_resource_id);
+            $message = "Paykeバージョンを「{$currentVersion}」から「{$newVersion}」へ変更しました。";
+            $logService->write_other_log($currentUser, "バージョン変更（手動）", $message);
+        }
+
+        // MEMO : いったん、公開アプリ名の変更はできないってことで。
+        // if($newUser->user_app_name != $currentUser->user_app_name)
+        // {
+        //     // 処理：Payke環境への適用
+
+        //     // ログ：公開アプリ名を〇〇から、〇〇に変更しました。
+        //     $message = "公開アプリ名を「{$currentUser->user_app_name}」から「{$newUser->user_app_name}」へ変更しました。";
+        //     $logService->write_other_log($currentUser, "公開アプリ名の変更", $message);
+        // }
+
+        if($newUser->enable_affiliate != $currentUser->enable_affiliate)
+        {
+            if($newUser->enable_affiliate) // true: 1
+            {
+                $log = [];
+                $is_success = $deployService->open_affiliate($currentUser->PaykeHost, $currentUser, $log);
+                // MEMO: 更新失敗の時は、元の状態に戻す。
+                if(!$is_success)
+                {
+                    $newUser->enable_affiliate = 0;
+                    $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                }
+            }
+            else
+            {
+                $log = [];
+                $is_success = $deployService->close_affiliate($currentUser->PaykeHost, $currentUser, $log);
+                // MEMO: 更新失敗の時は、元の状態に戻す。
+                if(!$is_success)
+                {
+                    $newUser->enable_affiliate = 1;
+                    $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                }
+            }
+        }
+
+        $currentUser->update([
+            "status" => $newUser->status
+            ,"payke_resource_id" => $newUser->payke_resource_id
+            // ,"user_app_name" => $newUser->user_app_name
+            ,"app_url" => $newUser->app_url
+            ,"enable_affiliate" => $newUser->enable_affiliate
+            ,"user_name" => $newUser->user_name
+            ,"email_address" => $newUser->email_address
+            ,"memo" => $newUser->memo
+        ]);
     }
 
     public function open_affiliate(PaykeUser $user): void
@@ -68,5 +141,18 @@ class PaykeUserService
     public function find_by_id(int $id)
     {
         return PaykeUser::where('id', $id)->firstOrFail();
+    }
+
+    public function get_statuses()
+    {
+        $statuses = [
+            ["id" => PaykeUser::STATUS__ACTIVE, "name" => "正常稼働"],
+            ["id" => PaykeUser::STATUS__BEFORE_SETTING, "name" => "初回登録"],
+            ["id" => PaykeUser::STATUS__DISABLE_ADMIN, "name" => "管理停止"],
+            ["id" => PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES, "name" => "管理・販売停止"],
+            ["id" => PaykeUser::STATUS__DELETE, "name" => "削除済"],
+            ["id" => PaykeUser::STATUS__HAS_ERROR, "name" => "エラーあり"]
+        ];
+        return $statuses;
     }
 }

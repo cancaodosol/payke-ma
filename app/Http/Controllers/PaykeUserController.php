@@ -72,11 +72,31 @@ class PaykeUserController extends Controller
 
     public function view_edit(int $id)
     {
-        return;
+        $service = new PaykeUserService();
+        $statuses = $service->get_statuses();
+        $user = $service->find_by_id($id);
+
+        $resService = new PaykeResourceService();
+        $resources = $resService->find_all_to_array();
+
+        $host_dbs = [[
+            "id" => $user->host_db_id(),
+            "name" => "{$user->PaykeHost->name} / {$user->PaykeDb->db_database}"
+            ]];
+
+        return view('payke_user.edit', ["user" => $user, "statuses" => $statuses, "host_dbs" => $host_dbs, "resources" => $resources]);
     }
 
     public function post_edit(CreateRequest $request)
     {
-        return;
+        $service = new PaykeUserService();
+
+        $id = $request->input("id");
+        $newUser = $request->to_payke_user();
+
+        $service->edit($id, $newUser);
+
+        $user = $service->find_by_id($id);
+        return view('payke_user.profile', ['user' => $user]);
     }
 }

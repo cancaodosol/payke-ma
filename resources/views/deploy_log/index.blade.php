@@ -20,8 +20,8 @@
             <h1 class="text-base font-semibold leading-6 text-gray-900">アップデート履歴</h1>
         </div>
         <div class="mt-4 sm:ml-2 sm:mt-0 sm:flex-none">
-        <button type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
-            ＞ 使用者情報へ</button>
+        <a href="{{ route('payke_user.profile', ['userId' => $user_id]) }}" type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
+            ＞ 使用者情報へ</a>
         </div>
     </div>
     <div class="mt-7 ml-1">
