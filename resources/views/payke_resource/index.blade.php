@@ -1,27 +1,21 @@
 <x-layouts.basepage title="Paykeバージョン一覧" current="Paykeバージョン一覧">
-    <div class="mb-10">
-        <div class="">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">Payke Zipアップロード</h1>
-        </div>
-        <form action="{{ route('payke_resource.create.post') }}", method="post">
-            @method('POST')
-            @csrf
-            <div>
-                <x-forms.file name="payke-zip" label="Payke Zipファイル" addSubmit="アップロードする"/>
-            </div>
-        </form>
-    </div>
-    <div class="mt-10 mb-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
-    </div>
-
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">バージョン一覧</h1>
+            <h1 class="text-base font-semibold leading-6 text-gray-900">Paykeバージョン一覧</h1>
         </div>
         <div class="mt-4 sm:ml-2 sm:mt-0 sm:flex-none">
         </div>
     </div>
-    <div class="mt-7 ml-1">
+    <div class="mt-3">
+        <form action="{{ route('payke_resource.create.post') }}", method="post">
+            @method('POST')
+            @csrf
+            <div>
+                <x-forms.file name="payke-zip" label="Payke Zipファイル" addSubmit="追加する"/>
+            </div>
+        </form>
+    </div>
+    <div class="mt-5 ml-1">
         <ul role="list" class="space-y-6">
             @foreach($paykes as $payke)
                 <li class="relative flex gap-x-4">
@@ -39,7 +33,7 @@
                     </div>
                     <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
                         <span class="font-medium text-gray-900">{{ $payke->version }}</span>
-                        {{ $payke->created_at }}( {{ $payke->diff_time_from_now() }} ) にアップロードしました。
+                        {{ $payke->created_at }}( {{ $payke->diff_time_from_now() }} ) に追加されました。
                         @if($payke->PaykeUsers()->count() > 0)
                         （ 使用者数：{{ $payke->PaykeUsers()->count() }} ）
                         <a href="{{ route('payke_user.index.paykeId', ['paykeId' => $payke->id]) }}" class="text-xs text-indigo-600 hover:text-indigo-900">
