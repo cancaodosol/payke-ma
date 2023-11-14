@@ -155,6 +155,12 @@ class DeployService
             $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
         }
 
+        if($is_first && $is_success && $user->enable_affiliate == 1)
+        {
+            $message = "アフィリエイト機能を有効にしました。";
+            $logService->write_other_log($user, 'アフィリエイト有効', $message);
+        }
+
         return $is_success;
     }
 
