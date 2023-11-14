@@ -15,7 +15,10 @@
                     <div class="my-2 text-sm">
                         <table class="mt-5 ml-5">
                             <tr><th class="text-right">稼働状況：</th><td>{{ $user->status_name() }}</td></tr>
-                            <tr><th class="text-right">バージョン：</th><td>Payke EC {{ $user->PaykeResource->version }}</td></tr>
+                            <tr><th class="text-right">バージョン：</th><td>Payke EC {{ $user->PaykeResource->version }} 
+                            <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
+                                📝</a>
+                            </td></tr>
                             <tr><th class="text-right">アフィリ：</th><td>{{ $user->enable_affiliate ? '使用可能' : '使用不可' }}</td></tr>
                             <tr><th class="text-right">URL：</th><td><a href="{{ $user->app_url }}" class="text-indigo-600 hover:text-indigo-900">{{ $user->app_url }}</a></td></tr>
                             <tr><th class="text-right">初回作成：</th><td>{{ $user->created_at }}</td></tr>

@@ -64,7 +64,13 @@
                         <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $db->db_host }}</td>
                         <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{{ $db->db_username }}</td>
                         <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $db->db_database }}</td>
-                        <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $db->PaykeUser ? '>> '.$db->PaykeUser->user_name : ''}}</td>
+                        <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
+                            @if($db->PaykeUser)
+                            <a href="{{ route('payke_user.profile', ['userId' => $db->PaykeUser->id]) }}" class="text-indigo-600 hover:text-indigo-900">
+                                {{ '>> '.$db->PaykeUser->user_name }}
+                            </a>
+                            @endif
+                        </td>
                         <td class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                             <a href="{{ route('payke_db.edit', ['id' => $db->id]) }}" class="text-indigo-600 hover:text-indigo-900">
                                 編集<span class="sr-only">, AAPS0L</span>
