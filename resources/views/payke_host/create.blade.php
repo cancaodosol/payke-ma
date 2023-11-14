@@ -29,3 +29,15 @@
     </div>
     </form>
 </x-layouts.basepage>
+<script>
+    const hostnameEle = document.getElementById("hostname");
+    const resourceDirEle = document.getElementById("resource_dir");
+    const publicHtmlDirEle = document.getElementById("public_html_dir");
+    hostnameEle.addEventListener("change", () => {
+        if(!resourceDirEle.value && !publicHtmlDirEle.value)
+        {
+            resourceDirEle.value = "~/" + hostnameEle.value + "/payke_resources";
+            publicHtmlDirEle.value = "~/" + hostnameEle.value + "/public_html";
+        }
+    });
+</script>
