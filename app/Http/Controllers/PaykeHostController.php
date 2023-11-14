@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class PaykeHostController extends Controller
 {
+    public string $root_dir;
+    public function __construct()
+    {
+        $this->root_dir = dirname(__FILE__)."/../../../";
+    }
+
     public function view_all(Request $request)
     {
         $service = new PaykeHostService();
@@ -36,6 +42,9 @@ class PaykeHostController extends Controller
         // データベースへ保存
         $service = new PaykeHostService();
         $host->identity_file = "storage/app/.ssh/{$file_name}";
+
+        // 権限を600に。
+        chmod($this->root_dir.$host->identity_file, 0600);
 
         $service->add($host);
 
@@ -68,6 +77,9 @@ class PaykeHostController extends Controller
             $request->identityFile___edit()->storeAs('.ssh', $file_name);
 
             $data['identity_file'] = "storage/app/.ssh/{$file_name}";
+
+            // 権限を600に。
+            chmod($this->root_dir.$data['identity_file'], 0600);
         }
 
         $service->edit($id, $data);
