@@ -1,9 +1,5 @@
 <x-layouts.basepage title="サーバー 新規登録" current="サーバー 新規登録">
 
-    @if ($errors->any())
-        <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
-    @endif
-
     <form action="{{ route('payke_host.create.post') }}", method="post" enctype="multipart/form-data">
     @method('POST')
     @csrf

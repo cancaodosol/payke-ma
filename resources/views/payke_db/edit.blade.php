@@ -1,9 +1,5 @@
 <x-layouts.basepage title="データベース 編集" current="データベース 編集">
 
-    @if ($errors->any())
-        <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
-    @endif
-
     <form action="{{ route('payke_db.edit.post') }}", method="post">
     @method('POST')
     @csrf

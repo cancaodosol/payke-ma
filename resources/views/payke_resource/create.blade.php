@@ -1,9 +1,5 @@
 <x-layouts.basepage title="Payke 新規作成" current="Payke 新規作成">
 
-    @if ($errors->any())
-        <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
-    @endif
-
     <form action="{{ route('payke_resource.create.post') }}" method="post" enctype="multipart/form-data">
     @method('POST')
     @csrf

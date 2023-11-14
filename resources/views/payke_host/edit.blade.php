@@ -1,9 +1,5 @@
 <x-layouts.basepage title="サーバー 編集" current="サーバー 編集">
 
-    @if ($errors->any())
-        <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
-    @endif
-
     <form action="{{ route('payke_host.edit.post') }}", method="post" enctype="multipart/form-data">
     @method('POST')
     @csrf

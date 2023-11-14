@@ -1,9 +1,5 @@
 <x-layouts.basepage title="データベース 新規登録" current="リリース先データベース 新規登録">
 
-    @if ($errors->any())
-        <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
-    @endif
-
     <form action="{{ route('payke_db.create.post') }}", method="post">
     @method('POST')
     @csrf
