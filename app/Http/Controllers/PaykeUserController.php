@@ -10,6 +10,7 @@ use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
+use App\Services\DeployLogService;
 use Illuminate\Http\Request;
 
 class PaykeUserController extends Controller
@@ -54,6 +55,10 @@ class PaykeUserController extends Controller
         // 指定したDBは、このタイミングで使用中にする。デプロイエラーが起こっても、そのDBは確保。
         $service = new PaykeUserService();
         $service->save_init($user);
+
+        $logService = new DeployLogService();
+        $message = "新規作成しました。";
+        $logService->write_other_log($user, "新規作成", $message);
         
         // Paykeのデプロイ開始。
         $deployService = new DeployService();

@@ -118,12 +118,6 @@ class DeployService
         $params['deploy_datetime'] = $datetime;
 
         // デプロイが初回の場合は、デプロイ先に設定ファイルなどを送る。
-        $logService = new DeployLogService();
-        if($is_first)
-        {
-            $message = "新規作成しました。";
-            $logService->write_other_log($user, "新規作成", $message);
-        }
         $params['is_first'] = $is_first ? '1' : '';
         $params['payke_install_file_path'] = $this->payke_install_file_path;
 
@@ -149,6 +143,7 @@ class DeployService
         $outLog = $this->exec_deply($params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
 
+        $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         $title = "{$payke->version} 更新";
         if($is_success){

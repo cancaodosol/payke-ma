@@ -62,16 +62,21 @@ class IndexController extends Controller
                 $logs = [];
                 $deploy->unlock($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $logs);
                 dd($logs);
-            case ':open_affi' :
+            case ':re_deploy' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                $deployService = new DeployService();
+                $outLog = [];
+                $is_success = $deployService->deploy($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $outLog, true);
+        
                 $service = new PaykeUserService();
-                $ret = $service->open_affiliate($user);
-                return redirect()->route('payke_user.index');
-            case ':close_affi' :
-                $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
-                $service = new PaykeUserService();
-                $ret = $service->close_affiliate($user);
-                return redirect()->route('payke_user.index');
+                if($is_success)
+                {
+                    $service->save_active($user);
+                    return view('common.result', ["title" => "成功！", "message" => "Payke のデプロイに成功しました！"]);
+                } else {
+                    $service->save_has_error($user,  implode("\n", $outLog));
+                    return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
+                }
             case ':test' :
                 return view('common.result', ["title" => "成功！", "message" => "Payke v3.23.1 のデプロイに成功しました！",
                     "info" => ["task deploy:info",
