@@ -8,6 +8,7 @@ use App\Models\PaykeDb;
 use App\Models\PaykeHost;
 use App\Models\PaykeResource;
 use App\Models\PaykeUser;
+use App\Helpers\SecurityHelper;
 
 class DeployService
 {
@@ -133,7 +134,10 @@ class DeployService
             'DB_DATABASE' => $db['db_database'],
             'DB_USERNAME' => $db['db_username'],
             'DB_PASSWORD' => $db['db_password'],
-            'DB_PREFIX' => ''
+            'DB_PREFIX' => '',
+
+            'SECURITY_SALT' => SecurityHelper::create_salt(),
+            'SECURITY_CIPHER_SEED' => SecurityHelper::create_seed()
         ];
         $env_file_name = "{$user->user_folder_id}_{$datetime}";
         $params['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
