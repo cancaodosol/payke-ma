@@ -40,8 +40,8 @@
                         <table class="mt-2 ml-5">
                             <tr><th class="text-right">サーバー名：</th><td>{{ $user->PaykeHost->name }}</td></tr>
                             <tr><th class="text-right">ホスト：</th><td>{{ $user->PaykeHost->hostname }}</td></tr>
-                            <tr><th class="text-right">公開パス：</th><td>{{ $user->PaykeHost->public_html_dir }}</td></tr>
-                            <tr><th class="text-right">資材パス：</th><td>{{ $user->PaykeHost->resource_dir }}</td></tr>
+                            <tr><th class="text-right">公開パス：</th><td>{{ $user->PaykeHost->public_html_dir."/".$user->user_app_name."/" }}</td></tr>
+                            <tr><th class="text-right">資材パス：</th><td>{{ $user->PaykeHost->resource_dir."/".$user->user_folder_id."/" }}</td></tr>
                         </table>
                     </div>
                     <h4 class="font-bold text-base leading-tight mt-5">使用データベース</h4>
