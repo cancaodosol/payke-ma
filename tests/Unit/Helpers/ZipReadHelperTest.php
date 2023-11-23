@@ -39,4 +39,34 @@ class ZipReadHelperTest extends TestCase
         // print_r($r1);
         $this->assertEquals("1688897142, 1688897142_add_some_columns_and_index_to_payments", $r1[count($r1) - 1]);
     }
+
+    /**
+     * read_payke_version_all test.
+     */
+    public function test_read_payke_migrations_all(): void
+    {
+        print("--------------------------------------------------\n");
+        $zh = new ZipReadHelper();
+        $zips = glob('storage/app/payke_resources/zips/*.zip');
+        $versions = array_fill(0, count($zips), "");
+        for($i=0; $i<count($zips); $i++)
+        {
+            $versions[$i] = $zh->read_payke_version($zips[$i]);
+        }
+        arsort($versions);
+        $stopname = "";
+        $migration_vers = [];
+        foreach ($versions as $key => $val) {
+            $migrations = $zh->read_payke_migrations($zips[$key]);
+            if($stopname == "") $stopname = $migrations[count($migrations) - 7];
+            for ($i = 1; $i < 10; $i++) { 
+                $migration = $migrations[count($migrations) - $i];
+                $migration_vers[$migration] = $val;
+                if($migration == $stopname) break;
+            }
+        }
+        foreach ($migration_vers as $key => $val) {
+            print("{$val} : {$key}\n");
+        }
+    }
 }
