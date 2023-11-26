@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="mt-3">
-        <form action="{{ route('payke_resource.create.post') }}", method="post">
+        <form action="{{ route('payke_resource.create.post') }}", method="post" enctype="multipart/form-data">
             @method('POST')
             @csrf
             <div>
