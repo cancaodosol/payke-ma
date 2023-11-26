@@ -9,6 +9,7 @@ use App\Services\DeployService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
 use App\Services\PaykeUserService;
+use App\Services\DeployLogService;
 use Illuminate\Http\Request;
 
 use function Laravel\Prompts\search;
@@ -60,8 +61,13 @@ class IndexController extends Controller
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deploy = new DeployService();
                 $logs = [];
-                $deploy->unlock($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $logs);
-                dd($logs);
+                $deploy->unlock($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $logs);                
+
+                $service = new DeployLogService();
+                $logs = $service->find_by_user_id($user->id);
+                $rService = new PaykeResourceService();
+                $resources = $rService->find_all_to_array();
+                return view('deploy_log.index', ['user_id' => $userId, 'logs' => $logs, 'resources' => $resources]);
             case ':re_deploy' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deployService = new DeployService();

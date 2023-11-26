@@ -53,10 +53,13 @@ function exists_payke_zip() : bool {
  */
 before('deploy:release','deploy:release:db_backup');
 task('deploy:release:db_backup', function() {
+    writeln('[ BEFORE : deploy:release ] -------');
+    writeln(run('cd {{deploy_path}} && pwd && ls -la'));
+    writeln('-----------------------------------');
     if(!get('is_first'))
     {
         writeln('データベースのバックアップを取っておくよ。');
-        run('cd {{current_app_path}} && mysqldump --single-transaction -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} > mysql_{{deploy_datetime}}.dump');
+        writeln(run('cd {{current_app_path}} && mysqldump --single-transaction -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} > mysql_{{deploy_datetime}}.dump'));
     }
 });
 
@@ -66,8 +69,13 @@ task('deploy:release:db_backup', function() {
  * zipファイルを解凍して使用するように、独自で作成した。
  */
 task('deploy:update_code', function() {
+
+    writeln('[ BEFORE deploy:update_code ] ------');
+    writeln(run('cd {{deploy_path}} && pwd && ls -la'));
+    writeln('-----------------------------------');
+
     // １．デプロイ対象のpayke.zipを存在チェック。なかったら、資材置き場へアップロード
-    run('mkdir -p {{resource_zips_dir}}');
+    writeln(run('mkdir -p {{resource_zips_dir}}'));
     if(!exists_payke_zip())
     {
         writeln('Payke Zipをアップロードしていくよ。');
@@ -78,18 +86,22 @@ task('deploy:update_code', function() {
 
     // ２．ユーザーごとのディレクトリに、zipファイルを解凍する。
     run('unzip -u {{resource_zips_dir}}/{{payke_zip_name}}.zip -d {{resource_zips_dir}}');
-    run('rm -rf {{resource_releases_dir}}/{{release_name}}');
-    run('mv {{resource_zips_dir}}/{{payke_zip_name}} {{resource_releases_dir}}/{{release_name}}');
+    writeln(run('rm -rf {{resource_releases_dir}}/{{release_name}}'));
+    writeln(run('mv {{resource_zips_dir}}/{{payke_zip_name}} {{resource_releases_dir}}/{{release_name}}'));
 
     // ３．sharedファイルをアップロードする。
     if(get('is_first'))
     {
         writeln('設定ファイルをアップロードしていくよ。');
-        run('mkdir -p {{deploy_path}}/shared/app/Config/');
+        writeln(run('mkdir -p {{deploy_path}}/shared/app/Config/'));
         upload('{{root_dir}}{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
         upload('{{root_dir}}{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
         upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
     }
+
+    writeln('[ AFTER deploy:update_code ] ------');
+    writeln(run('cd {{deploy_path}} && pwd && ls -la'));
+    writeln('-----------------------------------');
 });
 
 /**
@@ -106,7 +118,7 @@ task('deploy:init', function () {
  * cake-for-Xserverを使って、マイグレーションを行うように修正
  */
 task('deploy:run_migrations', function () {
-    run('cd {{resource_releases_dir}}/{{release_name}} && app/Console/cake-for-Xserver Migrations.migration run all --precheck Migrations.PrecheckCondition');
+    writeln(run('cd {{resource_releases_dir}}/{{release_name}} && app/Console/cake-for-Xserver Migrations.migration run all --precheck Migrations.PrecheckCondition'));
 })->desc('Run migrations');
 
 /**
@@ -115,8 +127,8 @@ task('deploy:run_migrations', function () {
  */
 after('deploy:symlink','deploy:symlink:public_app');
 task('deploy:symlink:public_app', function () {
-    run('unlink {{public_app_path}} || echo unexists.');
-    run('ln -s {{deploy_path}}/current {{public_app_path}}');
+    writeln(run('unlink {{public_app_path}} || echo unexists.'));
+    writeln(run('ln -s {{deploy_path}}/current {{public_app_path}}'));
 });
 
 /**
