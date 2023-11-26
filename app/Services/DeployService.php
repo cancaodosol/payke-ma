@@ -282,4 +282,10 @@ class DeployService
         }
         return $params_string;
     }
+
+    public function create_hashed_password(string $password): string
+    {
+        $hashed = password_hash($password, PASSWORD_BCRYPT);
+        return $hashed;
+    }
 }

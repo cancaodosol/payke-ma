@@ -192,4 +192,14 @@ class DeployServiceTest extends TestCase
         // $o2 = $ds->close_affiliate($host, $user, $l2);
         // print_r($o2);
     }
+
+    /**
+     * create hashed password test.
+     */
+    public function test_create_hashed_password(): void
+    {
+        $ds = new DeployService();
+        $r1 = $ds->create_hashed_password("paykepayke");
+        print($r1);
+    }
 }
