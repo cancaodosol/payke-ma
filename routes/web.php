@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('payke_user.index');
 });
 
 Route::get('/dashboard', function () {
@@ -29,8 +29,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-Route::redirect('/', '/payke_user');
 
 Route::get('/payke_host', [App\Http\Controllers\PaykeHostController::class ,'view_all'])
     ->name('payke_host.index');
