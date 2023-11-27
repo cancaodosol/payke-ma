@@ -13,7 +13,7 @@
         @endif
 
         <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
-            <x-forms.list name="payke_host_id" label="サーバー" :list="$hosts" addPageLink="{{ route('payke_user.index') }}"/>
+            <x-forms.list name="payke_host_id" label="サーバー" :list="$hosts" addPageLink="{{ route('payke_host.create') }}"/>
             <x-forms.input name="db_host" label="ホスト" example="localhost"/>
             <x-forms.input name="db_database" label="データベース名"/>
             <x-forms.input name="db_username" label="ユーザー名"/>
