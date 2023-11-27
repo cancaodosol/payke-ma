@@ -96,7 +96,7 @@ class IndexController extends Controller
             default:
                 $service = new SearchService();
                 $users = $service->search($inputSearchWord);
-                return view('payke_user.index', ['users' => $users]);
+                return view('search.index', ['users' => $users, 'keyword' => $inputSearchWord]);
         }
         dd($searchWords);
     }
