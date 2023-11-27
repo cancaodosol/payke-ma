@@ -95,7 +95,6 @@ task('deploy:update_code', function() {
         writeln('設定ファイルをアップロードしていくよ。');
         writeln(run('mkdir -p {{deploy_path}}/shared/app/Config/'));
         upload('{{root_dir}}{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
-        upload('{{root_dir}}{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
         upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
     }
 
@@ -118,7 +117,18 @@ task('deploy:init', function () {
  * cake-for-Xserverを使って、マイグレーションを行うように修正
  */
 task('deploy:run_migrations', function () {
-    writeln(run('cd {{resource_releases_dir}}/{{release_name}} && app/Console/cake-for-Xserver Migrations.migration run all --precheck Migrations.PrecheckCondition'));
+    writeln('データマイグレーションを実行。');
+    $migration_result = run('cd {{resource_releases_dir}}/{{release_name}} && app/Console/cake-for-Xserver Migrations.migration run all --precheck Migrations.PrecheckCondition');
+    writeln($migration_result);
+
+    $is_success = strpos($migration_result, 'All migrations have completed.') !== false;
+    if($is_success && get('is_first'))
+    {
+        writeln('install.phpのinstalledをtrueに更新。');
+        // MEMO: installedをtrueの状態で、マイグレーションを行うと、初回マイグレーションの場合エラーが発生する。
+        //       なので、install.phpの更新は、マイグレーション実行後に行う。
+        upload('{{root_dir}}{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
+    }
 })->desc('Run migrations');
 
 /**

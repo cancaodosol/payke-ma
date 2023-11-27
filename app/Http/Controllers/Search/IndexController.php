@@ -9,6 +9,7 @@ use App\Services\DeployService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
 use App\Services\PaykeUserService;
+use App\Services\PaykeResourceService;
 use App\Services\DeployLogService;
 use Illuminate\Http\Request;
 
@@ -67,7 +68,7 @@ class IndexController extends Controller
                 $logs = $service->find_by_user_id($user->id);
                 $rService = new PaykeResourceService();
                 $resources = $rService->find_all_to_array();
-                return view('deploy_log.index', ['user_id' => $userId, 'logs' => $logs, 'resources' => $resources]);
+                return view('deploy_log.index', ['user_id' => $user->id, 'logs' => $logs, 'resources' => $resources]);
             case ':re_deploy' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deployService = new DeployService();

@@ -154,7 +154,7 @@ class DeployServiceTest extends TestCase
         $db->db_database = 'hirotae_payma04';
 
         $payke = new PaykeResource();
-        $payke->payke_name = 'ayke-ec_v3-23-1';
+        $payke->payke_name = 'payke-ec_v3-23-1';
         $payke->payke_zip_name = 'payke-ec-6d979f64ed30';
         $payke->payke_zip_file_path = '/storage/app/payke_resources/zips/payke-ec-6d979f64ed30.zip';
 
