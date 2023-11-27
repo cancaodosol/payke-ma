@@ -11,6 +11,7 @@ use App\Services\PaykeHostService;
 use App\Services\PaykeUserService;
 use App\Services\PaykeResourceService;
 use App\Services\DeployLogService;
+use App\Services\SearchService;
 use Illuminate\Http\Request;
 
 use function Laravel\Prompts\search;
@@ -19,7 +20,8 @@ class IndexController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $searchWords = explode(" ", (string) $request->input('searchWord'));
+        $inputSearchWord = (string) $request->input('searchWord');
+        $searchWords = explode(" ", $inputSearchWord);
         switch($searchWords[0])
         {
             case ':newuser' :
@@ -91,6 +93,10 @@ class IndexController extends Controller
                         " task deploy:setup",
                         " task deploy:lock",
                         " task deploy:release:db_backup"]]);
+            default:
+                $service = new SearchService();
+                $users = $service->search($inputSearchWord);
+                return view('payke_user.index', ['users' => $users]);
         }
         dd($searchWords);
     }
