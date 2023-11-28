@@ -19,7 +19,7 @@
             }
             }
         </script>
-        <title>{{ $title ?? 'Payke Manager' }}</title>
+        <title>{{ $title ? 'Payke MA - '.$title : 'Payke Manager' }}</title>
     </head>
     <body class="h-full">
     <div>
