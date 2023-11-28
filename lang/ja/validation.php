@@ -220,7 +220,26 @@ return [
     */
 
     'attributes' => [
-        'tweet' => 'つぶやき'
+        'tweet' => 'つぶやき',
+        'payke_host_id' => 'ホスト',
+        'payke_db_id' => 'データベース',
+        'payke_resource_id' => 'Paykeバージョン',
+        'user_app_name' => '公開アプリ名',
+        'user_name' => '使用者名',
+        'email_address' => 'メールアドレス',
+        'memo' => 'メモ',
+        'db_host' => 'ホスト',
+        'db_username' => 'ユーザー名',
+        'db_password' => 'パスワード',
+        'db_database' => 'データベース名',
+        'name' => 'サーバー名',
+        'hostname' => 'ホスト名',
+        'remote_user' => 'ユーザー名',
+        'port' => 'ポート番号',
+        'identity_file' => '公開鍵',
+        'resource_dir' => 'リソース管理フォルダ',
+        'public_html_dir' => 'Payke公開フォルダ',
+        'payke-zip' => 'Payke Zipファイル'
     ],
 
 ];
