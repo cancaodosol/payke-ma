@@ -25,19 +25,10 @@
     <div>
         <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
         <div id="sidebar_menu" class="relative z-30 lg:hidden opacity-0" role="dialog" aria-modal="true">
-            <!--
-            Off-canvas menu backdrop, show/hide based on off-canvas menu state.
 
-            Entering: "transition-opacity ease-linear duration-300"
-                From: "opacity-0"
-                To: "opacity-100"
-            Leaving: "transition-opacity ease-linear duration-300"
-                From: "opacity-100"
-                To: "opacity-0"
-            -->
-            <div class="fixed inset-0 bg-gray-900/80"></div>
+            <div id="sidebar_menu_bg" class="fixed inset-0 bg-gray-900/80 w-0"></div>
 
-            <div class="fixed inset-0 flex transition translate-x-0">
+            <div id="sidebar_menu_canvas" class="fixed inset-0 flex transition -translate-x-full">
             <!--
                 Off-canvas menu, show/hide based on off-canvas menu state.
 
@@ -211,18 +202,29 @@
         <script>
             const sidebarMenuBtnEle = document.getElementById("sidebar_menu_btn");
             const sidebarMenuEle = document.getElementById("sidebar_menu");
+            const sidebarMenuBgEle = document.getElementById("sidebar_menu_bg");
+            const sidebarMenuCanvasEle = document.getElementById("sidebar_menu_canvas");
 
             let isMenuOpened = false;
             sidebarMenuBtnEle.addEventListener('click', () => {
+                console.log(isMenuOpened);
                 if(isMenuOpened)
                 {
                     sidebarMenuEle.classList.remove("opacity-100");
                     sidebarMenuEle.classList.add("opacity-0");
+                    sidebarMenuBgEle.classList.remove("w-100");
+                    sidebarMenuBgEle.classList.add("w-0");
+                    sidebarMenuCanvasEle.classList.remove("translate-x-0");
+                    sidebarMenuCanvasEle.classList.add("-translate-x-full");
                 }
                 else
                 {
                     sidebarMenuEle.classList.remove("opacity-0");
                     sidebarMenuEle.classList.add("opacity-100");
+                    sidebarMenuBgEle.classList.remove("w-0");
+                    sidebarMenuBgEle.classList.add("w-100");
+                    sidebarMenuCanvasEle.classList.remove("-translate-x-full");
+                    sidebarMenuCanvasEle.classList.add("translate-x-0");
                 }
                 isMenuOpened = !isMenuOpened;
             });
