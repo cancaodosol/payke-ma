@@ -104,4 +104,19 @@ class PaykeUserController extends Controller
         $user = $service->find_by_id($id);
         return view('payke_user.profile', ['user' => $user]);
     }
+
+    public function post_memo_edit(Request $request)
+    {
+        $service = new PaykeUserService();
+
+        $id = $request->input("id");
+        $memo = $request->input("memo");
+        $user = $service->find_by_id($id);
+        $user->memo = $memo;
+
+        $service->edit($id, $user);
+
+        $user = $service->find_by_id($id);
+        return view('payke_user.profile', ['user' => $user, 'successTitle' => 'メモを更新しました！']);
+    }
 }

@@ -1,4 +1,6 @@
-<x-layouts.basepage title="利用者情報 ： {{ $user->user_name }}" current="利用者情報">
+<x-layouts.basepage title="利用者情報 ： {{ $user->user_name }}" current="利用者情報"
+    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
+    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">利用者情報 ： {{ $user->user_name }}</h1>
@@ -26,6 +28,8 @@
                         </table>
                     </div>
                     <div class="mt-5 text-right">
+                        <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            >> アップデート履歴</a>
                         <a href="{{ route('payke_user.edit', ['id' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                             >> 編集画面</a>
                     </div>
@@ -90,13 +94,18 @@
                 class="flex flex-col h-full bg-card dark:bg-card-dark shadow justify-between rounded-lg pb-8 p-6 xl:p-8 mt-3 bg-gray-50">
                 <div>
                     <h4 class="font-bold text-base leading-tight">メモ</h4>
-                    <div class="mt-2">
-                        <textarea rows="7" class="text-xs w-full p-3">{{ $user->memo }}</textarea>
-                    </div>
-                    <div class="mt-1 text-right">
-                        <a href="{{ route('payke_user.edit', ['id' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            >> 編集画面</a>
-                    </div>
+                    <form action="{{ route('payke_user.memo_edit.post') }}", method="post">
+                    @method('POST')
+                    @csrf
+                        <div class="mt-2">
+                            <input type="hidden" name="id" value="{{ $user->id }}"/>
+                            <textarea name="memo" rows="7" class="text-xs w-full p-3">{{ $user->memo }}</textarea>
+                        </div>
+                        <div class="mt-1 text-right">
+                            <button type="submit" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                >> メモを更新</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

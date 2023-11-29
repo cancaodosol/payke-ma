@@ -87,6 +87,9 @@ Route::get('/payke_user/edit/{id}', [\App\Http\Controllers\PaykeUserController::
 Route::post('/payke_user/edit/post', [\App\Http\Controllers\PaykeUserController::class, 'post_edit'])
     ->name('payke_user.edit.post');
 
+Route::post('/payke_user/memo_edit/post', [\App\Http\Controllers\PaykeUserController::class, 'post_memo_edit'])
+    ->name('payke_user.memo_edit.post');
+
 Route::post('/payke_user/version/up', [\App\Http\Controllers\PaykeController::class, 'post_edit_version'])
     ->name('payke_user.version.up');
 

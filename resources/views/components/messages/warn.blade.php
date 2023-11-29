@@ -7,9 +7,11 @@
     </div>
     <div class="ml-3">
       <h3 class="text-sm font-medium text-yellow-700">{{ $title }}</h3>
+      @if($message != '')
       <p class="text-sm text-yellow-700">
         {{ $message }}
       </p>
+      @endif
     </div>
   </div>
 </div>
