@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Services\DeployService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
+use App\Jobs\DeployJob;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PaykeController extends Controller
 {
@@ -43,18 +45,10 @@ class PaykeController extends Controller
         $rService = new PaykeResourceService();
         $payke = $rService->find_by_id($request->input('payke_resource'));
 
-        $dService = new DeployService();
         $outLog = [];
-        $is_success = $dService->deploy($user->PaykeHost, $user, $user->PaykeDb, $payke, $outLog, false);
+        $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $payke, false))->delay(Carbon::now()->addSeconds(1));
+        dispatch($deployJob);
 
-        if($is_success)
-        {
-            $user->payke_resource_id = $payke->id;
-            $uService->save_active($user);
-            return view('common.result', ["title" => "成功！", "message" => "Payke のデプロイに成功しました！"]);
-        } else {
-            $uService->save_has_error($user,  implode("\n", $outLog));
-            return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
-        }
+        return view('common.result', ["title" => "Paykeのデプロイを開始しました。", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
     }
 }

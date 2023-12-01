@@ -11,7 +11,9 @@ use App\Services\PaykeHostService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
 use App\Services\DeployLogService;
+use App\Jobs\DeployJob;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PaykeUserController extends Controller
 {
@@ -61,18 +63,10 @@ class PaykeUserController extends Controller
         $logService->write_other_log($user, "新規作成", $message);
         
         // Paykeのデプロイ開始。
-        $deployService = new DeployService();
-        $outLog = [];
-        $is_success = $deployService->deploy($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $outLog, true);
+        $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now()->addSeconds(1));
+        dispatch($deployJob);
 
-        if($is_success)
-        {
-            $service->save_active($user);
-            return view('common.result', ["title" => "成功！", "message" => "Payke のデプロイに成功しました！"]);
-        } else {
-            $service->save_has_error($user,  implode("\n", $outLog));
-            return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
-        }
+        return view('common.result', ["title" => "Paykeのデプロイを開始しました。", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
     }
 
     public function view_edit(int $id)
