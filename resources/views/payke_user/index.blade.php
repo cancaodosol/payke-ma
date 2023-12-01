@@ -77,6 +77,20 @@
                             </div>
                             <div class="text-xs">未設置</div>
                         </div>
+                        @elseif($user->is_update_waiting())
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+                            <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">アップデート待ち</div>
+                        </div>
+                        @elseif($user->is_updating_now())
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+                            <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">アップデート処理中</div>
+                        </div>
                         @endif
                         </a>
                     </td>

@@ -48,11 +48,14 @@ class DeployJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $this->paykeUserService->save_updating_now($this->user);
+
         $outLog = [];
         $is_success = $this->deployService->deploy($this->host, $this->user, $this->db, $this->payke, $outLog, $this->is_first);
 
         if($is_success)
         {
+            $this->user->payke_resource_id = $this->payke->id;
             $this->paykeUserService->save_active($this->user);
         } else {
             $this->paykeUserService->save_has_error($this->user,  implode("\n", $outLog));

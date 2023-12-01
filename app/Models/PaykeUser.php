@@ -11,6 +11,8 @@ class PaykeUser extends Model
 
     const STATUS__ACTIVE = 1;
     const STATUS__BEFORE_SETTING = -1;
+    const STATUS__UPDATE_WAITING = -2;
+    const STATUS__UPDATING_NOW = -3;
     const STATUS__DISABLE_ADMIN = 2;
     const STATUS__DISABLE_ADMIN_AND_SALES = 3;
     const STATUS__DELETE = 4;
@@ -19,6 +21,8 @@ class PaykeUser extends Model
     const STATUS_NAMES = [
         1 => "正常稼働"
         ,-1 => "初回登録"
+        ,-2 => "アップデート待ち"
+        ,-3 => "アップデート処理中"
         ,2 => "管理停止"
         ,3 => "管理・販売停止"
         ,4 => "削除済"
@@ -42,6 +46,8 @@ class PaykeUser extends Model
 
     public function is_active() { return $this->status == PaykeUser::STATUS__ACTIVE; }
     public function is_before_setting() { return $this->status == PaykeUser::STATUS__BEFORE_SETTING; }
+    public function is_update_waiting() { return $this->status == PaykeUser::STATUS__UPDATE_WAITING; }
+    public function is_updating_now() { return $this->status == PaykeUser::STATUS__UPDATING_NOW; }
     public function is_disable_admin() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN; }
     public function is_disable_admin_and_sales() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES; }
     public function is_delete() { return $this->status == PaykeUser::STATUS__DELETE; }

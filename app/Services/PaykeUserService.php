@@ -138,6 +138,12 @@ class PaykeUserService
         $user->save();
     }
 
+    public function save_updating_now(PaykeUser $user): void
+    {
+        $user->status = PaykeUser::STATUS__UPDATING_NOW;
+        $user->save();
+    }
+
     public function find_by_id(int $id)
     {
         return PaykeUser::where('id', $id)->firstOrFail();
@@ -147,11 +153,13 @@ class PaykeUserService
     {
         $statuses = [
             ["id" => PaykeUser::STATUS__ACTIVE, "name" => "正常稼働"],
-            ["id" => PaykeUser::STATUS__BEFORE_SETTING, "name" => "初回登録"],
             ["id" => PaykeUser::STATUS__DISABLE_ADMIN, "name" => "管理停止"],
             ["id" => PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES, "name" => "管理・販売停止"],
             ["id" => PaykeUser::STATUS__DELETE, "name" => "削除済"],
-            ["id" => PaykeUser::STATUS__HAS_ERROR, "name" => "エラーあり"]
+            ["id" => PaykeUser::STATUS__HAS_ERROR, "name" => "エラーあり"],
+            ["id" => PaykeUser::STATUS__BEFORE_SETTING, "name" => "初回登録"],
+            ["id" => PaykeUser::STATUS__UPDATE_WAITING, "name" => "アップデート待ち"],
+            ["id" => PaykeUser::STATUS__UPDATING_NOW, "name" => "アップデート処理中"]
         ];
         return $statuses;
     }
