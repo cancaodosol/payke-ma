@@ -7,11 +7,13 @@
         </div>
         <div class="ml-3">
             <h3 class="text-sm font-medium text-red-800">{{ $title }}</h3>
-            @if($message != '')
             <div class="mt-2 text-sm text-red-700">
-                <p>{{ $message }}</p>
+                <ul role="list" class="list-disc space-y-1 pl-5">
+                    @foreach ($errors as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-            @endif
         </div>
     </div>
 </div>

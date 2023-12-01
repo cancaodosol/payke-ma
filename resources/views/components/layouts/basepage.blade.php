@@ -185,13 +185,16 @@
             <div class="px-4 sm:px-6 lg:px-8">
                 <!-- Your Message Area -->
                 @if ($errors->any())
-                    <x-messages.error title="入力内容に問題があります。" :errors="$errors->all()"/>
+                    <x-messages.errors title="入力内容に問題があります。" :errors="$errors->all()"/>
                 @endif
                 @if ($successTitle ?? false)
                     <x-messages.success title="{{ $successTitle }}" message="{{ $successMessage ?? '' }}"/>
                 @endif
                 @if ($warnTitle ?? false)
                     <x-messages.warn title="{{ $warnTitle }}" message="{{ $warnMessage ?? '' }}"/>
+                @endif
+                @if ($errorTitle ?? false)
+                    <x-messages.error title="{{ $errorTitle }}" message="{{ $errorMessage ?? '' }}"/>
                 @endif
                 <!-- Your content -->
                 {{ $slot }}

@@ -56,6 +56,16 @@ class PaykeUserController extends Controller
         // いったん、ここでユーザーは登録する。
         // 指定したDBは、このタイミングで使用中にする。デプロイエラーが起こっても、そのDBは確保。
         $service = new PaykeUserService();
+        if($service->exists_same_name($user->user_app_name))
+        {
+            $resService = new PaykeResourceService();
+            $resources = $resService->find_all_to_array();
+            $dbService = new PaykeDbService();
+            $host_dbs = $dbService->find_ready_host_dbs();
+            return view('payke_user.create', ["host_dbs" => $host_dbs, "resources" => $resources, "user" => $user,
+                "errorTitle" => "入力内容に問題があります。",
+                "errorMessage" => "公開アプリ名「{$user->user_app_name}」は既に使用されております。別の名前でご登録ください。"]);
+        }
         $service->save_init($user);
 
         $logService = new DeployLogService();

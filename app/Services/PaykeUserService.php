@@ -149,6 +149,11 @@ class PaykeUserService
         return PaykeUser::where('id', $id)->firstOrFail();
     }
 
+    public function exists_same_name(string $name)
+    {
+        return PaykeUser::where('user_app_name', $name)->count() > 0;
+    }
+
     public function get_statuses()
     {
         $statuses = [
