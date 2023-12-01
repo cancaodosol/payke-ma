@@ -1,6 +1,7 @@
 <x-layouts.basepage title="リソース一覧" current="リソース一覧"
     successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
-    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}">
+    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
+    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
         <div class="sm:flex sm:items-center">
             <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">リソース一覧</h1>

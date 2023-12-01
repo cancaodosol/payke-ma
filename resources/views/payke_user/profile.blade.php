@@ -1,6 +1,7 @@
 <x-layouts.basepage title="利用者情報 ： {{ $user->user_name }}" current="利用者情報"
     successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
-    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}">
+    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
+    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">利用者情報 ： {{ $user->user_name }}</h1>

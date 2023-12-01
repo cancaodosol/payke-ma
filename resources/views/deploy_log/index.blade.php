@@ -1,4 +1,7 @@
-<x-layouts.basepage title="Paykeアップデート履歴" current="Paykeアップデート履歴">
+<x-layouts.basepage title="Paykeアップデート履歴" current="Paykeアップデート履歴"
+    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
+    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
+    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
     <div class="mb-10">
         <div class="">
             <h1 class="text-base font-semibold leading-6 text-gray-900">Paykeアップデート</h1>

@@ -1,4 +1,7 @@
-<x-layouts.basepage title="サーバー 新規登録" current="サーバー 新規登録">
+<x-layouts.basepage title="サーバー 新規登録" current="サーバー 新規登録"
+    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
+    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
+    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
 
     <form action="{{ route('payke_host.create.post') }}", method="post" enctype="multipart/form-data">
     @method('POST')

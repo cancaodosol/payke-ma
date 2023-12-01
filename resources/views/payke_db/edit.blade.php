@@ -1,4 +1,7 @@
-<x-layouts.basepage title="データベース 編集" current="データベース 編集">
+<x-layouts.basepage title="データベース 編集" current="データベース 編集"
+    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
+    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
+    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
 
     <form action="{{ route('payke_db.edit.post') }}", method="post">
     @method('POST')
