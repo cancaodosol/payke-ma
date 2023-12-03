@@ -8,7 +8,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Carbon\Carbon;
 
+use App\Jobs\DeployJob;
 use App\Services\PaykeUserService;
 use App\Services\DeployService;
 use App\Models\DeployLog;
@@ -17,33 +19,24 @@ use App\Models\PaykeHost;
 use App\Models\PaykeResource;
 use App\Models\PaykeUser;
 
-class DeployJob implements ShouldQueue
+class DeployManyJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public DeployService $deployService;
     public PaykeUserService $paykeUserService;
-    public PaykeHost $host;
-    public PaykeUser $user;
-    public PaykeDb $db;
+    public $users;
     public PaykeResource $payke;
-    public bool $is_first;
-
-    public $timeout = 180;
-    public $retry_after = 240;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, bool $is_first = false)
+    public function __construct($users, PaykeResource $payke)
     {
         $this->deployService = new DeployService();
         $this->paykeUserService = new PaykeUserService();
-        $this->host = $host;
-        $this->user = $user;
-        $this->db = $db;
+        $this->users = $users;
         $this->payke = $payke;
-        $this->is_first = $is_first;
     }
 
     /**
@@ -51,17 +44,13 @@ class DeployJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->paykeUserService->save_updating_now($this->user);
+        foreach ($this->users as $user) {
+            $this->paykeUserService->save_update_waiting($user);
+        }
 
-        $outLog = [];
-        $is_success = $this->deployService->deploy($this->host, $this->user, $this->db, $this->payke, $outLog, $this->is_first);
-
-        if($is_success)
-        {
-            $this->user->payke_resource_id = $this->payke->id;
-            $this->paykeUserService->save_active($this->user);
-        } else {
-            $this->paykeUserService->save_has_error($this->user,  implode("\n", $outLog));
+        foreach ($this->users as $user) {
+            $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $this->payke, false))->delay(Carbon::now()->addSeconds(1));
+            dispatch($deployJob);
         }
     }
 }

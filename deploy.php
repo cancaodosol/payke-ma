@@ -98,6 +98,11 @@ task('deploy:update_code', function() {
         upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
     }
 
+    // Save revision in REVISION file.
+    $rev = '{{ payke_zip_name }}';
+    writeln("release_path -> {{ release_path }}");
+    writeln(run("echo $rev > {{ release_path }}/REVISION"));
+
     writeln('[ AFTER deploy:update_code ] ------');
     writeln(run('cd {{deploy_path}} && pwd && ls -la'));
     writeln('-----------------------------------');

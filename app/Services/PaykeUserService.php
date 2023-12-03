@@ -144,9 +144,20 @@ class PaykeUserService
         $user->save();
     }
 
+    public function save_update_waiting(PaykeUser $user): void
+    {
+        $user->status = PaykeUser::STATUS__UPDATE_WAITING;
+        $user->save();
+    }
+
     public function find_by_id(int $id)
     {
         return PaykeUser::where('id', $id)->firstOrFail();
+    }
+
+    public function find_by_ids(array $ids)
+    {
+        return PaykeUser::whereIn('id', $ids)->get();
     }
 
     public function exists_same_name(string $name)

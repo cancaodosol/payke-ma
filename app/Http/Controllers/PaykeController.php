@@ -45,10 +45,9 @@ class PaykeController extends Controller
         $rService = new PaykeResourceService();
         $payke = $rService->find_by_id($request->input('payke_resource'));
 
-        $outLog = [];
         $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $payke, false))->delay(Carbon::now()->addSeconds(1));
         dispatch($deployJob);
 
-        return view('common.result', ["title" => "Paykeのデプロイを開始しました。", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
+        return view('common.result', ["title" => "デプロイ開始", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
     }
 }

@@ -12,7 +12,9 @@ use App\Services\PaykeUserService;
 use App\Services\PaykeResourceService;
 use App\Services\DeployLogService;
 use App\Services\SearchService;
+use App\Jobs\DeployManyJob;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use function Laravel\Prompts\search;
 
@@ -86,6 +88,15 @@ class IndexController extends Controller
                     $service->save_has_error($user,  implode("\n", $outLog));
                     return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
                 }
+            case ':d_many' : 
+                $uService = new PaykeUserService();
+                $rService = new PaykeResourceService();
+                $payke = $rService->find_by_id($searchWords[1]); // 14 // 11 12,13
+                $ids = explode(",", $searchWords[2]); // 13,15,22,24
+                $users = $uService->find_by_ids($ids);
+                $deployJob = (new DeployManyJob($users, $payke))->delay(Carbon::now()->addSeconds(1));
+                dispatch($deployJob);
+                return view('common.result', ["title" => "デプロイ開始", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
             case ':test' :
                 return view('common.result', ["title" => "成功！", "message" => "Payke v3.23.1 のデプロイに成功しました！",
                     "info" => ["task deploy:info",
