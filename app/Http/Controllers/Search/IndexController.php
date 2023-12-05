@@ -97,6 +97,11 @@ class IndexController extends Controller
                 $deployJob = (new DeployManyJob($users, $payke))->delay(Carbon::now()->addSeconds(1));
                 dispatch($deployJob);
                 return view('common.result', ["title" => "デプロイ開始", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
+            case ':payke_v' : 
+                $rService = new PaykeResourceService();
+                $payke = $rService->find_by_id($searchWords[1]);
+                $paykes = $rService->find_upper_version_to_array($payke);
+                dd($paykes); 
             case ':test' :
                 return view('common.result', ["title" => "成功！", "message" => "Payke v3.23.1 のデプロイに成功しました！",
                     "info" => ["task deploy:info",

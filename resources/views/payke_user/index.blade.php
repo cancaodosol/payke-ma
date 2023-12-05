@@ -107,7 +107,18 @@
                         @endif
                     </td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900"></td>
+                    <td class="whitespace-nowrap px-2 py-2 text-xs font-medium text-gray-900">
+                        @if($resources[0]['name'] != $user->PaykeResource->version)
+                        <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            @foreach($resources as $resource)
+                                @if($resource['name'] == $user->PaykeResource->version)
+                                    @break
+                                @endif
+                                <option value="{{ $resource['id'] }}">{{ $resource['name'] }}</option>
+                            @endforeach
+                        </select>
+                        @endif
+                    </td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 truncate"></td>
                     <td class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">

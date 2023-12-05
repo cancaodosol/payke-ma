@@ -152,6 +152,8 @@ class DeployService
         }else{
             $message = "Payke {$payke->version}のデプロイに失敗しました。";
             $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
+            $o = [];
+            $this->unlock($host, $user, $db, $payke, $o);
         }
 
         if($is_first && $is_success && $user->enable_affiliate == 1)

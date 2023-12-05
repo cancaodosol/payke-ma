@@ -31,6 +31,24 @@ class PaykeResourceService
         return PaykeResource::orderByRaw('version_x DESC, version_y DESC, version_z DESC, payke_name DESC')->get();
     }
 
+    public function find_upper_version_to_array(PaykeResource $payke): array
+    {
+        $resources = PaykeResource::orderByRaw(
+            "version_x desc, version_y desc, version_z desc"
+            )->get();
+
+        $upper_resources = [];
+        foreach ($resources as $resource)
+        {
+            if($resource->version == $payke->version) break;
+            $upper_resources[] = $resource;
+        }
+
+        return array_map(function($x){
+            return ["id" => $x['id'], "name" => $x['version']];
+        }, $upper_resources);
+    }
+
     // MEMO : 画面で使いやすいように加工してある。
     public function find_all_to_array(): array
     {

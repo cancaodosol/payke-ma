@@ -27,13 +27,17 @@ class PaykeUserController extends Controller
     public function view_all(Request $request)
     {
         $users = PaykeUser::all();
-        return view('payke_user.index', ['users' => $users]);
+        $rService = new PaykeResourceService();
+        $resources = $rService->find_all_to_array();
+        return view('payke_user.index', ['users' => $users, 'resources' => $resources]);
     }
 
     public function view_by_payke_id(int $paykeId)
     {
         $users = PaykeUser::Where('payke_resource_id', $paykeId)->get();
-        return view('payke_user.index', ['users' => $users]);
+        $rService = new PaykeResourceService();
+        $resources = $rService->find_all_to_array();
+        return view('payke_user.index', ['users' => $users, 'resources' => $resources]);
     }
 
     public function view_add(Request $request)
