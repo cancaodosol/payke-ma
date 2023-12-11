@@ -105,6 +105,7 @@ task('deploy:update_code', function() {
 
     writeln('[ AFTER deploy:update_code ] ------');
     writeln(run('cd {{deploy_path}} && pwd && ls -la'));
+    writeln(run('cd {{deploy_path}}/releases && pwd && ls -la'));
     writeln('-----------------------------------');
 });
 
