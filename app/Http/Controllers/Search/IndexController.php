@@ -77,13 +77,28 @@ class IndexController extends Controller
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deployService = new DeployService();
                 $outLog = [];
+                $is_success = $deployService->deploy($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $outLog, false);
+        
+                $service = new PaykeUserService();
+                if($is_success)
+                {
+                    $service->save_active($user);
+                    return view('common.result', ["title" => "成功！", "message" => "Payke「{ $user->PaykeResource->version }」をデプロイしました！"]);
+                } else {
+                    $service->save_has_error($user,  implode("\n", $outLog));
+                    return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
+                }
+            case ':re_deploy_first' :
+                $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                $deployService = new DeployService();
+                $outLog = [];
                 $is_success = $deployService->deploy($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, $outLog, true);
         
                 $service = new PaykeUserService();
                 if($is_success)
                 {
                     $service->save_active($user);
-                    return view('common.result', ["title" => "成功！", "message" => "Payke のデプロイに成功しました！"]);
+                    return view('common.result', ["title" => "成功！", "message" => "Payke「{ $user->PaykeResource->version }」をデプロイしました！"]);
                 } else {
                     $service->save_has_error($user,  implode("\n", $outLog));
                     return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);

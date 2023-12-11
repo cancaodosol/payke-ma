@@ -17,6 +17,7 @@ class DeployService
     private string $payke_ini_file_path___affiliate_off;
     private string $root_dir;
     private string $resource_dir;
+    private string $execute_php_command;
 
     public function __construct()
     {
@@ -25,6 +26,7 @@ class DeployService
         $this->payke_install_file_path = "{$this->resource_dir}templates/install.php";
         $this->payke_ini_file_path___affiliate_on = "{$this->resource_dir}templates/paykeec___affiliate_on.ini";
         $this->payke_ini_file_path___affiliate_off = "{$this->resource_dir}templates/paykeec___affiliate_off.ini";
+        $this->execute_php_command = env("EXECUTE_PHP_COMMAND", "");
     }
 
     /** 
@@ -33,7 +35,7 @@ class DeployService
     public function exec_deply(array $params): array
     {
         $params_string = $this->create_params_string($params);
-        $command = "cd {$this->root_dir} && php vendor/bin/dep deploy{$params_string}";
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep deploy{$params_string}";
         return $this->exec($command);
     }
 
@@ -43,7 +45,7 @@ class DeployService
     public function exec_deply_unlock(array $params): array
     {
         $params_string = $this->create_params_string($params);
-        $command = "cd {$this->root_dir} && php vendor/bin/dep deploy:unlock{$params_string}";
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep deploy:unlock{$params_string}";
         return $this->exec($command);
     }
 
@@ -53,7 +55,7 @@ class DeployService
     public function exec_set_ini(array $params): array
     {
         $params_string = $this->create_params_string($params);
-        $command = "cd {$this->root_dir} && php vendor/bin/dep set_ini{$params_string}";
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep set_ini{$params_string}";
         return $this->exec($command);
     }
 
@@ -180,9 +182,6 @@ class DeployService
 
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "Deployerのアンロックに成功しました。";
-            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
-        }else{
             $message = "Deployerのアンロックに失敗しました。";
             $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
         }
