@@ -77,7 +77,7 @@ class PaykeUserController extends Controller
         $logService->write_other_log($user, "新規作成", $message);
         
         // Paykeのデプロイ開始。
-        $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now()->addSeconds(1));
+        $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now());
         dispatch($deployJob);
 
         return view('common.result', ["title" => "Paykeのデプロイを開始しました。", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);

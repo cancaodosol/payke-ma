@@ -25,7 +25,7 @@
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">アフィリ機能</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">現バージョン</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">更新可能</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">メモ</th>
+                    <!-- <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">メモ</th> -->
                     <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
                         <span class="sr-only">詳細</span>
                     </th>
@@ -109,17 +109,25 @@
                     <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</td>
                     <td class="whitespace-nowrap px-2 py-2 text-xs font-medium text-gray-900">
                         @if($resources[0]['name'] != $user->PaykeResource->version)
-                        <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            @foreach($resources as $resource)
-                                @if($resource['name'] == $user->PaykeResource->version)
-                                    @break
-                                @endif
-                                <option value="{{ $resource['id'] }}">{{ $resource['name'] }}</option>
-                            @endforeach
-                        </select>
+                        <form action="{{ route('payke_user.version.up') }}" method="post">
+                            @method('POST')
+                            @csrf
+                            <div class="flex flex-row">
+                                <input type="hidden" name="user_id" value="{{$user->id}}"/>
+                                <select name="payke_resource" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    @foreach($resources as $resource)
+                                        @if($resource['name'] == $user->PaykeResource->version)
+                                            @break
+                                        @endif
+                                        <option value="{{ $resource['id'] }}">{{ $resource['name'] }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="ml-1 text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow">更新</button>
+                            </div>
+                        </form>
                         @endif
                     </td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 truncate"></td>
+                    <!-- <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 truncate"></td> -->
                     <td class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
                             詳細<span class="sr-only">, AAPS0L</span>

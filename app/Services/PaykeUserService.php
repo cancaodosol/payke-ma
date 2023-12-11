@@ -150,6 +150,11 @@ class PaykeUserService
         $user->save();
     }
 
+    public function find_all()
+    {
+        return PaykeUser::all();
+    }
+
     public function find_by_id(int $id)
     {
         return PaykeUser::where('id', $id)->firstOrFail();
