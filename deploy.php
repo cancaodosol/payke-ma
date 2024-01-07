@@ -72,6 +72,7 @@ task('deploy:update_code', function() {
 
     writeln('[ BEFORE deploy:update_code ] ------');
     writeln(run('cd {{deploy_path}} && pwd && ls -la'));
+    writeln(run('cd {{deploy_path}}/releases && pwd && ls -la'));
     writeln('-----------------------------------');
 
     // １．デプロイ対象のpayke.zipを存在チェック。なかったら、資材置き場へアップロード
