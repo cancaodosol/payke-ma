@@ -46,15 +46,20 @@ class PaykeUserService
             $logService->write_other_log($currentUser, "バージョン変更（手動）", $message);
         }
 
-        // MEMO : いったん、公開アプリ名の変更はできないってことで。
-        // if($newUser->user_app_name != $currentUser->user_app_name)
-        // {
-        //     // 処理：Payke環境への適用
-
-        //     // ログ：公開アプリ名を〇〇から、〇〇に変更しました。
-        //     $message = "公開アプリ名を「{$currentUser->user_app_name}」から「{$newUser->user_app_name}」へ変更しました。";
-        //     $logService->write_other_log($currentUser, "公開アプリ名の変更", $message);
-        // }
+        if($newUser->user_app_name != $currentUser->user_app_name)
+        {
+            // 処理：Payke環境への適用
+            $log = [];
+            $old_app_name = $currentUser->user_app_name;
+            $new_app_name = $newUser->user_app_name;
+            $is_success = $deployService->rename_app_name($currentUser, $old_app_name, $new_app_name, $log);
+            // MEMO: 更新失敗の時は、元の状態に戻す。
+            if(!$is_success)
+            {
+                $newUser->user_app_name = $old_app_name;
+                $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+            }
+        }
 
         if($newUser->enable_affiliate != $currentUser->enable_affiliate)
         {
@@ -85,7 +90,7 @@ class PaykeUserService
         $currentUser->update([
             "status" => $newUser->status
             ,"payke_resource_id" => $newUser->payke_resource_id
-            // ,"user_app_name" => $newUser->user_app_name
+            ,"user_app_name" => $newUser->user_app_name
             ,"app_url" => $newUser->app_url
             ,"enable_affiliate" => $newUser->enable_affiliate
             ,"user_name" => $newUser->user_name

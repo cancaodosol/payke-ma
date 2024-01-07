@@ -29,6 +29,7 @@ set('resource_zips_dir', '{{resource_dir}}/zips');
 set('resource_releases_dir', '{{resource_dir}}/{{user_folder_id}}/releases');
 set('current_app_path', '{{resource_dir}}/{{user_folder_id}}/current');
 set('public_app_path' ,'{{public_html_dir}}/{{user_app_name}}');
+set('public_app_path_old' ,'{{public_html_dir}}/{{user_app_name_old}}');
 
 // CakePHPレシピでの設定情報
 set('release_name', '{{payke_name}}_{{deploy_datetime}}');
@@ -158,5 +159,15 @@ task('deploy:symlink:public_app', function () {
  */
 task('set_ini', function () {
     upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
+    writeln('ok!');
+});
+
+/**
+ * ReSymlink to App
+ * アプリ名の変更に伴うシンボリックリンクの張り替えを行う。
+ */
+task('rename_app_name_symlink', function () {
+    writeln(run('unlink {{public_app_path_old}} || echo unexists.'));
+    writeln(run('ln -s {{deploy_path}}/current {{public_app_path}}'));
     writeln('ok!');
 });

@@ -60,6 +60,16 @@ class DeployService
     }
 
     /** 
+     * アプリ名変更の処理をコマンド実行
+     **/
+    public function exec_rename_app_name(array $params): array
+    {
+        $params_string = $this->create_params_string($params);
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep rename_app_name_symlink{$params_string}";
+        return $this->exec($command);
+    }
+
+    /** 
      * phpからlinuxコマンドを実行する処理
      **/
     public function exec(string $command): array
@@ -184,6 +194,33 @@ class DeployService
         if($is_success){
             $message = "Deployerのアンロックに失敗しました。";
             $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * アプリ名を変更する。
+     */
+    public function rename_app_name(PaykeUser $user, string $old_app_name, string $new_app_name, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($user->PaykeHost, $user, new PaykeDb(), new PaykeResource());
+        $params['user_app_name'] = $new_app_name;
+        $params['user_app_name_old'] = $old_app_name;
+
+        // デプロイを実行す。
+        $outLog = $this->exec_rename_app_name($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "公開アプリ名を「{$old_app_name}」から「{$new_app_name}」へ変更しました。";
+            $logService->write_other_log($user, "公開アプリ名の変更", $message, null, $params_string, $outLog);
+        }else{
+            $message = "公開アプリ名の変更に失敗しました。";
+            $logService->write_error_log($user, '公開アプリ名の変更失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;
