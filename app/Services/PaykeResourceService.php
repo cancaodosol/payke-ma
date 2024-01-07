@@ -7,7 +7,7 @@ use App\Models\PaykeResource;
 
 class PaykeResourceService
 {
-    public function save(string $payke_zip_file_path): void
+    public function save(string $payke_zip_file_path, string $memo = ''): void
     {
         $resource = new PaykeResource();
 
@@ -17,6 +17,7 @@ class PaykeResourceService
         $resource->set_name($version);
         $resource->payke_zip_name = pathinfo($payke_zip_file_path, PATHINFO_FILENAME);
         $resource->payke_zip_file_path = $payke_zip_file_path;
+        $resource->memo = $memo;
 
         $resource->save();
     }

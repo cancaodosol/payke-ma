@@ -28,9 +28,11 @@ class PaykeResourceController extends Controller
         // データベースへ保存
         $service = new PaykeResourceService();
         $payke_zip_file_path = "storage/app/payke_resources/zips/{$file_name}";
-        $service->save($payke_zip_file_path);
+        $memo = $request->memo();
+        $service->save($payke_zip_file_path, $memo);
 
-        return redirect()->route('payke_user.index');
+        $resources = $service->find_all();
+        return view('payke_resource.index', ['paykes' => $resources]);
     }
 
     public function view_edit(int $id)

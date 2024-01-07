@@ -31,4 +31,9 @@ class CreateRequest extends FormRequest
     {
         return $this->file('payke-zip');
     }
+
+    public function memo()
+    {
+        return $this->input('memo');
+    }
 }

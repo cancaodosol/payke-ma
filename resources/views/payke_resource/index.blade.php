@@ -11,7 +11,11 @@
             @method('POST')
             @csrf
             <div>
-                <x-forms.file name="payke-zip" label="Payke Zipファイル" addSubmit="追加する"/>
+                <x-forms.file name="payke-zip" label="Payke Zipファイル"/>
+                <x-forms.textarea name="memo" label="メモ"/>
+            </div>
+            <div class="mt-6 flex items-center justify-end gap-x-6">
+                <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">追加登録する</button>
             </div>
         </form>
     </div>
@@ -42,6 +46,8 @@
                         @endif
                         <br>
                         {{ $payke->payke_zip_name }}
+                        <br>
+                        <span class="font-medium text-slate-900">{{ $payke->memo }}</span>
                     </p>
                 </li>
             @endforeach
