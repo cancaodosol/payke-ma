@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('deploy_logs', function (Blueprint $table) {
             $table->id();
-            $table->integer('status');
+            $table->integer('type');
             $table->unsignedBigInteger('user_id');
             $table->string('user_name');
             $table->string('user_app_name');
-            $table->string('payke_version');
+            $table->unsignedBigInteger('payke_resource_id')->nullable();
+            $table->string('title');
             $table->string('message');
             $table->text('deploy_params');
             $table->text('deployer_log');
@@ -25,6 +26,9 @@ return new class extends Migration
 
             // payke_usersテーブルとの関連付け
             $table->foreign('user_id')->references('id')->on('payke_users');
+
+            // payke_resourcesテーブルとの関連付け
+            $table->foreign('payke_resource_id')->references('id')->on('payke_resources');
         });
     }
 
