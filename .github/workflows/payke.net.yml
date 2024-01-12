@@ -1,4 +1,4 @@
-name: pke-deploy-to-hirotae.xsrv.jp
+name: deploy-to-payke.net
 
 on:
   push:

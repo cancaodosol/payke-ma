@@ -1,4 +1,4 @@
-name: dev-deploy-to-hirotae.xsrv.jp
+name: deploy-to-hirotae.xsrv.jp
 
 on:
   push:
