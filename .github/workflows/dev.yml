@@ -1,13 +1,14 @@
-name: test-deploy-to-hirotae.xsrv.jp
+name: dev-deploy-to-hirotae.xsrv.jp
 
 on:
   push:
     tags:
-      - test-**
+      - dev-**
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: ssh
         env:
