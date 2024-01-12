@@ -1,0 +1,20 @@
+name: test-deploy-to-hirotae.xsrv.jp
+
+on:
+  push:
+    tags:
+      - test-**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ssh
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          USER: ${{ secrets.USER }}
+          HOST: ${{ secrets.HOST }}
+        run: |
+          echo "$SECRET_KEY" > secret_key
+          chmod 600 secret_key
+          ssh -oStrivHostKeyChecking=no ${USER}@{HOST} -i secret_key "cd && sh ./.github/workflows/deploy.sh"
