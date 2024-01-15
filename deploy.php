@@ -137,9 +137,13 @@ task('deploy:run_migrations', function () {
         //       なので、install.phpの更新は、マイグレーション実行後に行う。
         upload('{{root_dir}}{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
 
-        // 継続支払いのCRONを設定
-        writeln('継続支払いのCRONを設定。');
-        run("echo '{{ current_app_path }}/app/Console/cake-for-Xserver recurring_payment process_next_charge > /dev/null 2>&1' >> {{ resource_dir }}/recurring_payment.sh");
+        // AmazonPayの集信実行のCRONを設定
+        writeln('AmazonPayの集信実行のCRONを設定。');
+        run("echo '{{ current_app_path }}/app/Console/cake-for-Xserver recurring_payment process_next_charge' >> {{ resource_dir }}/payke_amazon_pay.sh");
+
+        // アフィリエイトの集計実行のCRONを設定
+        writeln('アフィリエイトの集計実行のCRONを設定。');
+        run("echo '#{{ current_app_path }}/app/Console/cake-for-Xserver affiliate affiliate_reward' >> {{ resource_dir }}/payke_affiliate.sh");
     }
 })->desc('Run migrations');
 
