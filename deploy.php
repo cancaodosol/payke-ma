@@ -102,8 +102,8 @@ task('deploy:update_code', function() {
 
     // Save revision in REVISION file.
     $rev = '{{ payke_zip_name }}';
-    writeln("release_path -> {{ release_path }}");
-    writeln(run("echo $rev > {{ release_path }}/REVISION"));
+    writeln("deploy_path -> {{ deploy_path }}");
+    writeln(run("echo ".$rev." > {{ deploy_path }}/release/REVISION"));
 
     writeln('[ AFTER deploy:update_code ] ------');
     writeln(run('cd {{deploy_path}} && pwd && ls -la'));
