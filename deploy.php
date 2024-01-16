@@ -38,6 +38,25 @@ set('shared_dirs', ['app/tmp/logs']);
 set('shared_files', ['app/Config/.env.php', 'app/Config/install.php', 'app/Config/paykeec.ini']);
 set('keep_releases', 7);
 
+// Return release path.
+// MEMO: シンボリックリンクの存在チェック判定が不安定のため、存在チェックなしで取得するよう変更。
+set('release_path', function () {
+    $releaseExists = test('[ -L {{deploy_path}}/release ]');
+    writeln('');
+    writeln(' ------ ');
+    writeln('check release_path -> '.$releaseExists);
+    writeln(' ------ ');
+    writeln(run('cd {{deploy_path}} && pwd && ls -la {{deploy_path}}/release'));
+    writeln(' ------ ');
+    writeln(run('cd {{deploy_path}}/releases && pwd && ls -la'));
+    writeln(' ------ ');
+    writeln(run("readlink {{deploy_path}}/release"));
+    writeln(' ------ ');
+    writeln('');
+    $link = run("readlink {{deploy_path}}/release");
+    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
+});
+
 function exists_payke_zip() : bool {
     $line = run('ls -1 {{resource_zips_dir}}');
     $files = explode("\n", $line);
@@ -108,11 +127,11 @@ task('deploy:update_code', function() {
     writeln('[ AFTER deploy:update_code ] ------');
     writeln(run('cd {{deploy_path}} && pwd && ls -la'));
     writeln('');
-    writeln(' ------');
-    writeln(run('ls {{deploy_path}}/release'));
-    writeln(run('cd {{deploy_path}}/release && pwd && ls -la'));
+    writeln(' ------ ');
     writeln(run('readlink {{deploy_path}}/release'));
-    writeln(' ------');
+    writeln(' ------ ');
+    writeln(test('[ -h {{deploy_path}}/release ]'));
+    writeln(' ------ ');
     writeln('');
     writeln(run('cd {{deploy_path}}/releases && pwd && ls -la'));
     writeln('-----------------------------------');
