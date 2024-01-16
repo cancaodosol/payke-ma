@@ -1,8 +1,6 @@
 <?php
 namespace Deployer;
 
-use Deployer\Exception\Exception;
-
 require 'recipe/cakephp.php';
 
 // // Config
@@ -55,12 +53,8 @@ set('release_path', function () {
     writeln(run("readlink {{deploy_path}}/release"));
     writeln(' ------ ');
     writeln('');
-    if ($releaseExists) {
-        $link = run("readlink {{deploy_path}}/release");
-        return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-    } else {
-        throw new Exception(parse('The "release_path" ({{deploy_path}}/release) does not exist.'));
-    }
+    $link = run("readlink {{deploy_path}}/release");
+    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
 function exists_payke_zip() : bool {
