@@ -107,6 +107,13 @@ task('deploy:update_code', function() {
 
     writeln('[ AFTER deploy:update_code ] ------');
     writeln(run('cd {{deploy_path}} && pwd && ls -la'));
+    writeln('');
+    writeln(' ------');
+    writeln(run('ls {{deploy_path}}/release'));
+    writeln(run('cd {{deploy_path}}/release && pwd && ls -la'));
+    writeln(run('readlink {{deploy_path}}/release'));
+    writeln(' ------');
+    writeln('');
     writeln(run('cd {{deploy_path}}/releases && pwd && ls -la'));
     writeln('-----------------------------------');
 });
