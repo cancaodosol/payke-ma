@@ -53,7 +53,7 @@ set('release_path', function () {
     writeln(run("readlink {{deploy_path}}/release"));
     writeln(' ------ ');
     writeln('');
-    $link = run("readlink {{deploy_path}}/release");
+    $link = trim(run("readlink {{deploy_path}}/release"));
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
