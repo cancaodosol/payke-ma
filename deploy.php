@@ -57,6 +57,17 @@ set('release_path', function () {
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
+// Return the release path during a deployment
+// but fallback to the current path otherwise.
+// MEMO: シンボリックリンクの存在チェック判定が不安定のため、存在チェックなしで取得するよう変更。
+set('release_or_current_path', function () {
+    $releaseExists = trim(run("readlink {{deploy_path}}/release"));
+    $result = $releaseExists ? get('release_path') : get('current_path');
+    writeln('release_path ? : '.$releaseExists);
+    writeln('release_or_current_path : '.$result);
+    return $result;
+});
+
 function exists_payke_zip() : bool {
     $line = run('ls -1 {{resource_zips_dir}}');
     $files = explode("\n", $line);
