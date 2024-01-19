@@ -46,6 +46,10 @@ set('release_path', function () {
     writeln(' ------ ');
     writeln('check release_path -> '.$releaseExists);
     writeln(' ------ ');
+    writeln(run('cd {{deploy_path}} && pwd && ls -la {{deploy_path}}/release'));
+    writeln(' ------ ');
+    writeln(run('cd {{deploy_path}}/releases && pwd && ls -la'));
+    writeln(' ------ ');
     writeln(run("readlink {{deploy_path}}/release"));
     writeln(' ------ ');
     writeln('');
@@ -69,6 +73,9 @@ function exists_payke_zip() : bool {
  */
 before('deploy:release','deploy:release:db_backup');
 task('deploy:release:db_backup', function() {
+    writeln('[ BEFORE : deploy:release ] -------');
+    writeln(run('cd {{deploy_path}} && pwd && ls -la'));
+    writeln('-----------------------------------');
     if(!get('is_first'))
     {
         writeln('データベースのバックアップを取っておくよ。');
@@ -116,9 +123,9 @@ task('deploy:update_code', function() {
     writeln(run('cd {{deploy_path}} && pwd && ls -la'));
     writeln('');
     writeln(' ------ ');
-    writeln(test('[ -h {{deploy_path}}/release ]'));
+    writeln('test -h : ' . test('[ -h {{deploy_path}}/release ]'));
     writeln(' ------ ');
-    writeln(test('[ -L {{deploy_path}}/release ]'));
+    writeln('test -L : ' . test('[ -L {{deploy_path}}/release ]'));
     writeln(' ------ ');
     writeln(run('readlink {{deploy_path}}/release'));
     writeln(' ------ ');
