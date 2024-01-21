@@ -170,9 +170,12 @@ class PaykeUserService
         return PaykeUser::whereIn('id', $ids)->get();
     }
 
-    public function exists_same_name(string $name)
+    public function exists_same_name(int $host_id, string $name)
     {
-        return PaykeUser::where('user_app_name', $name)->count() > 0;
+        return PaykeUser::where([
+            ['payke_host_id', '=', $host_id],
+            ['user_app_name', '=', $name]
+        ])->count() > 0;
     }
 
     public function get_statuses()

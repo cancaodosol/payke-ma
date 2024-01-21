@@ -60,7 +60,7 @@ class PaykeUserController extends Controller
         // いったん、ここでユーザーは登録する。
         // 指定したDBは、このタイミングで使用中にする。デプロイエラーが起こっても、そのDBは確保。
         $service = new PaykeUserService();
-        if($service->exists_same_name($user->user_app_name))
+        if($service->exists_same_name($user->payke_host_id, $user->user_app_name))
         {
             $resService = new PaykeResourceService();
             $resources = $resService->find_all_to_array();
