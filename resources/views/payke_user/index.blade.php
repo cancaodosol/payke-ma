@@ -20,6 +20,7 @@
                 <tr>
                     <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0">No.</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">稼働 / 停止</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">サーバー</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">URL</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">アフィリ機能</th>
@@ -97,6 +98,7 @@
                         @endif
                         </a>
                     </td>
+                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $user->PaykeHost->name }}</td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm text-blue-500 underline"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $user->user_name }}</td>
                     <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
