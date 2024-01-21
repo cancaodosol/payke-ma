@@ -83,10 +83,10 @@ class IndexController extends Controller
                 if($is_success)
                 {
                     $service->save_active($user);
-                    return view('common.result', ["title" => "成功！", "message" => "Payke「{ $user->PaykeResource->version }」をデプロイしました！"]);
+                    return view('common.result', ["successTitle" => "成功！", "successMessage" => "Payke「{ $user->PaykeResource->version }」をデプロイしました！"]);
                 } else {
                     $service->save_has_error($user,  implode("\n", $outLog));
-                    return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
+                    return view('common.result', ["errorTitle" => "あちゃ〜、、失敗！", "errorMessage" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
                 }
             case ':re_deploy_first' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
@@ -98,10 +98,10 @@ class IndexController extends Controller
                 if($is_success)
                 {
                     $service->save_active($user);
-                    return view('common.result', ["title" => "成功！", "message" => "Payke「{ $user->PaykeResource->version }」をデプロイしました！"]);
+                    return view('common.result', ["successTitle" => "成功！", "successMessage" => "Payke「{ $user->PaykeResource->version }」をデプロイしました！"]);
                 } else {
                     $service->save_has_error($user,  implode("\n", $outLog));
-                    return view('common.result', ["title" => "あちゃ〜、、失敗！", "message" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
+                    return view('common.result', ["errorTitle" => "あちゃ〜、、失敗！", "errorMessage" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
                 }
             case ':d_many' : 
                 $uService = new PaykeUserService();
@@ -111,14 +111,14 @@ class IndexController extends Controller
                 $users = $uService->find_by_ids($ids);
                 $deployJob = (new DeployManyJob($users, $payke))->delay(Carbon::now()->addSeconds(1));
                 dispatch($deployJob);
-                return view('common.result', ["title" => "デプロイ開始", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
+                return view('common.result', ["successTitle" => "デプロイ開始", "successMessage" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
             case ':payke_v' : 
                 $rService = new PaykeResourceService();
                 $payke = $rService->find_by_id($searchWords[1]);
                 $paykes = $rService->find_upper_version_to_array($payke);
                 dd($paykes); 
             case ':test' :
-                return view('common.result', ["title" => "成功！", "message" => "Payke v3.23.1 のデプロイに成功しました！",
+                return view('common.result', ["successTitle" => "成功！", "successMessage" => "Payke v3.23.1 のデプロイに成功しました！",
                     "info" => ["task deploy:info",
                         "[payke_release] info deploying HEAD",
                         " task deploy:setup",

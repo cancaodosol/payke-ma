@@ -80,7 +80,7 @@ class PaykeUserController extends Controller
         $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now());
         dispatch($deployJob);
 
-        return view('common.result', ["title" => "Paykeのデプロイを開始しました。", "message" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
+        return view('common.result', ["successTitle" => "Paykeのデプロイを開始しました。", "successMessage" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
     }
 
     public function view_edit(int $id)

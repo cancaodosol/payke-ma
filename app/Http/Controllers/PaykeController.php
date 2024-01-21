@@ -23,7 +23,7 @@ class PaykeController extends Controller
         $label = $enable_affiliate == 1 ? "有効" : "無効";
         if($user->enable_affiliate == $enable_affiliate)
         {
-            return view('common.result', ["title" => "設定済み", "message" => "すでにアフィリエイト機能は、{$label}でした。"]);
+            return view('common.result', ["warnTitle" => "設定済み", "warnMessage" => "すでにアフィリエイト機能は、{$label}でした。"]);
         }
 
         $r = null;
@@ -35,7 +35,7 @@ class PaykeController extends Controller
         {
             $r = $service->close_affiliate($user);
         }
-        return view('common.result', ["title" => "設定完了！", "message" => "アフィリエイト機能を{$label}にしました。"]);
+        return view('common.result', ["successTitle" => "設定完了！", "successMessage" => "アフィリエイト機能を{$label}にしました。"]);
     }
 
     public function post_edit_version(Request $request)
