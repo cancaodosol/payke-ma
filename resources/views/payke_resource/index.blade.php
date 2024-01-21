@@ -19,38 +19,57 @@
             </div>
         </form>
     </div>
-    <div class="mt-5 ml-1">
-        <ul role="list" class="space-y-6">
-            @foreach($paykes as $payke)
-                <li class="relative flex gap-x-4">
-                    @if($loop->last)
-                        <div class="absolute left-0 top-0 flex w-6 justify-center">
-                            <div class="w-px bg-gray-200"></div>
-                        </div>
-                    @else
-                        <div class="absolute left-0 top-0 flex w-6 justify-center -bottom-6">
-                            <div class="w-px bg-gray-200"></div>
-                        </div>
-                    @endif
-                    <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
-                        <div class="h-1.5 w-1.5 rounded-full bg-green-400 ring-1 ring-gray-300"></div>
-                    </div>
-                    <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
-                        <span class="font-medium text-gray-900">{{ $payke->version }}</span>
-                        {{ $payke->created_at }}( {{ $payke->diff_time_from_now() }} ) に追加されました。
-                        @if($payke->PaykeUsers()->count() > 0)
-                        （ 使用者数：{{ $payke->PaykeUsers()->count() }} ）
-                        <a href="{{ route('payke_user.index.paykeId', ['paykeId' => $payke->id]) }}" class="text-xs text-indigo-600 hover:text-indigo-900">
-                            >> 使用者一覧
-                        </a>
-                        @endif
-                        <br>
-                        {{ $payke->payke_zip_name }}
-                        <br>
+    <div class="mt-8 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+                <tr>
+                    <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0">No.</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-center text-sm font-semibold text-gray-900">バージョン</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">ファイル名</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">コメント</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">利用者数</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">アップデート日</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+                <div hidden>{{ $no = count($paykes); }}</div>
+                @foreach($paykes as $payke)
+                <tr>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0">{{ $no-- }}</td>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 text-center sm:pl-0">{{ $payke->version }}</td>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-left sm:pl-0">{{ $payke->payke_zip_name }}</td>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-left sm:pl-0">
                         <span class="font-medium text-slate-900">{{ $payke->memo }}</span>
-                    </p>
-                </li>
-            @endforeach
-        </ul>
+                    </td>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-left sm:pl-0">
+                    @if($payke->PaykeUsers()->count() > 0)
+                        <a href="{{ route('payke_user.index.paykeId', ['paykeId' => $payke->id]) }}" class="text-xs text-indigo-600 hover:text-indigo-900">
+                            {{ $payke->PaykeUsers()->count() }}人
+                        </a>
+
+                        @if($payke->PaykeUsers()->count() <= 3)
+                            (
+                            @foreach($payke->PaykeUsers as $user)
+                            <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
+                                @if($loop->last)
+                                {{ $user->user_name }}
+                                @else
+                                {{ $user->user_name }},
+                                @endif
+                            </a>
+                            @endforeach
+                            )
+                        @endif
+                    @endif
+                    </td>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-left sm:pl-0">{{ $payke->created_at }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+            </table>
+        </div>
+        </div>
     </div>
 </x-layouts.basepage>
