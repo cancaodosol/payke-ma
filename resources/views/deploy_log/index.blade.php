@@ -53,8 +53,8 @@
                         @endif
                     </div>
                     <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
-                        <span class="font-medium text-gray-900">{{ $log->title }}</span>
-                        {{ $log->message }}
+                        <span class="font-medium text-gray-900">{{ $log->title }}</span><br>
+                        <span>{{ $log->message }}</span>
                     </p>
                     <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
                         {{ $log->getDiffTime() }}
@@ -85,14 +85,14 @@
                     <div class="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                         <div class="flex justify-between gap-x-4">
                             <div class="py-0.5 text-xs leading-5 text-gray-500">
-                                <span class="font-medium text-gray-900">{{ $log->title }}</span>
-                                {{ $log->message }}
+                                <span class="font-medium text-gray-900">{{ $log->title }}</span><br>
+                                <span>{{ $log->message }}</span>
                             </div>
                             <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
                                 {{ $log->getDiffTime() }}
                             </time>
                         </div>
-                        <details>
+                        <details class="mt-1">
                             <summary class="text-xs text-gray-500">ログ</summary>
                             <p class="text-sm leading-6 text-gray-500 ml-2">
                                 @foreach($log->getLogArray() as $dl)
