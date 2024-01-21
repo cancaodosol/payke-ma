@@ -18,13 +18,14 @@
             <table class="min-w-full divide-y divide-gray-300">
             <thead>
                 <tr>
-                    <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0">No.</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">稼働 / 停止</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">サーバー</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">URL</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
+                    <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0 hidden md:table-cell">No.</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-center text-sm font-semibold text-gray-900">稼働 / 停止</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">サーバー</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">URL</th>
+                    <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
+                    <th scope="col" class="whitespace-nowrap text-left text-sm font-semibold text-gray-900 md:hidden"></th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">現バージョン</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">更新可能</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">更新可能</th>
                     <!-- <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">メモ</th> -->
                     <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
                         <span class="sr-only">詳細</span>
@@ -35,7 +36,7 @@
                 <div hidden>{{ $no = 1; }}</div>
                 @foreach($users as $user)
                 <tr>
-                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0">{{ $no++ }}</td>
+                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $no++ }}</td>
                     <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
                         <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
                         @if($user->is_active())
@@ -97,16 +98,24 @@
                         @endif
                         </a>
                     </td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $user->PaykeHost->name }}</td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm text-blue-500 underline"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{{ $user->user_name }}</td>
+                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name }}</td>
+                    <td class="whitespace-nowrap px-2 py-2 text-sm text-blue-500 underline hidden md:table-cell"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
+                    <td class="whitespace-nowrap pl-2 py-2 text-sm text-gray-900">{{ $user->user_name }}</td>
+                    <td class="whitespace-nowrap md:hidden">
+                        <a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 text-blue-500">
+                                <path d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z" />
+                                <path d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z" />
+                            </svg>
+                        </a>
+                    </td>
                     <td class="flex items-center whitespace-nowrap px-2 py-2">
                         <span class="w-16 px-2 py-2 text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</span>
                         @if($user->enable_affiliate)
                         <img class="ml-2 w-5 h-5" src="{{ asset('/images/アフィリエイト可能アイコン.png') }}" alt="アフィリエイト可能" title="アフィリエイト可能">
                         @endif
                     </td>
-                    <td class="whitespace-nowrap px-2 py-2 text-xs font-medium text-gray-900">
+                    <td class="whitespace-nowrap px-2 py-2 text-xs font-medium text-gray-900 hidden md:table-cell">
                         @if($resources[0]['name'] != $user->PaykeResource->version)
                         <form action="{{ route('payke_user.version.up') }}" method="post">
                             @method('POST')
