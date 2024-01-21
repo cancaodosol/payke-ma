@@ -123,6 +123,7 @@ task('deploy:update_code', function() {
         writeln(run('mkdir -p {{deploy_path}}/shared/app/Config/'));
         upload('{{root_dir}}{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
         upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
+        upload('{{root_dir}}{{payke_install_file_path___installed_false}}', '{{deploy_path}}/shared/app/Config/install.php');
     }
 
     // Save revision in REVISION file.
@@ -169,7 +170,7 @@ task('deploy:run_migrations', function () {
         writeln('install.phpのinstalledをtrueに更新。');
         // MEMO: installedをtrueの状態で、マイグレーションを行うと、初回マイグレーションの場合エラーが発生する。
         //       なので、install.phpの更新は、マイグレーション実行後に行う。
-        upload('{{root_dir}}{{payke_install_file_path}}', '{{deploy_path}}/shared/app/Config/install.php');
+        upload('{{root_dir}}{{payke_install_file_path___installed_true}}', '{{deploy_path}}/shared/app/Config/install.php');
 
         // AmazonPayの集信実行のCRONを設定
         writeln('AmazonPayの集信実行のCRONを設定。');

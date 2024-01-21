@@ -23,7 +23,8 @@ class DeployService
     {
         $this->root_dir = dirname(__FILE__)."/../../";
         $this->resource_dir = "storage/app/payke_resources/";
-        $this->payke_install_file_path = "{$this->resource_dir}templates/install.php";
+        $this->payke_install_file_path___installed_true = "{$this->resource_dir}templates/install___installed_true.php";
+        $this->payke_install_file_path___installed_false = "{$this->resource_dir}templates/install___installed_false.php";
         $this->payke_ini_file_path___affiliate_on = "{$this->resource_dir}templates/paykeec___affiliate_on.ini";
         $this->payke_ini_file_path___affiliate_off = "{$this->resource_dir}templates/paykeec___affiliate_off.ini";
         $this->execute_php_command = env("EXECUTE_PHP_COMMAND", "");
@@ -131,7 +132,8 @@ class DeployService
 
         // デプロイが初回の場合は、デプロイ先に設定ファイルなどを送る。
         $params['is_first'] = $is_first ? '1' : '';
-        $params['payke_install_file_path'] = $this->payke_install_file_path;
+        $params['payke_install_file_path___installed_true'] = $this->payke_install_file_path___installed_true;
+        $params['payke_install_file_path___installed_false'] = $this->payke_install_file_path___installed_false;
 
         $env = [
             'DB_DATASOURCE' => 'Database/Mysql',
