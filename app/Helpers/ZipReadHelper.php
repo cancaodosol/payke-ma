@@ -16,7 +16,7 @@ class ZipReadHelper
     // 公式Doc：https://www.php.net/manual/ja/class.ziparchive.php
     public function read_payke_version($targetZipPath)
     {
-        $config_file_name = '/app/Config/constants.php';
+        $config_file_name = 'app/Config/constants.php';
 
         $version = 'v-1.-1.-1';
         $zip = new ZipArchive();
