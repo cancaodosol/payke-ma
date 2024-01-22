@@ -19,14 +19,13 @@
             <thead>
                 <tr>
                     <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0 hidden md:table-cell">No.</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-center text-sm font-semibold text-gray-900">稼働 / 停止</th>
+                    <th scope="col" class="whitespace-nowrap py-3.5 text-center text-sm font-semibold text-gray-900">稼働 / 停止</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">サーバー</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">URL</th>
                     <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
                     <th scope="col" class="whitespace-nowrap text-left text-sm font-semibold text-gray-900 md:hidden"></th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">現バージョン</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">更新可能</th>
-                    <!-- <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">メモ</th> -->
                     <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
                         <span class="sr-only">詳細</span>
                     </th>
@@ -36,8 +35,8 @@
                 <div hidden>{{ $no = 1; }}</div>
                 @foreach($users as $user)
                 <tr>
-                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $no++ }}</td>
-                    <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
+                    <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $no++ }}</td>
+                    <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
                         <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
                         @if($user->is_active())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
@@ -98,31 +97,30 @@
                         @endif
                         </a>
                     </td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name }}</td>
-                    <td class="whitespace-nowrap px-2 py-2 text-sm text-blue-500 underline hidden md:table-cell"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
-                    <td class="whitespace-nowrap pl-2 py-2 text-sm text-gray-900">{{ $user->user_name }}</td>
+                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name }}</td>
+                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-blue-500 underline hidden md:table-cell"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
+                    <td class="whitespace-nowrap pl-2 py-1.5 text-sm text-gray-900">{{ $user->user_name }}</td>
                     <td class="whitespace-nowrap md:hidden">
                         <a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 text-blue-500">
-                                <path d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z" />
-                                <path d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 text-gray-500">
+                                <path d="M1.75 1.002a.75.75 0 1 0 0 1.5h1.835l1.24 5.113A3.752 3.752 0 0 0 2 11.25c0 .414.336.75.75.75h10.5a.75.75 0 0 0 0-1.5H3.628A2.25 2.25 0 0 1 5.75 9h6.5a.75.75 0 0 0 .73-.578l.846-3.595a.75.75 0 0 0-.578-.906 44.118 44.118 0 0 0-7.996-.91l-.348-1.436a.75.75 0 0 0-.73-.573H1.75ZM5 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM13 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
                             </svg>
                         </a>
                     </td>
-                    <td class="flex items-center whitespace-nowrap px-2 py-2">
-                        <span class="w-16 px-2 py-2 text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</span>
+                    <td class="flex items-center whitespace-nowrap px-2 py-1.5">
+                        <span class="w-16 px-2 py-1.5 text-xs md:text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</span>
                         @if($user->enable_affiliate)
                         <img class="ml-2 w-5 h-5" src="{{ asset('/images/アフィリエイト可能アイコン.png') }}" alt="アフィリエイト可能" title="アフィリエイト可能">
                         @endif
                     </td>
-                    <td class="whitespace-nowrap px-2 py-2 text-xs font-medium text-gray-900 hidden md:table-cell">
+                    <td class="whitespace-nowrap px-2 py-1.5 text-xs font-medium text-gray-900 hidden md:table-cell">
                         @if($resources[0]['name'] != $user->PaykeResource->version)
                         <form action="{{ route('payke_user.version.up') }}" method="post">
                             @method('POST')
                             @csrf
                             <div class="flex flex-row">
                                 <input type="hidden" name="user_id" value="{{$user->id}}"/>
-                                <select name="payke_resource" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select name="payke_resource" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-20 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     @foreach($resources as $resource)
                                         @if($resource['name'] == $user->PaykeResource->version)
                                             @break
@@ -130,13 +128,12 @@
                                         <option value="{{ $resource['id'] }}">{{ $resource['name'] }}</option>
                                     @endforeach
                                 </select>
-                                <button type="submit" class="ml-1 text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow">更新</button>
+                                <button type="submit" class="ml-1 text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold py-1 px-1 border border-gray-300 rounded-lg shadow">更新</button>
                             </div>
                         </form>
                         @endif
                     </td>
-                    <!-- <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 truncate"></td> -->
-                    <td class="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                    <td class="relative whitespace-nowrap py-1.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
                             詳細<span class="sr-only">, AAPS0L</span>
                         </a>
