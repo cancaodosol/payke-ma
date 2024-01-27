@@ -7,5 +7,3 @@ php8.1 artisan cache:clear
 php8.1 artisan config:clear
 php8.1 artisan route:clear
 php8.1 artisan view:clear
-
-nohup php8.1 artisan queue:work >> ./logs/work.log &
