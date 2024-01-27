@@ -52,6 +52,6 @@ class PaykeController extends Controller
         $users = $uService->find_all();
         $rService = new PaykeResourceService();
         $resources = $rService->find_all_to_array();
-        return view('payke_user.index', ['users' => $users, 'resources' => $resources, 'successTitle' => 'アップデート開始', 'successMessage' => "「 $user->user_name 」のPaykeを「 $payke->version 」にアップデートしております。しばらくお待ちください。"]);
+        return view('payke_user.index', ['users' => $users, 'resources' => $resources, 'successTitle' => 'アップデート開始', 'successMessage' => "「 $user->user_name 」のPaykeを「 $payke->version 」にアップデートしております。1 ~ 2 分お待ちください。"]);
     }
 }
