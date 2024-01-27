@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Search;
 use App\Http\Controllers\Controller;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
+use App\Models\Job;
 use App\Services\DeployService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
@@ -26,25 +27,9 @@ class IndexController extends Controller
         $searchWords = explode(" ", $inputSearchWord);
         switch($searchWords[0])
         {
-            case ':newuser' :
-                return redirect()->route('payke_user.create');
-            case ':newhost' :
-                return view('payke_host.create');
-            case ':newdb' :
-                $hostService = new PaykeHostService();
-                $hosts = $hostService->find_all_to_array();
-                return view('payke_db.create', ["hosts" => $hosts]);
-            case ':editdb' :
-                $hostService = new PaykeHostService();
-                $hosts = $hostService->find_all_to_array();
-                $service = new PaykeDbService();
-                $db = $service->find_by_id($searchWords[1]);
-                return view('payke_db.edit', ["db" => $db, "hosts" => $hosts]);
-            case ':newpayke' :
-                return view('payke_resource.create');
-            case ':logs' :
-                $deployLog = DeployLog::all()[0];
-                dd($deployLog->getDiffTime());
+            case ':jobs_view' :
+                $jobs = Job::all();
+                dd($jobs);
             case ':logs_view' :
                 if(count($searchWords) > 1)
                 {
