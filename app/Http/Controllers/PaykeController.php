@@ -45,6 +45,7 @@ class PaykeController extends Controller
         $rService = new PaykeResourceService();
         $payke = $rService->find_by_id($request->input('payke_resource'));
 
+        $uService->save_update_waiting($user);
         $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $payke, false))->delay(Carbon::now());
         dispatch($deployJob);
 
