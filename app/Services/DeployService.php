@@ -194,6 +194,9 @@ class DeployService
 
         $params_string = $this->create_params_string($params);
         if($is_success){
+            $message = "Deployerをアンロックしました。";
+            $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
+        } else {
             $message = "Deployerのアンロックに失敗しました。";
             $logService->write_other_log($user, 'アンロック', $message, null, $params_string, $outLog);
         }
