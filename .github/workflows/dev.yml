@@ -3,7 +3,7 @@ name: deploy-to-hirotae.xsrv.jp
 on:
   push:
     tags:
-      - dev-**
+      - v**
 
 jobs:
   deploy:

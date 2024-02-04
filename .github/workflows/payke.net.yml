@@ -3,7 +3,7 @@ name: deploy-to-payke.net
 on:
   push:
     tags:
-      - pke-**
+      - v**
 
 jobs:
   deploy:
