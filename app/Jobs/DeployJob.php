@@ -30,7 +30,6 @@ class DeployJob implements ShouldQueue
     public bool $is_first;
 
     public $timeout = 180;
-    public $retry_after = 240;
 
     /**
      * Create a new job instance.
