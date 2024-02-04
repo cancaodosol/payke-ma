@@ -12,7 +12,6 @@ use App\Helpers\SecurityHelper;
 
 class DeployService
 {
-    private string $payke_install_file_path;
     private string $payke_ini_file_path___affiliate_on;
     private string $payke_ini_file_path___affiliate_off;
     private string $root_dir;
