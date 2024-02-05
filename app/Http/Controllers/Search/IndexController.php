@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
 use App\Models\Job;
+use App\Models\FailedJob;
 use App\Services\DeployService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
@@ -29,6 +30,9 @@ class IndexController extends Controller
         {
             case ':jobs_view' :
                 $jobs = Job::all();
+                dd($jobs);
+            case ':failed_jobs_view' :
+                $jobs = FailedJob::all();
                 dd($jobs);
             case ':logs_view' :
                 if(count($searchWords) > 1)
