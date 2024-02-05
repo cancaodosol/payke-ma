@@ -78,6 +78,7 @@
                             @endif
                         </div>
                         @endif
+                        <br><br>
                     </div>
                 </li>
             @endforeach
