@@ -37,11 +37,18 @@ class PaykeResourceController extends Controller
 
     public function view_edit(int $id)
     {
-        return;
+        $service = new PaykeResourceService();
+        $resource = $service->find_by_id($id);
+        return view('payke_resource.edit', ["resource" => $resource]);
     }
 
     public function post_edit(Request $request)
     {
-        return;
+        $id = $request->input('id');
+        $service = new PaykeResourceService();
+        $service->edit($id, $request->all());
+
+        $resources = $service->find_all();
+        return view('payke_resource.index', ['paykes' => $resources, 'successTitle' => "成功！", 'successMessage' => "データベース情報を更新しました。"]);
     }
 }

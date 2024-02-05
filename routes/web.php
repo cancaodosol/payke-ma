@@ -66,6 +66,12 @@ Route::get('/payke_resource', [\App\Http\Controllers\PaykeResourceController::cl
 Route::post('/payke_resource/create', [\App\Http\Controllers\PaykeResourceController::class, 'post_add'])
     ->name('payke_resource.create.post');
 
+Route::get('/payke_resource/e/{id}', [\App\Http\Controllers\PaykeResourceController::class, 'view_edit'])
+    ->name('payke_resource.edit');
+
+Route::post('/payke_resource/e', [\App\Http\Controllers\PaykeResourceController::class, 'post_edit'])
+    ->name('payke_resource.edit.post');
+
 Route::get('/payke_user', [\App\Http\Controllers\PaykeUserController::class, 'view_all'])
     ->name('payke_user.index');
 

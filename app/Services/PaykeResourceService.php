@@ -64,4 +64,10 @@ class PaykeResourceService
         $resource = $this->find_by_id($id);
         return $resource->version;
     }
+
+    public function edit(int $id, array $values)
+    {
+        $resource = $this->find_by_id($id);
+        $resource->update($values);
+    }
 }
