@@ -20,7 +20,7 @@
         </form>
     </div>
     <style>
-        .payke_memo ol, ul {
+        .payke_memo ol, .payke_memo ul {
             list-style: inside;
         }
     </style>
