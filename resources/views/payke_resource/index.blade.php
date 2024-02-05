@@ -63,7 +63,7 @@
                                 利用者 {{ $payke->PaykeUsers()->count() }}人
                             </a>
 
-                            @if($payke->PaykeUsers()->count() <= 3)
+                            @if($payke->PaykeUsers()->count() <= 10)
                                 (
                                 @foreach($payke->PaykeUsers as $user)
                                 <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
