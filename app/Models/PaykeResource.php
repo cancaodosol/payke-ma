@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\TimeHelper;
+use App\Helpers\HtmlHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,6 +47,11 @@ class PaykeResource extends Model
         ,'payke_zip_file_path'
         ,'memo'
     ];
+
+    public function memo_by_md() : string
+    {
+        return (new HtmlHelper())->markdown_to_html($this->memo);
+    }
 
     public function diff_time_from_now() : string
     {

@@ -19,6 +19,11 @@
             </div>
         </form>
     </div>
+    <style>
+        .payke_memo ol, ul {
+            list-style: inside;
+        }
+    </style>
     <div class="mt-5 ml-1">
         <ul role="list" class="space-y-6">
             @foreach($paykes as $payke)
@@ -50,7 +55,7 @@
                             <span class="ml-2" title="{{ $payke->created_at }}">{{ $payke->diff_time_from_now() }}UP</span>
                         </div>
                         @if($payke->memo)
-                        <div class="text-xs text-slate-900 mt-2">{{ $payke->memo }}</div>
+                        <div class="text-xs text-slate-900 mt-2 payke_memo">{!! $payke->memo_by_md() !!}</div>
                         @endif
                         @if($payke->PaykeUsers()->count() > 0)
                         <div class="mt-1">
