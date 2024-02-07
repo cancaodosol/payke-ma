@@ -81,6 +81,9 @@ Route::get('/payke_user/s/{paykeId}', [\App\Http\Controllers\PaykeUserController
 Route::get('/payke_user/p/{userId}', [\App\Http\Controllers\PaykeUserController::class, 'view_one'])
     ->name('payke_user.profile');
 
+Route::get('api/payke_user/p/{userId}', [\App\Http\Controllers\PaykeUserController::class, 'api_get_user'])
+    ->name('api.payke_user.profile');
+
 Route::get('/payke_user/create', [\App\Http\Controllers\PaykeUserController::class, 'view_add'])
     ->name('payke_user.create');
 

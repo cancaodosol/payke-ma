@@ -35,7 +35,7 @@
                 <tr>
                     <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $no++ }}</td>
                     <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                        <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
+                        <a class="deploy_status_box" href="{{ route('deploy_log.index', ['userId' => $user->id]) }}" is_update="{{ $user->is_update_waiting() || $user->is_updating_now() }}" user_id="{{ $user->id }}">
                         @if($user->is_active())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                             <div class="flex-none rounded-full p-1 text-green-400 bg-green-400/10">
@@ -93,6 +93,24 @@
                             <div class="text-xs">アップデート処理中</div>
                         </div>
                         @endif
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start hidden" name="is_active">
+                            <div class="flex-none rounded-full p-1 text-green-400 bg-green-400/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">正常稼働</div>
+                        </div>
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start hidden" name="has_error">
+                            <div class="flex-none rounded-full p-1 text-rose-500 bg-rose-500/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">エラー有り</div>
+                        </div>
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start hidden" name="is_updating_now">
+                            <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">アップデート処理中</div>
+                        </div>
                         </a>
                     </td>
                     <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name }}</td>
@@ -150,6 +168,13 @@
       return retjson.jobs;
     };
 
+    async function getPaykeUser(user_id) {
+      let url = `{{ route('api.payke_user.profile', ["userId" => 123456789]) }}`.replace("123456789", user_id);
+      const res = await fetch(url);
+      const retjson = await res.json();
+      return retjson.user;
+    };
+
     async function display_job_messages() {
         const jobs = await getJobQueue();
         console.log(jobs);
@@ -164,7 +189,59 @@
 
         let is_next = jobs.length > 0;
         if(!is_next) return;
-        setTimeout(display_job_messages, 5000);
+        setTimeout(display_job_messages, 7000);
+    }
+
+    async function display_deploy_status() {
+        const deployStatusBoxEles = Array.from(document.getElementsByClassName("deploy_status_box"));
+
+        let is_next = false;
+        deployStatusBoxEles.forEach(async (ele, index) => {
+            const user_id = ele.getAttribute("user_id");
+            const is_update = ele.getAttribute("is_update");
+            if(is_update == "false") return;
+            is_next = true;
+
+            console.log(user_id);
+            const user = await getPaykeUser(user_id);
+            console.log(user);
+            const new_is_update = user.is_update_waiting || user.is_updating_now;
+            ele.setAttribute("is_update", new_is_update);
+
+            for(const divEle of ele.children)
+            {
+                if(user.is_updating_now)
+                {
+                    if(divEle.getAttribute("name", "none") === "is_updating_now")
+                    {
+                        divEle.classList.remove("hidden");
+                    } else {
+                        divEle.classList.add("hidden");
+                    }
+                }
+                if(user.is_active)
+                {
+                    if(divEle.getAttribute("name", "none") === "is_active")
+                    {
+                        divEle.classList.remove("hidden");
+                    } else {
+                        divEle.classList.add("hidden");
+                    }
+                }
+                if(user.has_error)
+                {
+                    if(divEle.getAttribute("name", "none") === "has_error")
+                    {
+                        divEle.classList.remove("hidden");
+                    } else {
+                        divEle.classList.add("hidden");
+                    }
+                }
+            };
+        });
+
+        if(!is_next) return;
+        setTimeout(display_deploy_status, 7000);
     }
 
     function loop() {
@@ -175,11 +252,12 @@
             let running_sec = now_sec - start_at;
             if(running_sec) running_time.innerHTML = `${running_sec} 秒経過`;
         }
-        setTimeout(loop, 500);
+        setTimeout(loop, 1000);
     }
 
     async function onload() {
         display_job_messages();
+        display_deploy_status();
         loop();
     }
 

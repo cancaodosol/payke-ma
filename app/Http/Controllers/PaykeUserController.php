@@ -129,4 +129,11 @@ class PaykeUserController extends Controller
         session()->flash('successMessage', "");
         return redirect()->route('payke_user.profile', ['userId' => $id]);
     }
+
+    public function api_get_user($userId)
+    {
+        $service = new PaykeUserService();
+        $user = $service->find_by_id($userId);
+        return response()->json(['user' => $user->to_array()]);
+    }
 }

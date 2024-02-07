@@ -94,4 +94,20 @@ class PaykeUser extends Model
     {
         $this->app_url = "https://{$hostname}/{$user_app_name}/admin/users";
     }
+
+    public function to_array()
+    {
+        return [
+            'status_name' => $this->status_name(),
+            'is_active' => $this->is_active(),
+            'is_before_setting' => $this->is_before_setting(),
+            'is_update_waiting' => $this->is_update_waiting(),
+            'is_updating_now' => $this->is_updating_now(),
+            'is_disable_admin' => $this->is_disable_admin(),
+            'is_disable_admin_and_sales' => $this->is_disable_admin_and_sales(),
+            'is_delete' => $this->is_delete(),
+            'has_error' => $this->has_error(),
+            'data' => $this
+        ];
+    }
 }
