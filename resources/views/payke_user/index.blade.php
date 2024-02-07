@@ -12,7 +12,8 @@
             ＋ 新規登録</a>
         </div>
     </div>
-    <div class="mt-8 flow-root">
+    <ul id="job_message_box" class="mt-4 text-xs"></ul>
+    <div class="mt-4 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table class="min-w-full divide-y divide-gray-300">
@@ -145,4 +146,46 @@
         </div>
         </div>
     </div>
+    <script>
+    async function getJobQueue() {
+      const res = await fetch(`{{ route('jobqueue.index') }}`);
+      const retjson = await res.json();
+      return retjson.jobs;
+    };
+
+    async function display_job_messages() {
+        const jobs = await getJobQueue();
+        console.log(jobs);
+        job_message_box.innerHTML = "";
+        jobs.forEach(function(job) {
+            let listhtml = '';
+            listhtml = listhtml + `<li>${ job.message }`;
+            if(job.is_running) listhtml = listhtml + `<span id="running_time" start_at="${ job.reserved_at }"><span>`;
+            listhtml = listhtml + `</li>`;
+            job_message_box.innerHTML = job_message_box.innerHTML + listhtml;
+        }, jobs);
+
+        let is_next = jobs.length > 0;
+        if(!is_next) return;
+        setTimeout(display_job_messages, 5000);
+    }
+
+    function loop() {
+        running_time = document.getElementById("running_time");
+        if(running_time) {
+            const now_sec = Math.floor((new Date()).getTime()/1000);
+            const start_at = running_time.getAttribute("start_at");
+            let running_sec = now_sec - start_at;
+            if(running_sec) running_time.innerHTML = `${running_sec} 秒経過`;
+        }
+        setTimeout(loop, 500);
+    }
+
+    async function onload() {
+        display_job_messages();
+        loop();
+    }
+
+    onload();
+  </script>
 </x-layouts.basepage>

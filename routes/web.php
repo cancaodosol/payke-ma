@@ -105,6 +105,9 @@ Route::get('/deploy_log/{userId}', \App\Http\Controllers\DeployLog\IndexControll
 Route::post('/search', \App\Http\Controllers\Search\IndexController::class)
     ->name('search.index');
 
+Route::get('/api/jobqueue', [\App\Http\Controllers\PaykeController::class, 'get_job_queue'])
+    ->name('jobqueue.index');
+
 Route::middleware('auth')->group(
     function()
     {

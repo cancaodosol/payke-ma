@@ -7,6 +7,7 @@ use App\Services\DeployService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
 use App\Jobs\DeployJob;
+use App\Models\Job;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -52,6 +53,14 @@ class PaykeController extends Controller
         $users = $uService->find_all();
         $rService = new PaykeResourceService();
         $resources = $rService->find_all_to_array();
-        return view('payke_user.index', ['users' => $users, 'resources' => $resources, 'successTitle' => 'アップデート開始', 'successMessage' => "「 $user->user_name 」のPaykeを「 $payke->version 」にアップデートしております。1 ~ 2 分お待ちください。"]);
+
+    public function get_job_queue()
+    {
+        $jobs = Job::all();
+        $ret = [];
+        foreach ($jobs as $job) {
+            $ret[] = $job->to_array();
+        }
+        return response()->json(["jobs" => $ret]);
     }
 }
