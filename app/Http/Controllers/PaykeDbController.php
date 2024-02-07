@@ -32,8 +32,9 @@ class PaykeDbController extends Controller
         $service = new PaykeDbService();
         $service->add($db);
 
-        $hosts = (new PaykeHostService())->find_all();
-        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "データベース情報を新規登録しました。"]);
+        session()->flash('successTitle', '成功！');
+        session()->flash('successMessage', "データベース情報を新規登録しました。");
+        return redirect()->route('payke_user.index');
     }
 
     public function view_edit(int $id)
@@ -52,7 +53,8 @@ class PaykeDbController extends Controller
         $service = new PaykeDbService();
         $service->edit($id, $request->all());
 
-        $hosts = (new PaykeHostService())->find_all();
-        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "データベース情報を更新しました。"]);
+        session()->flash('successTitle', '成功！');
+        session()->flash('successMessage', "データベース情報を更新しました。");
+        return redirect()->route('payke_host.index');
     }
 }

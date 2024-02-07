@@ -1,7 +1,4 @@
-<x-layouts.basepage title="Payke環境 新規作成" current="新規作成"
-    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
-    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
-    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
+<x-layouts.basepage title="Payke環境 新規作成" current="新規作成">
 
     <form action="{{ route('payke_user.create.post') }}", method="post">
     @method('POST')

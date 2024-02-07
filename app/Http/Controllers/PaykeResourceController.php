@@ -48,7 +48,8 @@ class PaykeResourceController extends Controller
         $service = new PaykeResourceService();
         $service->edit($id, $request->all());
 
-        $resources = $service->find_all();
-        return view('payke_resource.index', ['paykes' => $resources, 'successTitle' => "成功！", 'successMessage' => "データベース情報を更新しました。"]);
+        session()->flash('successTitle', '成功！');
+        session()->flash('successMessage', "Paykeバージョン情報を更新しました。");
+        return redirect()->route('payke_resource.index');
     }
 }

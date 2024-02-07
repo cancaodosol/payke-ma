@@ -48,8 +48,9 @@ class PaykeHostController extends Controller
 
         $service->add($host);
 
-        $hosts = $service->find_all();
-        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "サーバー情報を新規登録しました。"]);
+        session()->flash('successTitle', '成功！');
+        session()->flash('successMessage', "サーバー情報を新規登録しました。");
+        return redirect()->route('payke_host.index');
     }
 
     public function view_edit(int $id)
@@ -84,7 +85,8 @@ class PaykeHostController extends Controller
 
         $service->edit($id, $data);
 
-        $hosts = $service->find_all();
-        return view('payke_host.index', ['hosts' => $hosts, 'successTitle' => "成功！", 'successMessage' => "サーバー情報を更新しました。"]);
+        session()->flash('successTitle', '成功！');
+        session()->flash('successMessage', "サーバー情報を更新しました。");
+        return redirect()->route('payke_host.index');
     }
 }

@@ -1,7 +1,4 @@
-<x-layouts.basepage title="サーバー 編集" current="サーバー 編集"
-    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
-    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
-    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
+<x-layouts.basepage title="サーバー 編集" current="サーバー 編集">
 
     <form action="{{ route('payke_host.edit.post') }}", method="post" enctype="multipart/form-data">
     @method('POST')

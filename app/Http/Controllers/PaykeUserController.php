@@ -66,9 +66,9 @@ class PaykeUserController extends Controller
             $resources = $resService->find_all_to_array();
             $dbService = new PaykeDbService();
             $host_dbs = $dbService->find_ready_host_dbs();
-            return view('payke_user.create', ["host_dbs" => $host_dbs, "resources" => $resources, "user" => $user,
-                "errorTitle" => "入力内容に問題があります。",
-                "errorMessage" => "公開アプリ名「{$user->user_app_name}」は既に使用されております。別の名前でご登録ください。"]);
+            session()->flash('errorTitle', '入力内容に問題があります。');
+            session()->flash('errorMessage', "公開アプリ名「{$user->user_app_name}」は既に使用されております。別の名前でご登録ください。");
+            return view('payke_user.create', ["host_dbs" => $host_dbs, "resources" => $resources, "user" => $user]);
         }
         $service->save_init($user);
 
@@ -109,8 +109,9 @@ class PaykeUserController extends Controller
 
         $service->edit($id, $newUser);
 
-        $user = $service->find_by_id($id);
-        return view('payke_user.profile', ['user' => $user]);
+        session()->flash('successTitle', '利用者情報を更新しました！');
+        session()->flash('successMessage', "");
+        return redirect()->route('payke_user.profile', ['userId' => $id]);
     }
 
     public function post_memo_edit(Request $request)
@@ -124,7 +125,8 @@ class PaykeUserController extends Controller
 
         $service->edit($id, $user);
 
-        $user = $service->find_by_id($id);
-        return view('payke_user.profile', ['user' => $user, 'successTitle' => 'メモを更新しました！']);
+        session()->flash('successTitle', 'メモを更新しました！');
+        session()->flash('successMessage', "");
+        return redirect()->route('payke_user.profile', ['userId' => $id]);
     }
 }

@@ -1,7 +1,4 @@
-<x-layouts.basepage title="データベース 新規登録" current="リリース先データベース 新規登録"
-    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
-    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
-    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
+<x-layouts.basepage title="データベース 新規登録" current="リリース先データベース 新規登録">
 
     <form action="{{ route('payke_db.create.post') }}", method="post">
     @method('POST')

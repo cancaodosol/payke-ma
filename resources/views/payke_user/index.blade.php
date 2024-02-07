@@ -1,7 +1,4 @@
-<x-layouts.basepage title="Payke一覧" current="Payke一覧"
-    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
-    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
-    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
+<x-layouts.basepage title="Payke一覧" current="Payke一覧">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
         <h1 class="text-base font-semibold leading-6 text-gray-900">Payke一覧</h1>

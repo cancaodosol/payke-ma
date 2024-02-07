@@ -1,7 +1,4 @@
-<x-layouts.basepage title="Paykeバージョン 編集" current="Paykeバージョン 編集"
-    successTitle="{{ $successTitle ?? '' }}" successMessage="{{ $successMessage ?? '' }}"
-    warnTitle="{{ $warnTitle ?? '' }}" warnMessage="{{ $warnMessage ?? '' }}"
-    errorTitle="{{ $errorTitle ?? '' }}" errorMessage="{{ $errorMessage ?? '' }}">
+<x-layouts.basepage title="Paykeバージョン 編集" current="Paykeバージョン 編集">
 
     <form action="{{ route('payke_resource.edit.post') }}", method="post">
     @method('POST')

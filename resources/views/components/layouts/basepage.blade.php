@@ -188,14 +188,14 @@
                 @if ($errors->any())
                     <x-messages.errors title="入力内容に問題があります。" :errors="$errors->all()"/>
                 @endif
-                @if ($successTitle ?? false)
-                    <x-messages.success title="{{ $successTitle }}" message="{{ $successMessage ?? '' }}"/>
+                @if (session('successTitle'))
+                    <x-messages.success title="{{ session('successTitle') }}" message="{{ session('successMessage') }}"/>
                 @endif
-                @if ($warnTitle ?? false)
-                    <x-messages.warn title="{{ $warnTitle }}" message="{{ $warnMessage ?? '' }}"/>
+                @if (session('warnTitle'))
+                    <x-messages.warn title="{{ session('warnTitle') }}" message="{{ session('warnMessage') }}"/>
                 @endif
-                @if ($errorTitle ?? false)
-                    <x-messages.error title="{{ $errorTitle }}" message="{{ $errorMessage ?? '' }}"/>
+                @if (session('errorTitle'))
+                    <x-messages.error title="{{ session('errorTitle') }}" message="{{ session('errorMessage') }}"/>
                 @endif
                 <!-- Your content -->
                 {{ $slot }}

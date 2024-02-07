@@ -50,9 +50,10 @@ class PaykeController extends Controller
         $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $payke, false))->delay(Carbon::now());
         dispatch($deployJob);
 
-        $users = $uService->find_all();
-        $rService = new PaykeResourceService();
-        $resources = $rService->find_all_to_array();
+        session()->flash('successTitle', 'アップデート開始');
+        session()->flash('successMessage', "「 $user->user_name 」のPaykeを「 $payke->version 」にアップデートしております。1 ~ 2 分お待ちください。");
+        return redirect()->route('payke_user.index');
+    }
 
     public function get_job_queue()
     {
