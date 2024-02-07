@@ -145,7 +145,7 @@
     </div>
     <script>
     async function getJobQueue() {
-      const res = await fetch(`{{ route('jobqueue.index') }}`);
+      const res = await fetch(`{{ route('api.jobqueue.index') }}`);
       const retjson = await res.json();
       return retjson.jobs;
     };

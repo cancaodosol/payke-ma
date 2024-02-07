@@ -55,7 +55,7 @@ class PaykeController extends Controller
         return redirect()->route('payke_user.index');
     }
 
-    public function get_job_queue()
+    public function api_get_jobqueue()
     {
         $jobs = Job::all();
         $ret = [];
