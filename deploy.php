@@ -197,7 +197,10 @@ task('deploy:symlink:public_app', function () {
  * アフィリエイト機能の有効/無効を制御するため、設定ファイルを更新する。
  */
 task('set_ini', function () {
+    writeln('from {{root_dir}}{{payke_ini_file_path}}');
+    writeln('to {{deploy_path}}/shared/app/Config/paykeec.ini');
     upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
+    writeln(run('cat {{deploy_path}}/shared/app/Config/paykeec.ini'));
     writeln('ok!');
 });
 
