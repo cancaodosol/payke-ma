@@ -24,7 +24,7 @@
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">更新可能</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">
                         <!-- サーバー -->
-                        <img class="w-5 h-5 mx-auto" src="{{ asset('/images/鯖_black.png') }}" alt="サバ" title="サバ">
+                        <img class="w-5 h-5" src="{{ asset('/images/鯖_black.png') }}" alt="サバ" title="サバ">
                     </th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">URL</th>
                     <th scope="col" class="relative whitespace-nowrap text-sm py-3.5 pl-3 pr-4 sm:pr-0">
