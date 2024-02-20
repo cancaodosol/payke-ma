@@ -18,14 +18,17 @@
                 <tr>
                     <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0 hidden md:table-cell">No.</th>
                     <th scope="col" class="whitespace-nowrap py-3.5 text-center text-sm font-semibold text-gray-900">稼働 / 停止</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">サーバー</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">URL</th>
                     <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
                     <th scope="col" class="whitespace-nowrap text-left text-sm font-semibold text-gray-900 md:hidden"></th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">現バージョン</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">更新可能</th>
-                    <th scope="col" class="relative whitespace-nowrap py-3.5 pl-3 pr-4 sm:pr-0">
-                        <span class="sr-only">詳細</span>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">
+                        <!-- サーバー -->
+                        <img class="w-5 h-5 mx-auto" src="{{ asset('/images/鯖_black.png') }}" alt="サバ" title="サバ">
+                    </th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">URL</th>
+                    <th scope="col" class="relative whitespace-nowrap text-sm py-3.5 pl-3 pr-4 sm:pr-0">
+                        詳細
                     </th>
                 </tr>
             </thead>
@@ -113,8 +116,6 @@
                         </div>
                         </a>
                     </td>
-                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name }}</td>
-                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-blue-500 underline hidden md:table-cell"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
                     <td class="whitespace-nowrap pl-2 py-1.5 text-sm text-gray-900">{{ $user->user_name }}</td>
                     <td class="whitespace-nowrap md:hidden">
                         <a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">
@@ -149,9 +150,15 @@
                         </form>
                         @endif
                     </td>
+                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name }}</td>
+                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-blue-500 underline hidden md:table-cell"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
                     <td class="relative whitespace-nowrap py-1.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
-                            詳細<span class="sr-only">, AAPS0L</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                <path d="m3.196 12.87-.825.483a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .758 0l7.25-4.25a.75.75 0 0 0 0-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 0 1-2.276 0L3.196 12.87Z" />
+                                <path d="m3.196 8.87-.825.483a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .758 0l7.25-4.25a.75.75 0 0 0 0-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 0 1-2.276 0L3.196 8.87Z" />
+                                <path d="M10.38 1.103a.75.75 0 0 0-.76 0l-7.25 4.25a.75.75 0 0 0 0 1.294l7.25 4.25a.75.75 0 0 0 .76 0l7.25-4.25a.75.75 0 0 0 0-1.294l-7.25-4.25Z" />
+                            </svg>
                         </a>
                     </td>
                 </tr>

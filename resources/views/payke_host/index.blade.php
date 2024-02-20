@@ -5,8 +5,10 @@
             <p class="mt-2 text-sm text-gray-700">サーバー、データベースの一覧です。</p>
             </div>
             <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <a href="{{ route('payke_host.create') }}" type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
-                ＋ サーバー</a>
+            <a href="{{ route('payke_host.create') }}" type="button" class="flex rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
+                ＋ サーバー
+                <img class="ml-2 w-4 h-4" src="{{ asset('/images/鯖_white.png') }}" alt="鯖_white" title="鯖_white">
+            </a>
             </div>
             <div class="mt-4 sm:ml-2 sm:mt-0 sm:flex-none">
             <a href="{{ route('payke_db.create') }}" type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">
