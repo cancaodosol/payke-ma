@@ -86,14 +86,14 @@
                             <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
                                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
                             </div>
-                            <div class="text-xs">アップデート待ち</div>
+                            <div class="text-xs">アプデ待</div>
                         </div>
                         @elseif($user->is_updating_now())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                             <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
                                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
                             </div>
-                            <div class="text-xs">アップデート処理中</div>
+                            <div class="text-xs">アプデ中</div>
                         </div>
                         @endif
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start hidden" name="is_active">
@@ -112,7 +112,7 @@
                             <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
                                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
                             </div>
-                            <div class="text-xs">アップデート処理中</div>
+                            <div class="text-xs">アプデ中</div>
                         </div>
                         </a>
                     </td>
@@ -128,6 +128,8 @@
                         <span class="w-16 px-2 py-1.5 text-xs md:text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</span>
                         @if($user->enable_affiliate)
                         <img class="ml-2 w-5 h-5" src="{{ asset('/images/アフィリエイト可能アイコン.png') }}" alt="アフィリエイト可能" title="アフィリエイト可能">
+                        @else
+                        <img class="ml-2 w-5 h-5" src="{{ asset('/images/アフィリエイト不可アイコン.png') }}" alt="アフィリエイト不可" title="アフィリエイト不可">
                         @endif
                     </td>
                     <td class="whitespace-nowrap px-2 py-1.5 text-xs font-medium text-gray-900 hidden md:table-cell">
