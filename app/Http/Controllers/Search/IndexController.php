@@ -19,6 +19,7 @@ use App\Jobs\DeployJob;
 use App\Jobs\DeployManyJob;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 use function Laravel\Prompts\search;
 
@@ -28,6 +29,7 @@ class IndexController extends Controller
     {
         $inputSearchWord = (string) $request->input('searchWord');
         $searchWords = explode(" ", $inputSearchWord);
+        Log::info("search by ".$inputSearchWord);
         switch($searchWords[0])
         {
             case ':jobs_view' :

@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Payke\OrderRequest;
+use App\Factories\PaykeUserFactory;
 use App\Services\DeployService;
+use App\Services\DeployLogService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
 use App\Jobs\DeployJob;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class PaykeController extends Controller
 {
@@ -63,5 +67,39 @@ class PaykeController extends Controller
             $ret[] = $job->to_array();
         }
         return response()->json(["jobs" => $ret]);
+    }
+
+    public function connect_paykeec_to_ma(OrderRequest $request)
+    {
+        Log::info("Accessed in /payke/ec2ma. \ndata ->");
+        try
+        {
+            Log::info("order_id : ".$request->order_id());
+            Log::info($request->raw());
+
+            // Paykeユーザーを仮作成。
+            $factory = new PaykeUserFactory();
+            $user_name = $request->customer_full_name();
+            $email_address = $request->customer_email();
+            $user = $factory->create_new_user($user_name, $email_address);
+
+            // DB保存。
+            $service = new PaykeUserService();
+            $service->save_init($user);
+
+            // ログ保存。
+            $logService = new DeployLogService();
+            $message = "Webwookから新規作成しました。";
+            $logService->write_other_log($user, "新規作成", $message);
+    
+            // Paykeのデプロイ開始。
+            $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now());
+            dispatch($deployJob);
+
+        }
+        catch(Exception $e)
+        {
+            Log::error($e->getMessage());
+        }
     }
 }
