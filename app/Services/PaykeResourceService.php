@@ -70,4 +70,10 @@ class PaykeResourceService
         $resource = $this->find_by_id($id);
         $resource->update($values);
     }
+
+    public function get_release_version(): PaykeResource
+    {
+        // TODO 暫定で、最新版を指定している。本番実装では、公開フラグを持ったバージョンを指定する。
+        return $this->find_all()[0];
+    }
 }

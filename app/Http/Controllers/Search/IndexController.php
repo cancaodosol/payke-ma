@@ -14,6 +14,8 @@ use App\Services\PaykeUserService;
 use App\Services\PaykeResourceService;
 use App\Services\DeployLogService;
 use App\Services\SearchService;
+use App\Factories\PaykeUserFactory;
+use App\Jobs\DeployJob;
 use App\Jobs\DeployManyJob;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -101,6 +103,22 @@ class IndexController extends Controller
                 $deployJob = (new DeployManyJob($users, $payke))->delay(Carbon::now()->addSeconds(1));
                 dispatch($deployJob);
                 return view('common.result', ["successTitle" => "デプロイ開始", "successMessage" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
+            case ':f' :
+                $factory = new PaykeUserFactory();
+                $user_name = "aaaa";
+                $email_address = "aaaa@bbb.com";
+                $user = $factory->create_new_user($user_name, $email_address);
+
+                $service = new PaykeUserService();
+                $service->save_init($user);
+        
+                $logService = new DeployLogService();
+                $message = " Searchから新規作成しました。";
+                $logService->write_other_log($user, "新規作成", $message);
+        
+                // Paykeのデプロイ開始。
+                $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now());
+                dispatch($deployJob);
             default:
                 $service = new SearchService();
                 $users = $service->search($inputSearchWord);

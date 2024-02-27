@@ -27,7 +27,12 @@ class PaykeDbService
                 ['status', '=', PaykeDb::STATUS__READY],
               ]))->orderBy('db_database','asc')->get();
             foreach ($dbs as $db) {
-                array_push($host_dbs, ["id" => "{$host->id}_{$db->id}", "name" => "{$host->name} / {$db->db_database}"]);
+                array_push($host_dbs, [
+                    "id" => "{$host->id}_{$db->id}",
+                    "host_id" => "{$host->id}",
+                    "db_id" => "{$db->id}",
+                    "name" => "{$host->name} / {$db->db_database}"
+                ]);
             }
         }
         return $host_dbs;
