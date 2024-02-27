@@ -76,6 +76,7 @@ class PaykeController extends Controller
         {
             Log::info("order_id : ".$request->order_id());
             Log::info($request->raw());
+            $request->to_payke_ec_order()->save();
 
             // Paykeユーザーを仮作成。
             $factory = new PaykeUserFactory();

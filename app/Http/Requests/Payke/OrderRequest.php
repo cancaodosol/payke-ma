@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Payke;
 
+use DateTime;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\PaykeEcOrder;
 
 class OrderRequest extends FormRequest
 {
@@ -46,9 +48,11 @@ class OrderRequest extends FormRequest
         return $this->data()["customer_last_name"].$this->data()["customer_first_name"];
     }
 
-    public function created_at(): string
+    public function created_at()
     {
-        return $this->get("created_at");
+        $date = new DateTime();
+        $date->setTimestamp($this->get("created_at"));
+        return $date;
     }
 
     public function to_array(): array
@@ -59,5 +63,16 @@ class OrderRequest extends FormRequest
             "data" => $this->get("data"),
             "created_at" => $this->created_at(),
         ];
+    }
+
+    public function to_payke_ec_order(): PaykeEcOrder
+    {
+        $order = new PaykeEcOrder();
+        $order->uuid = $this->id();
+        $order->type = $this->type();
+        $order->order_id = $this->order_id();
+        $order->raw = $this->raw();
+        $order->raw_created_at = $this->created_at();
+        return $order;
     }
 }

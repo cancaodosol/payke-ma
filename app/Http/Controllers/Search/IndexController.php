@@ -7,6 +7,7 @@ use App\Models\DeployLog;
 use App\Models\PaykeUser;
 use App\Models\Job;
 use App\Models\FailedJob;
+use App\Models\PaykeEcOrder;
 use App\Services\DeployService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
@@ -55,6 +56,9 @@ class IndexController extends Controller
                     }
                     dd($logs);
                 }
+            case ':eclogs_view' :
+                $logs = PaykeEcOrder::all();
+                dd($logs);
             case ':unlock' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deploy = new DeployService();
