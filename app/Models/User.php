@@ -43,8 +43,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function tweets()
+    public function PaykeUsers()
     {
-        return $this->hasMany(Tweet::class);
+        return $this->hasMany('App\Models\PaykeUser');
     }
 }

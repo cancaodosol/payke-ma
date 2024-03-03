@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Search;
 use App\Http\Controllers\Controller;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
+use App\Models\User;
 use App\Models\Job;
 use App\Models\FailedJob;
 use App\Models\PaykeEcOrder;
@@ -59,6 +60,21 @@ class IndexController extends Controller
             case ':eclogs_view' :
                 $logs = PaykeEcOrder::all();
                 dd($logs);
+            case ':set_user' :
+                $user = User::where('id', 2)->firstOrFail();
+                $pUser = PaykeUser::where('id', 30)->firstOrFail();
+                $pUser->user_id = $user->id;
+                $pUser->save();
+                dd($pUser);
+            case ':users_view' :
+                if(count($searchWords) > 1)
+                {
+                    $user = User::where('id', $searchWords[1])->firstOrFail();
+                    dd($user->PaykeUsers[0]->app_url);
+                }else{
+                    $users = User::all();
+                    dd($users);
+                }
             case ':unlock' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deploy = new DeployService();

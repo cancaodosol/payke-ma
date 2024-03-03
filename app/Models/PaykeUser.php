@@ -44,6 +44,11 @@ class PaykeUser extends Model
         return $this->belongsTo('App\Models\PaykeResource');
     }
 
+    public function User()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
     public function is_active() { return $this->status == PaykeUser::STATUS__ACTIVE; }
     public function is_before_setting() { return $this->status == PaykeUser::STATUS__BEFORE_SETTING; }
     public function is_update_waiting() { return $this->status == PaykeUser::STATUS__UPDATE_WAITING; }
