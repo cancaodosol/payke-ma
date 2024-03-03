@@ -8,9 +8,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Services\PaykeUserService;
+use App\Services\DeployLogService;
+use App\Models\PaykeUser;
 
 class ProfileController extends Controller
 {
+    /**
+     * Display the user's dashboard.
+     */
+    public function index(Request $request): View
+    {
+        return view('dashboard', [
+            'user' => $request->user(),
+        ]);
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -35,6 +48,32 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Update the user's payke ec name.
+     */
+    public function update_app_name(Request $request)
+    {
+        $pUser = $request->user()->PaykeUsers[0];
+        $service = new PaykeUserService();
+
+        $id = $request->input("id");
+        $new_app_name = $request->input("user_app_name");
+
+        if($service->exists_same_name($pUser->payke_host_id, $new_app_name))
+        {
+            session()->flash('errorTitle', '入力内容に問題があります。');
+            session()->flash('errorMessage', "公開アプリ名「{$new_app_name}」は既に使用されております。別の名前でご登録ください。");
+            return view('dashboard', ["user" => $request->user()]);
+        }
+
+        $pUser->status = PaykeUser::STATUS__ACTIVE;
+        $pUser->user_app_name = $new_app_name;
+        $pUser->set_app_url($pUser->PaykeHost->hostname, $pUser->user_app_name);
+        $service->edit($id, $pUser, false);
+
+        return redirect()->route('dashboard');
     }
 
     /**

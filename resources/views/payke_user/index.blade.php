@@ -74,7 +74,7 @@
                             </div>
                             <div class="text-xs">エラー有り</div>
                         </div>
-                        @elseif($user->is_before_setting())
+                        @elseif($user->is_before_deploy())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                             <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
                                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
@@ -95,6 +95,13 @@
                             </div>
                             <div class="text-xs">アプデ中</div>
                         </div>
+                        @elseif($user->is_before_setting())
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+                            <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">設定待ち</div>
+                        </div>
                         @endif
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start hidden" name="is_active">
                             <div class="flex-none rounded-full p-1 text-green-400 bg-green-400/10">
@@ -113,6 +120,12 @@
                                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
                             </div>
                             <div class="text-xs">アプデ中</div>
+                        </div>
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start hidden" name="is_before_setting">
+                            <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">設定待ち</div>
                         </div>
                         </a>
                     </td>
@@ -231,6 +244,15 @@
                 if(user.is_active)
                 {
                     if(divEle.getAttribute("name", "none") === "is_active")
+                    {
+                        divEle.classList.remove("hidden");
+                    } else {
+                        divEle.classList.add("hidden");
+                    }
+                }
+                if(user.is_before_setting)
+                {
+                    if(divEle.getAttribute("name", "none") === "is_before_setting")
                     {
                         divEle.classList.remove("hidden");
                     } else {

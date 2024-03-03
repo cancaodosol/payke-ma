@@ -58,7 +58,12 @@ class DeployJob implements ShouldQueue
         if($is_success)
         {
             $this->user->payke_resource_id = $this->payke->id;
-            $this->paykeUserService->save_active($this->user);
+            if($this->is_first)
+            {
+                $this->paykeUserService->save_wait_setting($this->user);
+            } else {
+                $this->paykeUserService->save_active($this->user);
+            }
         } else {
             $this->paykeUserService->save_has_error($this->user,  implode("\n", $outLog));
         }

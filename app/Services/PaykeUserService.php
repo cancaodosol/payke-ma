@@ -13,7 +13,7 @@ class PaykeUserService
 {
     public function save_init(PaykeUser $user): void
     {
-        $user->status = PaykeUser::STATUS__BEFORE_SETTING;
+        $user->status = PaykeUser::STATUS__BEFORE_DEPLOY;
         $user->PaykeHost->status = PaykeHost::STATUS__READY;
         $user->PaykeDb->status = PaykeDb::STATUS__IN_USE;
         $user->save();
@@ -21,21 +21,14 @@ class PaykeUserService
         $user->PaykeDb->save();
     }
 
-    public function edit(int $id, PaykeUser $newUser): void
+    public function edit(int $id, PaykeUser $newUser, $is_hand = true): void
     {
         $currentUser = $this->find_by_id($id);
 
         $logService = new DeployLogService();
         $deployService = new DeployService();
-        if($newUser->status != $currentUser->status)
-        {
-            // ログ：ステータスを〇〇から、〇〇へ変更しました。
-            $currentStatusName = PaykeUser::STATUS_NAMES[$currentUser->status];
-            $newStatusName = PaykeUser::STATUS_NAMES[$newUser->status];
-            $message = "ステータスを「{$currentStatusName}」から「{$newStatusName}」へ変更しました。";
-            $logService->write_other_log($currentUser, "ステータス変更（手動）", $message);
-        }
 
+        $hand_label = $is_hand ? "（手動）" : "";
         if($newUser->payke_resource_id != $currentUser->payke_resource_id)
         {
             // ログ：Paykeバージョンを〇〇から、〇〇へ変更しました。
@@ -43,7 +36,7 @@ class PaykeUserService
             $currentVersion = $service->get_version_by_id($currentUser->payke_resource_id);
             $newVersion = $service->get_version_by_id($newUser->payke_resource_id);
             $message = "Paykeバージョンを「{$currentVersion}」から「{$newVersion}」へ変更しました。";
-            $logService->write_other_log($currentUser, "バージョン変更（手動）", $message);
+            $logService->write_other_log($currentUser, "バージョン変更{$hand_label}", $message);
         }
 
         if($newUser->user_app_name != $currentUser->user_app_name)
@@ -85,6 +78,15 @@ class PaykeUserService
                     $newUser->status = PaykeUser::STATUS__HAS_ERROR;
                 }
             }
+        }
+
+        if($newUser->status != $currentUser->status)
+        {
+            // ログ：ステータスを〇〇から、〇〇へ変更しました。
+            $currentStatusName = PaykeUser::STATUS_NAMES[$currentUser->status];
+            $newStatusName = PaykeUser::STATUS_NAMES[$newUser->status];
+            $message = "ステータスを「{$currentStatusName}」から「{$newStatusName}」へ変更しました。";
+            $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
         }
 
         $currentUser->update([
@@ -129,6 +131,12 @@ class PaykeUserService
         {
             $this->save_has_error($user, "アフィリエイト機能の無効化に失敗しました。");
         }
+    }
+
+    public function save_wait_setting(PaykeUser $user): void
+    {
+        $user->status = PaykeUser::STATUS__BEFORE_SETTING;
+        $user->save();
     }
 
     public function save_active(PaykeUser $user): void
@@ -186,9 +194,10 @@ class PaykeUserService
             ["id" => PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES, "name" => "管理・販売停止"],
             ["id" => PaykeUser::STATUS__DELETE, "name" => "削除済"],
             ["id" => PaykeUser::STATUS__HAS_ERROR, "name" => "エラーあり"],
-            ["id" => PaykeUser::STATUS__BEFORE_SETTING, "name" => "初回登録"],
+            ["id" => PaykeUser::STATUS__BEFORE_DEPLOY, "name" => "初回登録"],
             ["id" => PaykeUser::STATUS__UPDATE_WAITING, "name" => "アップデート待ち"],
-            ["id" => PaykeUser::STATUS__UPDATING_NOW, "name" => "アップデート処理中"]
+            ["id" => PaykeUser::STATUS__UPDATING_NOW, "name" => "アップデート処理中"],
+            ["id" => PaykeUser::STATUS__BEFORE_SETTING, "name" => "設定待ち"],
         ];
         return $statuses;
     }

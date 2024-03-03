@@ -6,6 +6,7 @@ use App\Services\PaykeUserService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeResourceService;
 use App\Models\PaykeUser;
+use App\Helpers\SecurityHelper;
 
 class PaykeUserFactory
 {
@@ -51,14 +52,9 @@ class PaykeUserFactory
 
     private function create_randam_app_name($host_id)
     {
-        $app_name = $this->create_randam();
+        $app_name = SecurityHelper::create_ramdam_string();
         $service = new PaykeUserService();
         if(!$service->exists_same_name($host_id, $app_name)) return $app_name;
         return create_app_name($host_id);
-    }
-
-    private function create_randam($length = 8)
-    {
-        return substr(base_convert(md5(uniqid()), 16, 36), 0, $length);
     }
 }

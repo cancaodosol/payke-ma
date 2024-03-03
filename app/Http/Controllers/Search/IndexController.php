@@ -17,11 +17,13 @@ use App\Services\PaykeResourceService;
 use App\Services\DeployLogService;
 use App\Services\SearchService;
 use App\Factories\PaykeUserFactory;
+use App\Helpers\SecurityHelper;
 use App\Jobs\DeployJob;
 use App\Jobs\DeployManyJob;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 use function Laravel\Prompts\search;
 
@@ -125,26 +127,45 @@ class IndexController extends Controller
                 $deployJob = (new DeployManyJob($users, $payke))->delay(Carbon::now()->addSeconds(1));
                 dispatch($deployJob);
                 return view('common.result', ["successTitle" => "デプロイ開始", "successMessage" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
+            case ':test' :
+                $val = SecurityHelper::create_ramdam_string();
+                dd($val);
             case ':f' :
+                $user_name = "test10";
+                $email_address = "test10@bbb.com";
+                $order_id = "500001";
+                $new_password = SecurityHelper::create_ramdam_string();
+                Log::info("ユーザー名: ".$user_name."、 メールアドレス: ".$email_address."、 パスワード: ".$new_password);
+
+                // ログインユーザーを作成する
+                $user = new User();
+                $user->name = $user_name;
+                $user->email = $email_address;
+                $user->password = Hash::make($new_password);
+                $user->save();
+
+                // Paykeユーザーを作成する
                 $factory = new PaykeUserFactory();
-                $user_name = "aaaa";
-                $email_address = "aaaa@bbb.com";
-                $user = $factory->create_new_user($user_name, $email_address);
+                $pUser = $factory->create_new_user($user_name, $email_address);
+                $pUser->user_id = $user->id;
+                $pUser->payke_order_id = $order_id;
 
                 $service = new PaykeUserService();
-                $service->save_init($user);
+                $service->save_init($pUser);
         
                 $logService = new DeployLogService();
                 $message = " Searchから新規作成しました。";
-                $logService->write_other_log($user, "新規作成", $message);
+                $logService->write_other_log($pUser, "新規作成", $message);
         
-                // Paykeのデプロイ開始。
-                $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now());
+                // Payke環境のデプロイ開始。
+                $deployJob = (new DeployJob($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, true))->delay(Carbon::now());
                 dispatch($deployJob);
             default:
                 $service = new SearchService();
                 $users = $service->search($inputSearchWord);
-                return view('search.index', ['users' => $users, 'keyword' => $inputSearchWord]);
+                $rService = new PaykeResourceService();
+                $resources = $rService->find_all_to_array();
+                return view('search.index', ['users' => $users, 'resources' => $resources, 'keyword' => $inputSearchWord]);
         }
         dd($searchWords);
     }

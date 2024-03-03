@@ -27,4 +27,13 @@ class SecurityHelper
     {
         return mt_rand().mt_rand().mt_rand();
     }
+
+    /**
+     * なんらかの初期値に使用するランダムな文字列を作成する
+     */
+    public static function create_ramdam_string($length = 8): string
+    {
+        $uuid = (string) Str::uuid();
+        return substr(sha1($uuid), 0, $length);
+    }
 }
