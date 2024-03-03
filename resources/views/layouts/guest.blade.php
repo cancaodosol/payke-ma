@@ -16,13 +16,12 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
+            <div class="flex h-16 shrink-0 items-center">
+                <img class="h-14 w-14" src="{{ asset('/app_icon.svg') }}?color=indigo&shade=600" alt="Your Company">
+                <span class="ml-4 mr-4 mt-1 font-mono text-2xl">Payke MA</span>
+                <div class="w-8"></div>
             </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-4 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
         </div>

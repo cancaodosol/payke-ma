@@ -19,6 +19,8 @@
             }
             }
         </script>
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         <title>{{ $title ? 'Payke MA - '.$title : 'Payke Manager' }}</title>
     </head>
     <body class="h-full">
@@ -106,9 +108,11 @@
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
             <div class="flex h-16 shrink-0 items-center">
-                <img class="h-8 w-auto" src="{{ asset('/app_icon.svg') }}?color=indigo&shade=600" alt="Your Company">
-                <span class="ml-2 mt-1 font-mono">Payke MA<span>
-                <span class="ml-1 mt-1 font-mono text-xs">{{ config('app.version') }}<span>
+                <a href="{{ route('home') }}" class="flex">
+                    <img class="h-8 w-auto" src="{{ asset('/app_icon.svg') }}?color=indigo&shade=600" alt="Your Company">
+                    <span class="ml-2 mt-1 font-mono">Payke MA<span>
+                    <span class="ml-1 mt-1 font-mono text-xs">{{ config('app.version') }}<span>
+                </a>
             </div>
             <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -169,38 +173,96 @@
                 <input id="searchWord" class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." type="search" name="searchWord">
                 </form>
                 <div class="flex items-center gap-x-4 lg:gap-x-6">
-                <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
-                    <span class="sr-only">View notifications</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                    </svg>
-                </button>
 
                 <!-- Separator -->
                 <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true"></div>
+                </div>
+
+                <!-- Settings Dropdown -->
+                <div class="hidden sm:flex sm:items-center">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-2">{{ Auth::user()->name }}</div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('ユーザー情報') }}
+                            </x-dropdown-link>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                        onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    {{ __('ログアウト') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
+                <!-- Hamburger -->
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
             </div>
 
             <main class="py-10">
-            <div class="px-4 sm:px-6 lg:px-8">
-                <!-- Your Message Area -->
-                @if ($errors->any())
-                    <x-messages.errors title="入力内容に問題があります。" :errors="$errors->all()"/>
-                @endif
-                @if (session('successTitle'))
-                    <x-messages.success title="{{ session('successTitle') }}" message="{{ session('successMessage') }}"/>
-                @endif
-                @if (session('warnTitle'))
-                    <x-messages.warn title="{{ session('warnTitle') }}" message="{{ session('warnMessage') }}"/>
-                @endif
-                @if (session('errorTitle'))
-                    <x-messages.error title="{{ session('errorTitle') }}" message="{{ session('errorMessage') }}"/>
-                @endif
-                <!-- Your content -->
-                {{ $slot }}
-            </div>
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <!-- Your Message Area -->
+                    @if ($errors->any())
+                        <x-messages.errors title="入力内容に問題があります。" :errors="$errors->all()"/>
+                    @endif
+                    @if (session('successTitle'))
+                        <x-messages.success title="{{ session('successTitle') }}" message="{{ session('successMessage') }}"/>
+                    @endif
+                    @if (session('warnTitle'))
+                        <x-messages.warn title="{{ session('warnTitle') }}" message="{{ session('warnMessage') }}"/>
+                    @endif
+                    @if (session('errorTitle'))
+                        <x-messages.error title="{{ session('errorTitle') }}" message="{{ session('errorMessage') }}"/>
+                    @endif
+                    <!-- Your content -->
+                    {{ $slot }}
+                </div>
             </main>
+            <footer>
+                <div class="mx-auto">
+                    <ul class="flex">
+                        <li>
+                            <a href="{{ route('payke_user.index') }}" class="text-sm text-gray-500 hover:text-gray-900">
+                                Payke一覧
+                            </a>
+                        </li>
+                        <li class="ml-5">
+                            <a href="{{ route('payke_host.index') }}" class="text-sm text-gray-500 hover:text-gray-900">
+                                リソース一覧
+                            </a>
+                        </li>
+                        <li class="ml-5">
+                            <a href="{{ route('payke_resource.index') }}" class="text-sm text-gray-500 hover:text-gray-900">
+                                Paykeバージョン一覧
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </footer>
         </div>
         </div>
         <script>
