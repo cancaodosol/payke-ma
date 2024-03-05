@@ -18,12 +18,11 @@ Route::get('/', function () {
     return redirect()->route('payke_user.index');
 })->name('home');
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
-
 Route::get('/dashboard', [App\Http\Controllers\ProfileController::class ,'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::post('/payke/ec2ma', [\App\Http\Controllers\PaykeController::class, 'connect_paykeec_to_ma'])
+    ->name('payke.ec2ma');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -34,9 +33,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::middleware('auth')->group(
+Route::middleware(['auth', 'admin'])->group(
     function()
     {
+        Route::get('/welcome', function () { return view('welcome'); });
+
         Route::get('/payke_host', [App\Http\Controllers\PaykeHostController::class ,'view_all'])
             ->name('payke_host.index');
         
@@ -108,9 +109,6 @@ Route::middleware('auth')->group(
         
         Route::post('/payke_user/version/up', [\App\Http\Controllers\PaykeController::class, 'post_edit_version'])
             ->name('payke_user.version.up');
-        
-        Route::post('/payke/ec2ma', [\App\Http\Controllers\PaykeController::class, 'connect_paykeec_to_ma'])
-            ->name('payke.ec2ma');
         
         Route::get('/deploy_log/{userId}', \App\Http\Controllers\DeployLog\IndexController::class)
             ->name('deploy_log.index');
