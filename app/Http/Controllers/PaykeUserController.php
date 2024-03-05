@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaykeUser\CreateRequest;
 use App\Models\PaykeUser;
+use App\Models\PaykeEcOrder;
 use App\Services\DeployService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
@@ -21,7 +22,8 @@ class PaykeUserController extends Controller
     {
         $service = new PaykeUserService();
         $user = $service->find_by_id($userId);
-        return view('payke_user.profile', ['user' => $user]);
+        $orders = PaykeEcOrder::where('order_id', $user->payke_order_id)->orderByRaw('created_at DESC, id DESC')->get();
+        return view('payke_user.profile', ['user' => $user, 'payke_ec_orders' => $orders]);
     }
 
     public function view_all(Request $request)
@@ -92,10 +94,17 @@ class PaykeUserController extends Controller
         $resService = new PaykeResourceService();
         $resources = $resService->find_all_to_array();
 
-        $host_dbs = [[
-            "id" => $user->host_db_id(),
-            "name" => "{$user->PaykeHost->name} / {$user->PaykeDb->db_database}"
+        $host_dbs = [];
+        if($user->payke_host_id == null)
+        {
+            $dbService = new PaykeDbService();
+            $host_dbs = $dbService->find_ready_host_dbs();
+        } else {
+            $host_dbs = [[
+                "id" => $user->host_db_id(),
+                "name" => "{$user->PaykeHost->name} / {$user->PaykeDb->db_database}"
             ]];
+        }
 
         return view('payke_user.edit', ["user" => $user, "statuses" => $statuses, "host_dbs" => $host_dbs, "resources" => $resources]);
     }
@@ -106,6 +115,21 @@ class PaykeUserController extends Controller
 
         $id = $request->input("id");
         $newUser = $request->to_payke_user();
+
+        if($service->exists_same_name($newUser->payke_host_id, $newUser->user_app_name))
+        {
+            $statuses = $service->get_statuses();
+            $resService = new PaykeResourceService();
+            $resources = $resService->find_all_to_array();
+            $dbService = new PaykeDbService();
+            $host_dbs = [[
+                "id" => $newUser->host_db_id(),
+                "name" => "{$newUser->PaykeHost->name} / {$newUser->PaykeDb->db_database}"
+            ]];
+            session()->flash('errorTitle', '入力内容に問題があります。');
+            session()->flash('errorMessage', "公開アプリ名「{$newUser->user_app_name}」は既に使用されております。別の名前でご登録ください。");
+            return view('payke_user.edit', ["user" => $newUser, "statuses" => $statuses, "host_dbs" => $host_dbs, "resources" => $resources]);
+        }
 
         $service->edit($id, $newUser);
 

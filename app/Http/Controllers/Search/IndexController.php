@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Job;
 use App\Models\FailedJob;
 use App\Models\PaykeEcOrder;
+use App\Services\UserService;
 use App\Services\DeployService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
@@ -64,10 +65,12 @@ class IndexController extends Controller
                 dd($logs);
             case ':set_user' :
                 $user = User::where('id', 2)->firstOrFail();
-                $pUser = PaykeUser::where('id', 30)->firstOrFail();
-                $pUser->user_id = $user->id;
-                $pUser->save();
-                dd($pUser);
+                // $pUser = PaykeUser::where('id', 30)->firstOrFail();
+                // $pUser->user_id = $user->id;
+                // $pUser->save();
+                $user->role = 2;
+                $user->save();
+                dd($user);
             case ':users_view' :
                 if(count($searchWords) > 1)
                 {
@@ -138,21 +141,20 @@ class IndexController extends Controller
                 Log::info("ユーザー名: ".$user_name."、 メールアドレス: ".$email_address."、 パスワード: ".$new_password);
 
                 // ログインユーザーを作成する
-                $user = new User();
-                $user->name = $user_name;
-                $user->email = $email_address;
-                $user->password = Hash::make($new_password);
-                $user->save();
+                $uService = new UserService();
+                $user = $uService->save_user($user_name, $email_address, $new_password);
 
-                // Paykeユーザーを作成する
+                // Paykeユーザーを仮作成。
                 $factory = new PaykeUserFactory();
                 $pUser = $factory->create_new_user($user_name, $email_address);
                 $pUser->user_id = $user->id;
                 $pUser->payke_order_id = $order_id;
 
+                // DB保存。
                 $service = new PaykeUserService();
                 $service->save_init($pUser);
         
+                // ログ保存。
                 $logService = new DeployLogService();
                 $message = " Searchから新規作成しました。";
                 $logService->write_other_log($pUser, "新規作成", $message);

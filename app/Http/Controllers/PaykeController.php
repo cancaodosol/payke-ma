@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payke\OrderRequest;
+use App\Services\UserService;
 use App\Factories\PaykeUserFactory;
 use App\Services\DeployService;
 use App\Services\DeployLogService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
 use App\Jobs\DeployJob;
+use App\Helpers\SecurityHelper;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -74,29 +76,55 @@ class PaykeController extends Controller
         Log::info("Accessed in /payke/ec2ma. \ndata ->");
         try
         {
-            Log::info("order_id : ".$request->order_id());
             Log::info($request->raw());
+            Log::info($request->request_url());
             $request->to_payke_ec_order()->save();
 
-            // Paykeユーザーを仮作成。
-            $factory = new PaykeUserFactory();
-            $user_name = $request->customer_full_name();
-            $email_address = $request->customer_email();
-            $user = $factory->create_new_user($user_name, $email_address);
-
-            // DB保存。
-            $service = new PaykeUserService();
-            $service->save_init($user);
-
-            // ログ保存。
-            $logService = new DeployLogService();
-            $message = "Webwookから新規作成しました。";
-            $logService->write_other_log($user, "新規作成", $message);
+            // Payke ECの新規購入時の処理
+            if($request->is_type_placed())
+            {
+                $order_id = $request->order_id();
+                $user_name = $request->customer_full_name();
+                $email_address = $request->customer_email();
+                $new_password = SecurityHelper::create_ramdam_string();
+                Log::info("ユーザー名: ".$user_name."、 メールアドレス: ".$email_address."、 パスワード: ".$new_password. "、 URL: ".$request->url());
     
-            // Paykeのデプロイ開始。
-            $deployJob = (new DeployJob($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource, true))->delay(Carbon::now());
-            dispatch($deployJob);
+                // ログインユーザーを作成する
+                $uService = new UserService();
+                $user = $uService->save_user($user_name, $email_address, $new_password);
+    
+                // Paykeユーザーを仮作成。
+                $factory = new PaykeUserFactory();
+                $pUser = $factory->create_new_user($user_name, $email_address);
+                $pUser->user_id = $user->id;
+                $pUser->payke_order_id = $order_id;
+                $has_error = $pUser->payke_host_id == null;
+    
+                // DB保存。
+                $service = new PaykeUserService();
+                if($has_error)
+                {
+                    $service->save_has_error($pUser);
+                } else {
+                    $service->save_init($pUser);
+                }
+        
+                // ログ保存。
+                $logService = new DeployLogService();
+                $message = "Webwookから新規作成しました。";
+                $logService->write_other_log($pUser, "新規作成", $message);
 
+                if($has_error)
+                {
+                    $err_message = "デプロイに必要な空きデータベースがなく、PaykeEC環境を作成できませんでした。";
+                    $logService->write_error_log($pUser, "リソース不足", $err_message);
+                    return;
+                }
+        
+                // Paykeのデプロイ開始。
+                $deployJob = (new DeployJob($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, true))->delay(Carbon::now());
+                dispatch($deployJob);
+            }
         }
         catch(Exception $e)
         {

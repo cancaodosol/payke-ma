@@ -12,12 +12,24 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const ROLE__USER = 1;
+    const ROLE__ADMIN = 2;
+
+    const ROLE_NAMES = [
+        1 => "一般"
+        ,2 => "管理"
+    ];
+
+    public function is_user() { return $this->role == User::ROLE__USER; }
+    public function is_admin() { return $this->role == User::ROLE__ADMIN; }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'role',
         'name',
         'email',
         'password',

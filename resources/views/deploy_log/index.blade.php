@@ -89,6 +89,7 @@
                                 {{ $log->getDiffTime() }}
                             </time>
                         </div>
+                        @if(count($log->getLogArray()) > 0)
                         <details class="mt-1">
                             <summary class="text-xs text-gray-500">ログ</summary>
                             <p class="text-sm leading-6 text-gray-500 ml-2">
@@ -97,6 +98,7 @@
                                 @endforeach
                             </p>
                         </details>
+                        @endif
                     </div>
                 </li>
                 @endif

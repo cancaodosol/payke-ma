@@ -40,6 +40,6 @@ class DeployLogService
 
     public function find_by_user_id(int $user_id)
     {
-        return DeployLog::where('user_id', $user_id)->orderBy('created_at', 'DESC')->get();
+        return DeployLog::where('user_id', $user_id)->orderByRaw('created_at DESC, id DESC')->get();
     }
 }

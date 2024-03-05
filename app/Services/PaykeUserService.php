@@ -8,6 +8,8 @@ use App\Models\PaykeDb;
 use App\Models\PaykeUser;
 use App\Services\DeployService;
 use App\Services\DeployLogService;
+use App\Jobs\DeployJob;
+use Carbon\Carbon;
 
 class PaykeUserService
 {
@@ -27,6 +29,34 @@ class PaykeUserService
 
         $logService = new DeployLogService();
         $deployService = new DeployService();
+
+        if($currentUser->payke_host_id == null && $newUser->payke_host_id != null)
+        {
+            // 選択したリソースのステータスを使用中に変更。
+            $newUser->PaykeHost->status = PaykeHost::STATUS__READY;
+            $newUser->PaykeDb->status = PaykeDb::STATUS__IN_USE;
+            $currentUser->update([
+                "status" => $newUser->status
+                ,"payke_host_id" => $newUser->payke_host_id
+                ,"payke_db_id" => $newUser->payke_db_id
+                ,"payke_resource_id" => $newUser->payke_resource_id
+                ,"user_app_name" => $newUser->user_app_name
+                ,"user_folder_id" => $newUser->user_folder_id
+                ,"app_url" => $newUser->app_url
+                ,"enable_affiliate" => $newUser->enable_affiliate
+                ,"user_name" => $newUser->user_name
+                ,"email_address" => $newUser->email_address
+                ,"memo" => $newUser->memo
+            ]);
+            $newUser->PaykeHost->save();
+            $newUser->PaykeDb->save();
+
+            // Paykeのデプロイ開始。
+            // MEMO：初回作成時に、リソース不足でデプロイできなかったものは、ここで行う想定。
+            $deployJob = (new DeployJob($newUser->PaykeHost, $newUser, $newUser->PaykeDb, $newUser->PaykeResource, true))->delay(Carbon::now());
+            dispatch($deployJob);
+            return;
+        }
 
         $hand_label = $is_hand ? "（手動）" : "";
         if($newUser->payke_resource_id != $currentUser->payke_resource_id)
@@ -145,7 +175,7 @@ class PaykeUserService
         $user->save();
     }
 
-    public function save_has_error(PaykeUser $user, string $error): void
+    public function save_has_error(PaykeUser $user, string $error=""): void
     {
         $user->status = PaykeUser::STATUS__HAS_ERROR;
         $user->save();

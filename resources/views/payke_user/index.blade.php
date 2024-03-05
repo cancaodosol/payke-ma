@@ -165,7 +165,7 @@
                         </form>
                         @endif
                     </td>
-                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name }}</td>
+                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name ?? '未設定' }}</td>
                     <td class="whitespace-nowrap px-2 py-1.5 text-sm text-blue-500 underline hidden md:table-cell"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
                     <td class="relative whitespace-nowrap py-1.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">

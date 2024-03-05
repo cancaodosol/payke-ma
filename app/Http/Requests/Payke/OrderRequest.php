@@ -23,12 +23,22 @@ class OrderRequest extends FormRequest
         return $this->get("id");
     }
 
+    public function request_url(): string
+    {
+        return $this->httpHost();
+    }
+
     public function type(): string
     {
         // # タイプ一覧
         // - order.placed
         // - payment.succeeded
         return $this->get("type");
+    }
+
+    public function is_type_placed(): string
+    {
+        return $this->type() == "order.placed";
     }
 
     public function order_id(): string
