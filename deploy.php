@@ -213,3 +213,16 @@ task('rename_app_name_symlink', function () {
     writeln(run('ln -s {{deploy_path}}/current {{public_app_path}}'));
     writeln('ok!');
 });
+
+/**
+ * Create Admin User
+ * 管理ユーザーの追加を行う。
+ */
+task('create_admin_user', function () {
+    $create_superadmin_sql = <<<EOT
+    'INSERT INTO users (id, username, password, role, created) VALUES ("{{admin_uuid}}", "{{admin_username}}", "{{admin_password}}", "admin", NOW())'
+    EOT;
+    writeln($create_superadmin_sql);
+    writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$create_superadmin_sql}"));
+    writeln('ok!');
+});

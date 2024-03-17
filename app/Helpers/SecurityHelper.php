@@ -36,4 +36,28 @@ class SecurityHelper
         $uuid = (string) Str::uuid();
         return substr(sha1($uuid), 0, $length);
     }
+
+    /**
+     * UUID作成
+     */
+    public static function create_uuid(): string
+    {
+        return (string) Str::uuid();
+    }
+
+    /**
+     * パスワード文字列をハッシュ化
+     */
+    public static function create_hashed_password(string $password): string
+    {
+        $hashed = password_hash($password, PASSWORD_BCRYPT);
+        return $hashed;
+    }
+
+    public static function transfer_safety_bash_text(string $text): string
+    {
+        $search = [";", "&", "(", ")", "|", "^", "<", ">", "?", "*", "[", "]", "\$", "`", "'", '"', "!", "{", "}"];
+        $replace = ["\;", "\&", "\(", "\)", "\|", "\^", "\<", "\>", "\?", "\*", "\[", "\]", "\\$", "\`", "\'", '"', "\!", "\{", "\}"];
+        return str_replace($search, $replace, $text);
+    }
 }

@@ -65,6 +65,16 @@ class DeployService
     public function exec_rename_app_name(array $params): array
     {
         $params_string = $this->create_params_string($params);
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep create_admin_user{$params_string}";
+        return $this->exec($command);
+    }
+
+    /** 
+     * adminユーザー作成の処理をコマンド実行
+     **/
+    public function exec_create_admin_user(array $params): array
+    {
+        $params_string = $this->create_params_string($params);
         $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep rename_app_name_symlink{$params_string}";
         return $this->exec($command);
     }
@@ -282,6 +292,34 @@ class DeployService
         return $is_success;
     }
 
+    /**
+     * 管理ユーザーを作成する
+     */
+    public function create_admin_user(PaykeUser $user, string $username, string $passpard, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
+        $params['admin_uuid'] = SecurityHelper::create_uuid();
+        $params['admin_username'] = SecurityHelper::transfer_safety_bash_text($username);
+        $params['admin_password'] = SecurityHelper::transfer_safety_bash_text(SecurityHelper::create_hashed_password($passpard));
+
+        // デプロイを実行す。
+        $outLog = $this->exec_rename_app_name($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "PaykeECに管理ユーザー「{$username}」を作成しました。";
+            $logService->write_other_log($user, "管理ユーザー作成", $message, null, $params_string, $outLog);
+        }else{
+            $message = "PaykeECへの管理ユーザー「{$username}」作成に失敗しました。";
+            $logService->write_error_log($user, '管理ユーザー作成失敗', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
     private function model_to_params(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke): array
     {
         $aHost = [
@@ -323,11 +361,5 @@ class DeployService
             $params_string = "{$params_string} -o {$key}={$value_string}";
         }
         return $params_string;
-    }
-
-    public function create_hashed_password(string $password): string
-    {
-        $hashed = password_hash($password, PASSWORD_BCRYPT);
-        return $hashed;
     }
 }

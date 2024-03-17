@@ -131,8 +131,14 @@ class IndexController extends Controller
                 dispatch($deployJob);
                 return view('common.result', ["successTitle" => "デプロイ開始", "successMessage" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
             case ':test' :
-                $val = SecurityHelper::create_ramdam_string();
-                dd($val);
+            case ':c' :
+                $uService = new PaykeUserService();
+                $user = $uService->find_by_id(15);
+                $deployService = new DeployService();
+                $outLog = [];
+                $is_success = $deployService->create_admin_user($user, "atagohan@yahoo.co.jp", "matsui^^^3", $outLog);
+                dd($outLog);
+                return;
             case ':f' :
                 $user_name = "test10";
                 $email_address = "test10@bbb.com";
