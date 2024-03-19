@@ -113,10 +113,31 @@ class PaykeUserService
         if($newUser->status != $currentUser->status)
         {
             // ログ：ステータスを〇〇から、〇〇へ変更しました。
+            $message = "";
             $currentStatusName = PaykeUser::STATUS_NAMES[$currentUser->status];
             $newStatusName = PaykeUser::STATUS_NAMES[$newUser->status];
             $message = "ステータスを「{$currentStatusName}」から「{$newStatusName}」へ変更しました。";
-            $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
+            if($newUser->status == PaykeUser::STATUS__DISABLE_ADMIN) {
+                $log = [];
+                $is_success = $deployService->lock_users($currentUser, $log);
+                if(!$is_success)
+                {
+                    $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                } else {
+                    $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
+                }
+            } else if($currentUser->status == PaykeUser::STATUS__DISABLE_ADMIN && $newUser->status == PaykeUser::STATUS__ACTIVE) {
+                $log = [];
+                $is_success = $deployService->unlock_users($currentUser, $log);
+                if(!$is_success)
+                {
+                    $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                } else {
+                    $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
+                }
+            } else {
+                $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
+            }
         }
 
         $currentUser->update([

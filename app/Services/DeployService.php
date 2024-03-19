@@ -90,6 +90,26 @@ class DeployService
     }
 
     /** 
+     * ログイン制御処理のコマンド実行
+     **/
+    public function exec_lock_users(array $params): array
+    {
+        $params_string = $this->create_params_string($params);
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep lock_users{$params_string}";
+        return $this->exec($command);
+    }
+
+    /** 
+     * ログイン制御の解除処理のコマンド実行
+     **/
+    public function exec_unlock_users(array $params): array
+    {
+        $params_string = $this->create_params_string($params);
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep unlock_users{$params_string}";
+        return $this->exec($command);
+    }
+
+    /** 
      * phpからlinuxコマンドを実行する処理
      **/
     public function exec(string $command): array
@@ -352,6 +372,57 @@ class DeployService
         }else{
             $message = "PaykeECのメンテナンス用ユーザーのパスワードの変更に失敗しました。";
             $logService->write_error_log($user, 'メンテナンス用ユーザーのパスワード設定失敗', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * すべてのユーザーのログインをできないようにする（メンテナンス用ユーザーを除く）
+     */
+    public function lock_users(PaykeUser $user, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
+        $params['superadmin_username'] = "admin";
+
+        // デプロイを実行す。
+        $outLog = $this->exec_lock_users($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "PaykeECにログイン制限をかけました。";
+            $logService->write_other_log($user, "ログイン制限", $message, null, $params_string, $outLog);
+        }else{
+            $message = "PaykeECにログイン制限をかけることに失敗しました。";
+            $logService->write_error_log($user, 'ログイン制限失敗', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * すべてのユーザーのログイン制限を解除する
+     */
+    public function unlock_users(PaykeUser $user, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
+
+        // デプロイを実行す。
+        $outLog = $this->exec_unlock_users($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "PaykeECにログイン制限を解除しました。";
+            $logService->write_other_log($user, "ログイン制限解除", $message, null, $params_string, $outLog);
+        }else{
+            $message = "PaykeECにログイン制限の解除に失敗しました。";
+            $logService->write_error_log($user, 'ログイン制限解除失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;

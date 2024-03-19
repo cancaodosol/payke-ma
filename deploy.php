@@ -219,10 +219,49 @@ task('rename_app_name_symlink', function () {
  * 管理ユーザーの追加を行う。
  */
 task('create_admin_user', function () {
-    $create_superadmin_sql = <<<EOT
+    $create_admin_sql = <<<EOT
     'INSERT INTO users (id, username, password, role, created) VALUES ("{{admin_uuid}}", "{{admin_username}}", "{{admin_password}}", "admin", NOW())'
     EOT;
-    writeln($create_superadmin_sql);
-    writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$create_superadmin_sql}"));
+    writeln($create_admin_sql);
+    writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$create_admin_sql}"));
+    writeln('ok!');
+});
+
+/**
+ * Update SuperAdmin User
+ * メンテナンス用のユーザーのパスワード変更を行う。
+ */
+task('update_superadmin_password', function () {
+    $update_superadmin_sql = <<<EOT
+    'UPDATE users SET password = "{{superadmin_password}}", locked = NULL, modified = NOW() WHERE username = "{{superadmin_username}}"'
+    EOT;
+    writeln($update_superadmin_sql);
+    writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$update_superadmin_sql}"));
+    writeln('ok!');
+});
+
+/**
+ * Lock Users
+ * すべてのユーザーのログインをできないようにする（メンテナンス用ユーザーを除く）
+ */
+task('lock_users', function () {
+    $lock_users_sql = <<<EOT
+    'UPDATE users SET locked =  NOW() WHERE username <> "{{superadmin_username}}"'
+    EOT;
+    writeln($lock_users_sql);
+    writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$lock_users_sql}"));
+    writeln('ok!');
+});
+
+/**
+ * Unlock Users
+ * すべてのユーザーのログイン制限を解除する
+ */
+task('unlock_users', function () {
+    $unlock_users_sql = <<<EOT
+    'UPDATE users SET locked =  NULL'
+    EOT;
+    writeln($unlock_users_sql);
+    writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$unlock_users_sql}"));
     writeln('ok!');
 });
