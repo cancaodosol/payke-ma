@@ -72,6 +72,8 @@ class PaykeUser extends Model
         ,'enable_affiliate'
         ,'user_name'
         ,'email_address'
+        ,'superadmin_username'
+        ,'superadmin_password'
         ,'memo'
     ];
 

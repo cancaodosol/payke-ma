@@ -11,6 +11,7 @@ use App\Services\DeployLogService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
 use App\Jobs\DeployJob;
+use App\Jobs\DeployJobOrderd;
 use App\Helpers\SecurityHelper;
 use App\Models\Job;
 use Illuminate\Http\Request;
@@ -122,7 +123,7 @@ class PaykeController extends Controller
                 }
         
                 // Paykeのデプロイ開始。
-                $deployJob = (new DeployJob($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, true))->delay(Carbon::now());
+                $deployJob = (new DeployJobOrderd($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, $email_address, $new_password))->delay(Carbon::now());
                 dispatch($deployJob);
             }
         }

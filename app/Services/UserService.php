@@ -29,6 +29,16 @@ class UserService
         return $user;
     }
 
+    public function find_admin_users()
+    {
+        return User::where("role", User::ROLE__ADMIN)->get();
+    }
+
+    public function find_by_user_id(int $userid)
+    {
+        return User::where("id", $userid)->firstOrFail();
+    }
+
     public function get_roles()
     {
         $roles = [

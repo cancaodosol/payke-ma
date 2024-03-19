@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Search;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewUserIntroduction;
+use App\Mail\PaykeEcOrderdMail;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
 use App\Models\User;
@@ -20,9 +22,12 @@ use App\Services\SearchService;
 use App\Factories\PaykeUserFactory;
 use App\Helpers\SecurityHelper;
 use App\Jobs\DeployJob;
+use App\Jobs\DeployJobOrderd;
 use App\Jobs\DeployManyJob;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
@@ -30,7 +35,7 @@ use function Laravel\Prompts\search;
 
 class IndexController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, Mailer $mailer)
     {
         $inputSearchWord = (string) $request->input('searchWord');
         $searchWords = explode(" ", $inputSearchWord);
@@ -75,7 +80,7 @@ class IndexController extends Controller
                 if(count($searchWords) > 1)
                 {
                     $user = User::where('id', $searchWords[1])->firstOrFail();
-                    dd($user->PaykeUsers[0]->app_url);
+                    dd($user);
                 }else{
                     $users = User::all();
                     dd($users);
@@ -130,13 +135,40 @@ class IndexController extends Controller
                 $deployJob = (new DeployManyJob($users, $payke))->delay(Carbon::now()->addSeconds(1));
                 dispatch($deployJob);
                 return view('common.result', ["successTitle" => "デプロイ開始", "successMessage" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
+            case ':paykeusers_view' :
+                // 管理ユーザーの取得
+                $uService = new PaykeUserService();
+                $pUser = $uService->find_by_id(40);
+                dd($pUser);
             case ':test' :
+                // 管理ユーザーの取得
+                $uService = new PaykeUserService();
+                $pUser = $uService->find_by_id(40);
+                // Paykeのデプロイ開始。
+                $deployJob = (new DeployJobOrderd($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, "atagohan53@yahoo.co.jp", "a7f3a1c4"))->delay(Carbon::now());
+                dispatch($deployJob);
+                return;
+            case ':test2' :
+                $uService = new PaykeUserService();
+                $pUser = $uService->find_by_id(40);
+                $admin_username = "admin5";
+                $admin_password = "pass5";
+                Mail::to($this->$user->email)
+                    ->send(new PaykeEcOrderdMail($pUser, $admin_username, $admin_password, route("login")));
             case ':c' :
                 $uService = new PaykeUserService();
                 $user = $uService->find_by_id(15);
                 $deployService = new DeployService();
                 $outLog = [];
                 $is_success = $deployService->create_admin_user($user, "atagohan@yahoo.co.jp", "matsui^^^3", $outLog);
+                dd($outLog);
+                return;
+            case ':d' :
+                $uService = new PaykeUserService();
+                $user = $uService->find_by_id(15);
+                $deployService = new DeployService();
+                $outLog = [];
+                $is_success = $deployService->update_superadmin_password($user, "superadmin", $outLog);
                 dd($outLog);
                 return;
             case ':f' :

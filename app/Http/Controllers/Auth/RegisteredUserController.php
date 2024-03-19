@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewUserIntroduction;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,7 +30,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, Mailer $mailer): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -45,6 +47,10 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        // メールの送信処理を追加
+        $mailer->to('test@example.com')
+            ->send(new NewUserIntroduction());
 
         return redirect(RouteServiceProvider::HOME);
     }
