@@ -114,9 +114,10 @@ class PaykeUserController extends Controller
         $service = new PaykeUserService();
 
         $id = $request->input("id");
+        $currentUser = $service->find_by_id($id);
         $newUser = $request->to_payke_user();
 
-        if($service->exists_same_name($newUser->payke_host_id, $newUser->user_app_name))
+        if($currentUser->user_app_name != $newUser->user_app_name && $service->exists_same_name($newUser->payke_host_id, $newUser->user_app_name))
         {
             $statuses = $service->get_statuses();
             $resService = new PaykeResourceService();

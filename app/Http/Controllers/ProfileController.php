@@ -64,7 +64,7 @@ class ProfileController extends Controller
         if($service->exists_same_name($pUser->payke_host_id, $new_app_name))
         {
             session()->flash('errorTitle', '入力内容に問題があります。');
-            session()->flash('errorMessage', "公開アプリ名「{$new_app_name}」は既に使用されております。別の名前でご登録ください。");
+            session()->flash('errorMessage', "公開アプリ名「{$new_app_name}」は使用できません。別の名前でご登録ください。");
             return view('dashboard', ["user" => $request->user()]);
         }
 
