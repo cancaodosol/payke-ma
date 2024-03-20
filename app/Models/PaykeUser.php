@@ -18,6 +18,7 @@ class PaykeUser extends Model
     const STATUS__DISABLE_ADMIN_AND_SALES = 3;
     const STATUS__DELETE = 4;
     const STATUS__HAS_ERROR = 9;
+    const STATUS__HAS_UNPAID = 10;
 
     const STATUS_NAMES = [
         1 => "正常稼働"
@@ -29,6 +30,7 @@ class PaykeUser extends Model
         ,3 => "管理・販売停止"
         ,4 => "削除済"
         ,9 => "エラーあり"
+        ,10 => "未払いあり"
     ];
 
     public function PaykeHost()
@@ -60,6 +62,7 @@ class PaykeUser extends Model
     public function is_disable_admin_and_sales() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES; }
     public function is_delete() { return $this->status == PaykeUser::STATUS__DELETE; }
     public function has_error() { return $this->status == PaykeUser::STATUS__HAS_ERROR; }
+    public function has_unpaid() { return $this->status == PaykeUser::STATUS__HAS_UNPAID; }
 
     protected $fillable = [
         'status'

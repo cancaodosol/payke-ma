@@ -245,6 +245,7 @@ class PaykeUserService
             ["id" => PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES, "name" => "管理・販売停止"],
             ["id" => PaykeUser::STATUS__DELETE, "name" => "削除済"],
             ["id" => PaykeUser::STATUS__HAS_ERROR, "name" => "エラーあり"],
+            ["id" => PaykeUser::STATUS__HAS_UNPAID, "name" => "未払いあり"],
             ["id" => PaykeUser::STATUS__BEFORE_DEPLOY, "name" => "初回登録"],
             ["id" => PaykeUser::STATUS__UPDATE_WAITING, "name" => "アップデート待ち"],
             ["id" => PaykeUser::STATUS__UPDATING_NOW, "name" => "アップデート処理中"],

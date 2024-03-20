@@ -46,26 +46,20 @@
                             </div>
                             <div class="text-xs">正常稼働</div>
                         </div>
-                        @elseif($user->is_disable_admin())
+                        @elseif($user->has_unpaid())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                             <div class="flex-none rounded-full p-1 text-yellow-400 bg-yellow-400/10">
                                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
                             </div>
-                            <div class="text-xs">管理停止</div>
+                            <div class="text-xs">未払いあり</div>
                         </div>
-                        @elseif($user->is_disable_admin_and_sales())
+                        @elseif($user->is_disable_admin() || $user->is_disable_admin_and_sales() || $user->is_delete())
+                        <!-- 管理停止、管理・販売停止、完全停止 は、赤丸。 -->
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                             <div class="flex-none rounded-full p-1 text-rose-500 bg-rose-500/10">
                                 <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
                             </div>
-                            <div class="text-xs">管理・販売停止</div>
-                        </div>
-                        @elseif($user->is_delete())
-                        <div class="flex items-center justify-end gap-x-2 sm:justify-start">
-                            <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
-                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
-                            </div>
-                            <div class="text-xs">完全停止</div>
+                            <div class="text-xs">{{$user->status_name()}}</div>
                         </div>
                         @elseif($user->has_error())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
