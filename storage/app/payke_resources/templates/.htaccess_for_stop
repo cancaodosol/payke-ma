@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule ^(.*)$ APP_IS_STOPPED_URL [L,R=301]

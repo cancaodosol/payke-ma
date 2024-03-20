@@ -110,6 +110,26 @@ class DeployService
     }
 
     /** 
+     * アプリ停止処理のコマンド実行
+     **/
+    public function exec_stop_app(array $params): array
+    {
+        $params_string = $this->create_params_string($params);
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep stop_app{$params_string}";
+        return $this->exec($command);
+    }
+
+    /** 
+     * アプリ再開処理のコマンド実行
+     **/
+    public function exec_restart_app(array $params): array
+    {
+        $params_string = $this->create_params_string($params);
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep restart_app{$params_string}";
+        return $this->exec($command);
+    }
+
+    /** 
      * phpからlinuxコマンドを実行する処理
      **/
     public function exec(string $command): array
@@ -156,6 +176,22 @@ class DeployService
         $success = file_put_contents($to_path, $contents);
 
         return $success ? "{$this->resource_dir}tmp/.env_{$file_name}.php" : "";
+    }
+
+    /**
+     * アプリ使用停止用の .htaccessファイルを作成する。
+     */
+    public function create_htaccess_for_stop(): string
+    {
+        $base_path = "{$this->root_dir}{$this->resource_dir}templates/.htaccess_for_stop";
+        $to_path = "{$this->root_dir}{$this->resource_dir}tmp/.htaccess_for_stop";
+
+        $contents = file_get_contents($base_path);
+        $contents = str_replace("APP_IS_STOPPED_URL", route('app.stopped'), $contents);
+
+        $success = file_put_contents($to_path, $contents);
+
+        return $success ? "{$this->resource_dir}tmp/.htaccess_for_stop" : "";
     }
 
     /** 
@@ -394,7 +430,7 @@ class DeployService
         $params_string = $this->create_params_string($params);
         if($is_success){
             $message = "PaykeECにログイン制限をかけました。";
-            $logService->write_other_log($user, "ログイン制限", $message, null, $params_string, $outLog);
+            $logService->write_warm_log($user, "ログイン制限", $message, null, $params_string, $outLog);
         }else{
             $message = "PaykeECにログイン制限をかけることに失敗しました。";
             $logService->write_error_log($user, 'ログイン制限失敗', $message, null, $params_string, $outLog);
@@ -419,10 +455,64 @@ class DeployService
         $params_string = $this->create_params_string($params);
         if($is_success){
             $message = "PaykeECにログイン制限を解除しました。";
-            $logService->write_other_log($user, "ログイン制限解除", $message, null, $params_string, $outLog);
+            $logService->write_success_log($user, "ログイン制限解除", $message, null, $params_string, $outLog);
         }else{
             $message = "PaykeECにログイン制限の解除に失敗しました。";
             $logService->write_error_log($user, 'ログイン制限解除失敗', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * アプリを停止する
+     */
+    public function stop_app(PaykeUser $user, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
+
+        // アプリ停止用の.htaccessファイルを作成する。
+        $htaccess_for_stop_path = $this->create_htaccess_for_stop();
+        $params['htaccess_for_stop_path'] = $htaccess_for_stop_path;
+
+        // デプロイを実行す。
+        $outLog = $this->exec_stop_app($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "PaykeECを停止しました。";
+            $logService->write_warm_log($user, "アプリ停止", $message, null, $params_string, $outLog);
+        }else{
+            $message = "PaykeECの停止に失敗しました。";
+            $logService->write_error_log($user, 'アプリ停止失敗', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * アプリを再開する
+     */
+    public function restart_app(PaykeUser $user, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
+
+        // デプロイを実行す。
+        $outLog = $this->exec_restart_app($params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "PaykeECを再開しました。キャッシュをクリアしてから、PaykeECにアクセスしてください。";
+            $logService->write_success_log($user, "アプリ再開", $message, null, $params_string, $outLog);
+        }else{
+            $message = "PaykeECの再開に失敗しました。";
+            $logService->write_error_log($user, 'アプリ再開失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;

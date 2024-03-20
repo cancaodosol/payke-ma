@@ -112,32 +112,7 @@ class PaykeUserService
 
         if($newUser->status != $currentUser->status)
         {
-            // ログ：ステータスを〇〇から、〇〇へ変更しました。
-            $message = "";
-            $currentStatusName = PaykeUser::STATUS_NAMES[$currentUser->status];
-            $newStatusName = PaykeUser::STATUS_NAMES[$newUser->status];
-            $message = "ステータスを「{$currentStatusName}」から「{$newStatusName}」へ変更しました。";
-            if($newUser->status == PaykeUser::STATUS__DISABLE_ADMIN) {
-                $log = [];
-                $is_success = $deployService->lock_users($currentUser, $log);
-                if(!$is_success)
-                {
-                    $newUser->status = PaykeUser::STATUS__HAS_ERROR;
-                } else {
-                    $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
-                }
-            } else if($currentUser->status == PaykeUser::STATUS__DISABLE_ADMIN && $newUser->status == PaykeUser::STATUS__ACTIVE) {
-                $log = [];
-                $is_success = $deployService->unlock_users($currentUser, $log);
-                if(!$is_success)
-                {
-                    $newUser->status = PaykeUser::STATUS__HAS_ERROR;
-                } else {
-                    $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
-                }
-            } else {
-                $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
-            }
+            $newUser = $this->change_status($currentUser, $newUser, $hand_label);
         }
 
         $currentUser->update([
@@ -150,6 +125,66 @@ class PaykeUserService
             ,"email_address" => $newUser->email_address
             ,"memo" => $newUser->memo
         ]);
+    }
+
+    public function change_status(PaykeUser $currentUser, PaykeUser $newUser, string $hand_label): PaykeUser
+    {
+        $logService = new DeployLogService();
+        $deployService = new DeployService();
+
+        // ログ：ステータスを〇〇から、〇〇へ変更しました。
+        $message = "";
+        $currentStatusName = PaykeUser::STATUS_NAMES[$currentUser->status];
+        $newStatusName = PaykeUser::STATUS_NAMES[$newUser->status];
+        $message = "ステータスを「{$currentStatusName}」から「{$newStatusName}」へ変更しました。";
+
+        // ステータス「管理・販売停止」にしたときは、PaykeECにアクセスしたらすべてリダイレクト。
+        if($newUser->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES) {
+            $log = [];
+            $is_success = $deployService->stop_app($currentUser, $log);
+            if(!$is_success)
+            {
+                $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                return $newUser;
+            }
+        }
+
+        // ステータス「管理・販売停止」を解除したときは、アクセス可能に。
+        if($currentUser->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES
+            && ($newUser->status == PaykeUser::STATUS__ACTIVE || $newUser->status == PaykeUser::STATUS__DISABLE_ADMIN)) {
+            $log = [];
+            $is_success = $deployService->restart_app($currentUser, $log);
+            if(!$is_success)
+            {
+                $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                return $newUser;
+            }
+        }
+
+        // ステータス「管理停止」にしたときは、PaykeECのユーザーをロック。
+        if($newUser->status == PaykeUser::STATUS__DISABLE_ADMIN) {
+            $log = [];
+            $is_success = $deployService->lock_users($currentUser, $log);
+            if(!$is_success)
+            {
+                $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                return $newUser;
+            }
+        }
+
+        // ステータス「管理停止」解除されたときは、PaykeECのユーザーのロック解除。
+        if($currentUser->status == PaykeUser::STATUS__DISABLE_ADMIN && $newUser->status == PaykeUser::STATUS__ACTIVE) {
+            $log = [];
+            $is_success = $deployService->unlock_users($currentUser, $log);
+            if(!$is_success)
+            {
+                $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                return $newUser;
+            }
+        }
+        
+        $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
+        return $newUser;
     }
 
     public function open_affiliate(PaykeUser $user): void

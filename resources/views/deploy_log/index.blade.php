@@ -31,7 +31,7 @@
     <div class="mt-7 ml-1">
         <ul role="list" class="space-y-6">
             @foreach($logs as $log)
-                @if($log->is_version_info() || $log->is_other_info())
+                @if($log->is_version_info() || $log->is_other_info() || $log->is_success() || $log->is_warm())
                 <li class="relative flex gap-x-4">
                     @if($loop->last)
                         <div class="absolute left-0 top-0 flex w-6 justify-center">
@@ -44,6 +44,8 @@
                     @endif
                     <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
                         @if($log->is_version_info())
+                            <div class="h-1.5 w-1.5 rounded-full bg-green-400 ring-1 ring-gray-300"></div>
+                        @elseif($log->is_success())
                             <div class="h-1.5 w-1.5 rounded-full bg-green-400 ring-1 ring-gray-300"></div>
                         @elseif($log->is_warm())
                             <div class="h-1.5 w-1.5 rounded-full bg-yellow-400 ring-1 ring-gray-300"></div>
@@ -66,7 +68,7 @@
                         <div>
                             <div>{{ $log->message }}</div>
                             @if($log->memo != "")
-                            <div class="text-green-700">{{ $log->memo }}</div>
+                            <div class="text-red-600">{{ $log->memo }}</div>
                             @endif
                         </div>
                     </div>
@@ -87,6 +89,8 @@
                     @endif
                     <div class="relative flex mt-3 h-6 w-6 flex-none items-center justify-center bg-white">
                         @if($log->is_version_info())
+                            <div class="h-1.5 w-1.5 rounded-full bg-green-400 ring-1 ring-gray-300"></div>
+                        @elseif($log->is_success())
                             <div class="h-1.5 w-1.5 rounded-full bg-green-400 ring-1 ring-gray-300"></div>
                         @elseif($log->is_warm())
                             <div class="h-1.5 w-1.5 rounded-full bg-yellow-400 ring-1 ring-gray-300"></div>
@@ -111,7 +115,7 @@
                                 <div>
                                     <div>{{ $log->message }}</div>
                                     @if($log->memo != "")
-                                    <div class="text-green-700">{{ $log->memo }}</div>
+                                    <div class="text-red-600">{{ $log->memo }}</div>
                                     @endif
                                 </div>
                             </div>

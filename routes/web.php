@@ -21,6 +21,9 @@ Route::get('/', function () {
 Route::get('/dashboard', [App\Http\Controllers\ProfileController::class ,'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/stopped', function () { return view('messages.app_is_stopped'); })
+    ->name('app.stopped');
+
 Route::post('/payke/ec2ma', [\App\Http\Controllers\PaykeController::class, 'connect_paykeec_to_ma'])
     ->name('payke.ec2ma');
 

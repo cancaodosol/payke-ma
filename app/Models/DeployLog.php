@@ -13,6 +13,7 @@ class DeployLog extends Model
     const TYPE__VERSION_INFO = 0;
     const TYPE__WARM = 1;
     const TYPE__ERROR = 2;
+    const TYPE__SUCCESS = 3;
     const TYPE__OTHER_INFO = 9;
 
     protected $fillable = [
@@ -30,6 +31,7 @@ class DeployLog extends Model
     public function is_version_info() { return $this->type == DeployLog::TYPE__VERSION_INFO; }
     public function is_warm() { return $this->type == DeployLog::TYPE__WARM; }
     public function is_error() { return $this->type == DeployLog::TYPE__ERROR; }
+    public function is_success() { return $this->type == DeployLog::TYPE__SUCCESS; }
     public function is_other_info() { return $this->type == DeployLog::TYPE__OTHER_INFO; }
 
     public function getParamArray() : array

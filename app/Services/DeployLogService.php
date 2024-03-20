@@ -28,6 +28,16 @@ class DeployLogService
         return $this->write_log(DeployLog::TYPE__VERSION_INFO, $user, $title, $message, $resource, $deployParam, $deployerLogs);
     }
 
+    public function write_success_log(PaykeUser $user, string $title, string $message, PaykeResource $resource = null, string $deployParam = '', array $deployerLogs = [])
+    {
+        return $this->write_log(DeployLog::TYPE__SUCCESS, $user, $title, $message, $resource, $deployParam, $deployerLogs);
+    }
+
+    public function write_warm_log(PaykeUser $user, string $title, string $message, PaykeResource $resource = null, string $deployParam = '', array $deployerLogs = [])
+    {
+        return $this->write_log(DeployLog::TYPE__WARM, $user, $title, $message, $resource, $deployParam, $deployerLogs);
+    }
+
     public function write_error_log(PaykeUser $user, string $title, string $message, PaykeResource $resource = null, string $deployParam = '', array $deployerLogs = [])
     {
         return $this->write_log(DeployLog::TYPE__ERROR, $user, $title, $message, $resource, $deployParam, $deployerLogs);
