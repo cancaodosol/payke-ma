@@ -3,6 +3,7 @@
         <div class="">
             <h1 class="text-base font-semibold leading-6 text-gray-900">Paykeアップデート</h1>
         </div>
+        @if(count($resources) > 0)
         <form action="{{ route('payke_user.version.up') }}", method="post">
             @method('POST')
             @csrf
@@ -11,6 +12,9 @@
                 <x-forms.list name="payke_resource" label="Paykeバージョン" :list="$resources" addSubmit="更新する"/>
             </div>
         </form>
+        @else
+        <p class="mt-2 text-sm text-gray-700">現在、最新のバージョンを使用しています。</p>
+        @endif
     </div>
     <div class="mt-10 mb-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
     </div>
