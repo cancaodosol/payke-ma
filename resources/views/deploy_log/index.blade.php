@@ -53,10 +53,23 @@
                            <div class="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"></div>
                         @endif
                     </div>
-                    <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
-                        <span class="font-medium text-gray-900">{{ $log->title }}</span><br>
-                        <span>{{ $log->message }}</span>
-                    </p>
+                    <div class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
+                        <div class="flex">
+                            <span class="font-medium text-gray-900">{{ $log->title }}</span>
+                            <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}" class="ml-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                    <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
+                                    <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
+                                </svg>
+                            </a>
+                        </div>
+                        <div>
+                            <div>{{ $log->message }}</div>
+                            @if($log->memo != "")
+                            <div class="text-green-700">{{ $log->memo }}</div>
+                            @endif
+                        </div>
+                    </div>
                     <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
                         {{ $log->getDiffTime() }}
                     </time>
@@ -86,8 +99,21 @@
                     <div class="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                         <div class="flex justify-between gap-x-4">
                             <div class="py-0.5 text-xs leading-5 text-gray-500">
-                                <span class="font-medium text-gray-900">{{ $log->title }}</span><br>
-                                <span>{{ $log->message }}</span>
+                                <div class="flex">
+                                    <span class="font-medium text-gray-900">{{ $log->title }}</span>
+                                    <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}" class="ml-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                            <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
+                                            <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div>
+                                    <div>{{ $log->message }}</div>
+                                    @if($log->memo != "")
+                                    <div class="text-green-700">{{ $log->memo }}</div>
+                                    @endif
+                                </div>
                             </div>
                             <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
                                 {{ $log->getDiffTime() }}

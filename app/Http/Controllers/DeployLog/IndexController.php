@@ -17,7 +17,7 @@ class IndexController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(int $userId)
+    public function view_all(int $userId)
     {
         $service = new DeployLogService();
         $logs = $service->find_by_user_id($userId);
@@ -29,5 +29,24 @@ class IndexController extends Controller
         $resources = $rService->find_upper_version_to_array($user->PaykeResource);
 
         return view('deploy_log.index', ['user_id' => $userId, 'logs' => $logs, 'resources' => $resources]);
+    }
+
+    public function view_edit(int $id)
+    {
+        $service = new DeployLogService();
+        $log = $service->find_by_id($id);
+        return view('deploy_log.edit', ["log" => $log]);
+    }
+
+    public function post_edit(Request $request)
+    {
+        $id = $request->input('id');
+        $service = new DeployLogService();
+        $service->edit($id, $request->all());
+
+        $log = $service->find_by_id($id);
+
+        session()->flash('successTitle', 'メモを更新しました。');
+        return redirect()->route('deploy_log.index', ["userId" => $log->user_id]);
     }
 }

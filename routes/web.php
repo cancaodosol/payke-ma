@@ -110,8 +110,14 @@ Route::middleware(['auth', 'admin'])->group(
         Route::post('/payke_user/version/up', [\App\Http\Controllers\PaykeController::class, 'post_edit_version'])
             ->name('payke_user.version.up');
         
-        Route::get('/deploy_log/{userId}', \App\Http\Controllers\DeployLog\IndexController::class)
+        Route::get('/deploy_log/{userId}', [\App\Http\Controllers\DeployLog\IndexController::class, 'view_all'])
             ->name('deploy_log.index');
+
+        Route::get('/deploy_log/edit/{id}', [\App\Http\Controllers\DeployLog\IndexController::class, 'view_edit'])
+            ->name('deploy_log.edit');
+        
+        Route::post('/deploy_log/edit/post', [\App\Http\Controllers\DeployLog\IndexController::class, 'post_edit'])
+            ->name('deploy_log.edit.post');
         
         Route::post('/search', \App\Http\Controllers\Search\IndexController::class)
             ->name('search.index');

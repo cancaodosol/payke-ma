@@ -38,8 +38,19 @@ class DeployLogService
         return $this->write_log(DeployLog::TYPE__OTHER_INFO, $user, $title, $message, $resource, $deployParam, $deployerLogs);
     }
 
+    public function find_by_id(int $id)
+    {
+        return DeployLog::where('id', $id)->firstOrFail();
+    }
+
     public function find_by_user_id(int $user_id)
     {
         return DeployLog::where('user_id', $user_id)->orderByRaw('created_at DESC, id DESC')->get();
+    }
+
+    public function edit(int $id, array $values)
+    {
+        $log = $this->find_by_id($id);
+        $log->update($values);
     }
 }
