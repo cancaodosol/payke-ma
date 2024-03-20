@@ -31,8 +31,8 @@ class PaykeResourceController extends Controller
         $memo = $request->memo();
         $service->save($payke_zip_file_path, $memo);
 
-        $resources = $service->find_all();
-        return view('payke_resource.index', ['paykes' => $resources]);
+        session()->flash('successTitle', 'Paykeバージョンを追加しました。');
+        return redirect()->route('payke_resource.index');
     }
 
     public function view_edit(int $id)

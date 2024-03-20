@@ -12,7 +12,7 @@
             @csrf
             <div>
                 <x-forms.file name="payke-zip" label="Payke Zipファイル"/>
-                <x-forms.textarea name="memo" label="バージョン説明（任意）"/>
+                <x-forms.textarea name="memo" label="バージョン説明（任意）" example="Markdownで書けます。"/>
             </div>
             <div class="mt-6 flex items-center justify-end gap-x-6">
                 <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">追加登録する</button>
