@@ -11,7 +11,10 @@ class PaykeEcOrder extends Model
 
     const TYPE_NAMES = [
         "order.placed" => "注文完了",
-        "payment.succeeded" => "支払い完了"
+        "payment.succeeded" => "支払い完了",
+        "order.payment_stopped" => "未払い",
+        "order.payment_restarted" => "支払い再開",
+        "order.canceled" => "キャンセル"
     ];
 
     protected $fillable = [

@@ -33,18 +33,49 @@ class OrderRequest extends FormRequest
         // # タイプ一覧
         // - order.placed
         // - payment.succeeded
+        // - order.payment_stopped
+        // - order.payment_restarted
+        // - order.canceled
         return $this->get("type");
     }
 
-    public function is_type_placed(): string
+    // [1]PaykeECの新規購入時
+    public function is_type_placed(): bool
     {
         return $this->type() == "order.placed";
     }
 
+    // [2]決済成功時
+    public function is_type_payment_succeeded(): bool
+    {
+        return $this->type() == "payment.succeeded";
+    }
+
+    // [3]継続決済の支払停止時
+    public function is_type_payment_stopped(): bool
+    {
+        return $this->type() == "order.payment_stopped";
+    }
+
+    // [4]継続決済の支払再開時
+    public function is_type_payment_restarted(): bool
+    {
+        return $this->type() == "order.payment_restarted";
+    }
+
+    // [5]キャンセル時
+    public function is_type_order_canceled(): bool
+    {
+        return $this->type() == "order.canceled";
+    }
+
     public function order_id(): string
     {
-        if($this->type() == 'order.placed') return $this->data()["id"];
-        if($this->type() == 'payment.succeeded') return $this->data()["order_id"];
+        if($this->is_type_placed()) return $this->data()["id"];
+        if($this->is_type_payment_succeeded()) return $this->data()["order_id"];
+        if($this->is_type_payment_stopped()) return $this->data()["id"];
+        if($this->is_type_payment_restarted()) return $this->data()["id"];
+        if($this->is_type_order_canceled()) return $this->data()["id"];
         return "";
     }
 

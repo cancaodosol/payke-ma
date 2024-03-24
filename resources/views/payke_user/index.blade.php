@@ -96,6 +96,13 @@
                             </div>
                             <div class="text-xs">設定待ち</div>
                         </div>
+                        @elseif($user->is_unused())
+                        <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+                            <div class="flex-none rounded-full p-1 text-slate-300 bg-slate-300/10">
+                                <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                            </div>
+                            <div class="text-xs">利用終了</div>
+                        </div>
                         @endif
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start hidden" name="is_active">
                             <div class="flex-none rounded-full p-1 text-green-400 bg-green-400/10">

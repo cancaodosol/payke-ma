@@ -14,6 +14,7 @@ use App\Jobs\DeployJob;
 use App\Jobs\DeployJobOrderd;
 use App\Helpers\SecurityHelper;
 use App\Models\Job;
+use App\Models\PaykeUser;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -81,7 +82,7 @@ class PaykeController extends Controller
             Log::info($request->request_url());
             $request->to_payke_ec_order()->save();
 
-            // Payke ECの新規購入時の処理
+            // [1]PaykeECの新規購入時
             if($request->is_type_placed())
             {
                 $order_id = $request->order_id();
@@ -125,6 +126,49 @@ class PaykeController extends Controller
                 // Paykeのデプロイ開始。
                 $deployJob = (new DeployJobOrderd($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, $email_address, $new_password))->delay(Carbon::now());
                 dispatch($deployJob);
+            } else {
+                Log::info($request->data());
+                Log::info($request->order_id());
+                $service = new PaykeUserService();
+                $user = $service->find_by_order_id($request->order_id());
+                Log::info($user->user_name);
+                if(!$user)
+                {
+                }
+
+                // [2]継続決済のサイクルごとの決済成功時
+                // payment.succeeded
+                if($request->is_type_payment_succeeded())
+                {
+                    // 特になし。継続してご利用ください。
+                    return;
+                }
+    
+                // [3]継続決済の支払停止時（お客さんの支払いが滞っている時）
+                // order.payment_stopped
+                if($request->is_type_payment_stopped())
+                {
+                    // ステータスを未払いにする
+                    $user->status = PaykeUser::STATUS__HAS_UNPAID;
+                    $service->edit($user->id, $user, false);
+                }
+    
+                // [4]継続決済の支払再開時
+                // order.payment_restarted
+                if($request->is_type_payment_restarted())
+                {
+                    // ステータスを正常稼働にする
+                    $user->status = PaykeUser::STATUS__ACTIVE;
+                    $service->edit($user->id, $user, false);
+                }
+    
+                // [5]キャンセル時（お客さんの意思で、アプリの利用を辞めたい時）
+                // order.canceled
+                if($request->is_type_order_canceled())
+                {
+                    $user->status = PaykeUser::STATUS__UNUSED;
+                    $service->edit($user->id, $user, false);
+                }
             }
         }
         catch(Exception $e)

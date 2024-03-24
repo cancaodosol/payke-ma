@@ -182,6 +182,17 @@ class PaykeUserService
                 return $newUser;
             }
         }
+
+        // ステータス「利用終了」にしたときは、PaykeECにアクセスしたらすべてリダイレクト。
+        if($newUser->status == PaykeUser::STATUS__UNUSED) {
+            $log = [];
+            $is_success = $deployService->stop_app($currentUser, $log);
+            if(!$is_success)
+            {
+                $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                return $newUser;
+            }
+        }
         
         $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
         return $newUser;
@@ -259,6 +270,11 @@ class PaykeUserService
         return PaykeUser::where('id', $id)->firstOrFail();
     }
 
+    public function find_by_order_id(string $order_id)
+    {
+        return PaykeUser::where('payke_order_id', $order_id)->firstOrFail();
+    }
+
     public function find_by_ids(array $ids)
     {
         return PaykeUser::whereIn('id', $ids)->get();
@@ -285,6 +301,7 @@ class PaykeUserService
             ["id" => PaykeUser::STATUS__UPDATE_WAITING, "name" => "アップデート待ち"],
             ["id" => PaykeUser::STATUS__UPDATING_NOW, "name" => "アップデート処理中"],
             ["id" => PaykeUser::STATUS__BEFORE_SETTING, "name" => "設定待ち"],
+            ["id" => PaykeUser::STATUS__UNUSED, "name" => "利用停止"],
         ];
         return $statuses;
     }

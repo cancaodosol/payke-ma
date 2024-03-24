@@ -14,6 +14,7 @@ class PaykeUser extends Model
     const STATUS__UPDATE_WAITING = -2;
     const STATUS__UPDATING_NOW = -3;
     const STATUS__BEFORE_SETTING = -4;
+    const STATUS__UNUSED = -5;
     const STATUS__DISABLE_ADMIN = 2;
     const STATUS__DISABLE_ADMIN_AND_SALES = 3;
     const STATUS__DELETE = 4;
@@ -26,6 +27,7 @@ class PaykeUser extends Model
         ,-2 => "アップデート待ち"
         ,-3 => "アップデート処理中"
         ,-4 => "設定待ち"
+        ,-5 => "利用終了"
         ,2 => "管理停止"
         ,3 => "管理・販売停止"
         ,4 => "削除済"
@@ -58,6 +60,7 @@ class PaykeUser extends Model
     public function is_update_waiting() { return $this->status == PaykeUser::STATUS__UPDATE_WAITING; }
     public function is_updating_now() { return $this->status == PaykeUser::STATUS__UPDATING_NOW; }
     public function is_before_setting() { return $this->status == PaykeUser::STATUS__BEFORE_SETTING; }
+    public function is_unused() { return $this->status == PaykeUser::STATUS__UNUSED; }
     public function is_disable_admin() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN; }
     public function is_disable_admin_and_sales() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES; }
     public function is_delete() { return $this->status == PaykeUser::STATUS__DELETE; }
@@ -78,6 +81,7 @@ class PaykeUser extends Model
         ,'superadmin_username'
         ,'superadmin_password'
         ,'memo'
+        ,'payke_order_id'
     ];
 
     const validation_rules = [
