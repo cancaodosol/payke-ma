@@ -19,6 +19,7 @@
                                 </td></tr>
                                 <tr><th class="text-right">アフィリ：</th><td>{{ $user->enable_affiliate ? '使用可能' : '使用不可' }}</td></tr>
                                 <tr><th class="text-right">URL：</th><td><a href="{{ $user->app_url }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">{{ $user->app_url }}</a></td></tr>
+                                <tr><th class="text-right">管理パス：</th><td>{{ $user->superadmin_password }}</td></tr>
                                 <tr><th class="text-right">初回作成：</th><td>{{ $user->created_at }}</td></tr>
                                 <tr><th class="text-right">最終更新：</th><td>{{ $user->updated_at }}</td></tr>
                             </table>
