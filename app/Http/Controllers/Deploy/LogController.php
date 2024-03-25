@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\DeployLog;
+namespace App\Http\Controllers\Deploy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePaykeDbRequest;
@@ -12,7 +12,7 @@ use App\Services\PaykeUserService;
 use App\Services\PaykeResourceService;
 use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class LogController extends Controller
 {
     /**
      * Handle the incoming request.

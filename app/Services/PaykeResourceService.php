@@ -73,7 +73,8 @@ class PaykeResourceService
 
     public function get_release_version(): PaykeResource
     {
-        // TODO 暫定で、最新版を指定している。本番実装では、公開フラグを持ったバージョンを指定する。
-        return $this->find_all()[0];
+        $service = new DeploySettingService();
+        $payke_resource_id = $service->get_value("payke_resource_id");
+        return $this->find_by_id(intval($payke_resource_id));
     }
 }

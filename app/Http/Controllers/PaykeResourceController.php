@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaykeResource\CreateRequest;
 use App\Services\PaykeResourceService;
+use App\Services\DeploySettingService;
 use Illuminate\Http\Request;
 
 class PaykeResourceController extends Controller
@@ -13,7 +14,9 @@ class PaykeResourceController extends Controller
     {
         $service = new PaykeResourceService();
         $resources = $service->find_all();
-        return view('payke_resource.index', ['paykes' => $resources]);
+        $dService = new DeploySettingService();
+        $payke_resource_id = $dService->get_value("payke_resource_id");
+        return view('payke_resource.index', ['paykes' => $resources, 'setting_payke_resource_id' => $payke_resource_id]);
     }
 
     public function post_add(CreateRequest $request)
