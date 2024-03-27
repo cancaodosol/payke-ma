@@ -23,7 +23,7 @@ class Admingate
         }
         else
         {
-            return redirect("dashboard");
+            return redirect("profile");
         }
     }
 }

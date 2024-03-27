@@ -15,11 +15,18 @@ use App\Models\PaykeUser;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's dashboard.
+     * Display the user's Profile.
      */
     public function index(Request $request): View
     {
-        return view('dashboard', [
+        $pUser = $request->user()->PaykeUsers[0];
+        if($pUser->is_before_setting())
+        {
+            return view('profile.init', [
+                'user' => $request->user(),
+            ]);
+        }
+        return view('profile.index', [
             'user' => $request->user(),
         ]);
     }
@@ -65,7 +72,7 @@ class ProfileController extends Controller
         {
             session()->flash('errorTitle', '入力内容に問題があります。');
             session()->flash('errorMessage', "公開アプリ名「{$new_app_name}」は使用できません。別の名前でご登録ください。");
-            return view('dashboard', ["user" => $request->user()]);
+            return view('profile.init', ["user" => $request->user()]);
         }
 
         $pUser->status = PaykeUser::STATUS__ACTIVE;
@@ -73,7 +80,7 @@ class ProfileController extends Controller
         $pUser->set_app_url($pUser->PaykeHost->hostname, $pUser->user_app_name);
         $service->edit($id, $pUser, false);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('profile.index');
     }
 
     /**

@@ -18,9 +18,6 @@ Route::get('/', function () {
     return redirect()->route('payke_user.index');
 })->name('home');
 
-Route::get('/dashboard', [App\Http\Controllers\ProfileController::class ,'index'])
-    ->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::get('/stopped', function () { return view('messages.app_is_stopped'); })
     ->name('app.stopped');
 
@@ -28,7 +25,8 @@ Route::post('/payke/ec2ma', [\App\Http\Controllers\PaykeController::class, 'conn
     ->name('payke.ec2ma');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update_app_name'])->name('profile.update_app_name');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
