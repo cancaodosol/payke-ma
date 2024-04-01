@@ -265,3 +265,27 @@ task('unlock_users', function () {
     writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$unlock_users_sql}"));
     writeln('ok!');
 });
+
+/**
+ * Stop App
+ * アプリを使用できないようにする
+ */
+task('stop_app', function () {
+    writeln(run("cd {{deploy_path}} && mkdir -p stopped"));
+    upload('{{root_dir}}{{htaccess_for_stop_path}}', '{{deploy_path}}/stopped/.htaccess');
+    writeln(run('unlink {{public_app_path}} || echo unexists.'));
+    writeln(run('ln -s {{deploy_path}}/stopped {{public_app_path}}'));
+    writeln(run('ls -l {{public_html_dir}}'));
+    writeln('ok!');
+});
+
+/**
+ * Restart App
+ * アプリを使用できるようにする
+ */
+task('restart_app', function () {
+    writeln(run('unlink {{public_app_path}} || echo unexists.'));
+    writeln(run('ln -s {{deploy_path}}/current {{public_app_path}}'));
+    writeln(run('ls -l {{public_html_dir}}'));
+    writeln('ok!');
+});
