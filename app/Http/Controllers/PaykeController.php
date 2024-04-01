@@ -187,6 +187,10 @@ class PaykeController extends Controller
         catch(Exception $e)
         {
             Log::error($e->getMessage());
+            $mService = new MailService($mailer);
+            $title = "想定外のエラー";
+            $message = "PaykeECからのデータ連携で、想定外のエラーが発生しました。\n\n".$e->getMessage();
+            $mService->send_to_admin($title, $message, $request->raw());
         }
     }
 }
