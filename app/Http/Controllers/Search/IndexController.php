@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Search;
 use App\Http\Controllers\Controller;
 use App\Mail\NewUserIntroduction;
 use App\Mail\PaykeEcOrderdMail;
+use App\Mail\ErrorMail;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
 use App\Models\User;
 use App\Models\Job;
 use App\Models\FailedJob;
 use App\Models\PaykeEcOrder;
+use App\Models\DeploySetting;
 use App\Services\UserService;
 use App\Services\DeployService;
 use App\Services\PaykeDbService;
@@ -19,6 +21,7 @@ use App\Services\PaykeUserService;
 use App\Services\PaykeResourceService;
 use App\Services\DeployLogService;
 use App\Services\SearchService;
+use App\Services\MailService;
 use App\Factories\PaykeUserFactory;
 use App\Helpers\SecurityHelper;
 use App\Jobs\DeployJob;
@@ -48,6 +51,9 @@ class IndexController extends Controller
             case ':failed_jobs_view' :
                 $jobs = FailedJob::all();
                 dd($jobs);
+            case ':settings_view' :
+                $settings = DeploySetting::all();
+                dd($settings);
             case ':logs_view' :
                 if(count($searchWords) > 1)
                 {
@@ -68,6 +74,15 @@ class IndexController extends Controller
             case ':eclogs_view' :
                 $logs = PaykeEcOrder::all();
                 dd($logs);
+            case ':send_email' :
+                $mailser = new MailService($mailer);
+                $user = PaykeUser::where('id', 24)->firstOrFail();
+                // $user->payke_order_id = "1234";
+                // $mailer->to($user->email_address)
+                //     ->send(new PaykeEcOrderdMail($user, "ぉぎん", "hahaha", route("login")));
+                // $mailer->to($user->email_address)
+                //     ->send(new ErrorMail("データなし", "テストでエラーメッセージを送ってみました。"));
+                $mailser->send_to_admin("サービスから", "送ってみたよ。");
             case ':set_user' :
                 $user = User::where('id', 2)->firstOrFail();
                 // $pUser = PaykeUser::where('id', 30)->firstOrFail();
@@ -136,25 +151,72 @@ class IndexController extends Controller
                 dispatch($deployJob);
                 return view('common.result', ["successTitle" => "デプロイ開始", "successMessage" => "Paykeのデプロイ開始しました。しばらくお待ちください。"]);
             case ':paykeusers_view' :
-                // 管理ユーザーの取得
+                if(count($searchWords) > 1)
+                {
+                    $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                    $data = [
+                        "user_name" => $user->user_name,
+                        "payke_order_id" => $user->payke_order_id,
+                    ];
+                    dd($data);
+                }else{
+                    $users = PaykeUser::all();
+                    $data = [];
+                    foreach($users as $user)
+                    {
+                        $data[] = [
+                            "user_name" => $user->user_name,
+                            "payke_order_id" => $user->payke_order_id,
+                        ];
+                    }
+                    dd($data);
+                }
+            case ':user_wiew_order_id' :
+                if(count($searchWords) != 2) dd("user_wiew_order_id <order_id>");
                 $uService = new PaykeUserService();
-                $pUser = $uService->find_by_id(40);
-                dd($pUser);
-            case ':test' :
+                $user = $uService->find_by_order_id($searchWords[1]);
+                dd($user);
+            case ':lock_users' :
                 // 管理ユーザーの取得
                 $uService = new PaykeUserService();
                 $pUser = $uService->find_by_id(40);
                 // Paykeのデプロイ開始。
-                $deployJob = (new DeployJobOrderd($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, "atagohan53@yahoo.co.jp", "a7f3a1c4"))->delay(Carbon::now());
-                dispatch($deployJob);
+                $outLog = [];
+                $deployService = new DeployService();
+                $deployService->lock_users($pUser, $outLog);
+                dd($outLog);
                 return;
-            case ':test2' :
+            case ':unlock_users' :
+                // 管理ユーザーの取得
                 $uService = new PaykeUserService();
                 $pUser = $uService->find_by_id(40);
-                $admin_username = "admin5";
-                $admin_password = "pass5";
-                Mail::to($this->$user->email)
-                    ->send(new PaykeEcOrderdMail($pUser, $admin_username, $admin_password, route("login")));
+                // Paykeのデプロイ開始。
+                $outLog = [];
+                $deployService = new DeployService();
+                $deployService->unlock_users($pUser, $outLog);
+                dd($outLog);
+                return;
+            case ':hash' :
+                if(count($searchWords) != 2) return;
+                dd(SecurityHelper::create_hashed_password($searchWords[1]));
+            case ':stop_app' :
+                $uService = new PaykeUserService();
+                $pUser = $uService->find_by_id(40);
+
+                $outLog = [];
+                $deployService = new DeployService();
+                $deployService->stop_app($pUser, $outLog);
+                dd($outLog);
+                return;
+            case ':restart_app' :
+                $uService = new PaykeUserService();
+                $pUser = $uService->find_by_id(40);
+
+                $outLog = [];
+                $deployService = new DeployService();
+                $deployService->restart_app($pUser, $outLog);
+                dd($outLog);
+                return;
             case ':c' :
                 $uService = new PaykeUserService();
                 $user = $uService->find_by_id(15);

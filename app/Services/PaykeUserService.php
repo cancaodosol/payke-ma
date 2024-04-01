@@ -272,7 +272,7 @@ class PaykeUserService
 
     public function find_by_order_id(string $order_id)
     {
-        return PaykeUser::where('payke_order_id', $order_id)->firstOrFail();
+        return PaykeUser::where('payke_order_id', $order_id)->first();
     }
 
     public function find_by_ids(array $ids)

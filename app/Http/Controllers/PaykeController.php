@@ -10,14 +10,16 @@ use App\Services\DeployService;
 use App\Services\DeployLogService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
+use App\Services\MailService;
 use App\Jobs\DeployJob;
 use App\Jobs\DeployJobOrderd;
 use App\Helpers\SecurityHelper;
 use App\Models\Job;
 use App\Models\PaykeUser;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Mail\Mailer;
+use Carbon\Carbon;
 
 class PaykeController extends Controller
 {
@@ -73,7 +75,7 @@ class PaykeController extends Controller
         return response()->json(["jobs" => $ret]);
     }
 
-    public function connect_paykeec_to_ma(OrderRequest $request)
+    public function connect_paykeec_to_ma(OrderRequest $request, Mailer $mailer)
     {
         Log::info("Accessed in /payke/ec2ma. \ndata ->");
         try
@@ -107,6 +109,11 @@ class PaykeController extends Controller
                 if($has_error)
                 {
                     $service->save_has_error($pUser);
+
+                    $mService = new MailService($mailer);
+                    $title = "PaykeECデプロイリソース不足";
+                    $message = "デプロイに必要な空きデータベースがなく、PaykeEC環境を作成できませんでした。\n\nuserid: ".$pUser->id;
+                    $mService->send_to_admin($title, $message, $request->raw());
                 } else {
                     $service->save_init($pUser);
                 }
@@ -129,12 +136,6 @@ class PaykeController extends Controller
             } else {
                 Log::info($request->data());
                 Log::info($request->order_id());
-                $service = new PaykeUserService();
-                $user = $service->find_by_order_id($request->order_id());
-                Log::info($user->user_name);
-                if(!$user)
-                {
-                }
 
                 // [2]継続決済のサイクルごとの決済成功時
                 // payment.succeeded
@@ -143,6 +144,18 @@ class PaykeController extends Controller
                     // 特になし。継続してご利用ください。
                     return;
                 }
+
+                $service = new PaykeUserService();
+                $user = $service->find_by_order_id($request->order_id());
+                if(!$user)
+                {
+                    $mService = new MailService($mailer);
+                    $title = "未登録ユーザーの決済データを受信";
+                    $message = "未登録ユーザーの決済データを受信しました。\nPaykeECからの決済データに紐づくユーザーがありません。";
+                    $mService->send_to_admin($title, $message, $request->raw());
+                    return;
+                }
+                Log::info($user->user_name);
     
                 // [3]継続決済の支払停止時（お客さんの支払いが滞っている時）
                 // order.payment_stopped
