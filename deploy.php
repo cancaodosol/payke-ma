@@ -205,6 +205,16 @@ task('set_ini', function () {
 });
 
 /**
+ * Setting Payke Message Ini
+ * メッセージ表示用の設定ファイルを更新する。
+ */
+task('put_ma_file', function () {
+    upload('{{root_dir}}{{payke_ma_file_path}}', '{{deploy_path}}/shared/app/Config/.ma.php');
+    writeln(run('cat {{deploy_path}}/shared/app/Config/.ma.php'));
+    writeln('ok!');
+});
+
+/**
  * ReSymlink to App
  * アプリ名の変更に伴うシンボリックリンクの張り替えを行う。
  */

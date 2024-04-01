@@ -130,6 +130,16 @@ class DeployService
     }
 
     /** 
+     * deployerのコマンド実行
+     **/
+    public function exec_deployer_command(string $command, array $params): array
+    {
+        $params_string = $this->create_params_string($params);
+        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep {$command}{$params_string}";
+        return $this->exec($command);
+    }
+
+    /** 
      * phpからlinuxコマンドを実行する処理
      **/
     public function exec(string $command): array
@@ -176,6 +186,28 @@ class DeployService
         $success = file_put_contents($to_path, $contents);
 
         return $success ? "{$this->resource_dir}tmp/.env_{$file_name}.php" : "";
+    }
+
+    /**
+     * ユーザー情報をもとに、.ma.phpファイルを作成する。
+     *
+     * @param PaykeUser $user
+     *
+     * @return bool
+     */
+    public function create_ma_file(PaykeUser $user): string
+    {
+        $base_path = "{$this->root_dir}{$this->resource_dir}templates/.ma.php";
+        $to_path = "{$this->root_dir}{$this->resource_dir}tmp/.ma_{$user->user_folder_id}.php";
+
+        $contents = file_get_contents($base_path);
+        $contents = str_replace('NOTICE_FOR_ALL_URL_VALUE', route("home")."/notice/all.php", $contents);
+        $contents = str_replace('NOTICE_FOR_PERSONAL_ADMIN_URL_VALUE', route("home")."/notice/personal/{$user->user_folder_id}_admin.php", $contents);
+        $contents = str_replace('NOTICE_FOR_PERSONAL_LOGIN_URL_VALUE', route("home")."/notice/personal/{$user->user_folder_id}_login.php", $contents);
+
+        $success = file_put_contents($to_path, $contents);
+
+        return $success ? "{$this->resource_dir}tmp/.ma_{$user->user_folder_id}.php" : "";
     }
 
     /**
@@ -513,6 +545,33 @@ class DeployService
         }else{
             $message = "PaykeECの再開に失敗しました。";
             $logService->write_error_log($user, 'アプリ再開失敗', $message, null, $params_string, $outLog);
+        }
+
+        return $is_success;
+    }
+
+    /**
+     * maファイルを設置する。
+     */
+    public function put_ma_file(PaykeUser $user, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
+
+        $params['payke_ma_file_path'] = $this->create_ma_file($user);
+
+        // デプロイを実行す。
+        $outLog = $this->exec_deployer_command("put_ma_file", $params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
+
+        $logService = new DeployLogService();
+        $params_string = $this->create_params_string($params);
+        if($is_success){
+            $message = "maファイルを設置しました。";
+            $logService->write_success_log($user, "maファイル設置", $message, null, $params_string, $outLog);
+        }else{
+            $message = "maファイルを設置に失敗しました。";
+            $logService->write_error_log($user, 'maファイル設置失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;
