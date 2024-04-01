@@ -48,7 +48,7 @@ class PaykeEcOrderdMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            text: 'email.payke_ec_ordered',
+            view: 'email.payke_ec_ordered',
             with: [
                 'name' => $this->name,
                 'login_id' => $this->login_id,
