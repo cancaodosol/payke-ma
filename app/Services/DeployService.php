@@ -153,15 +153,28 @@ class DeployService
     /**
      * デプロイするデータベース情報をもとに、.env.phpファイルを作成する。
      *
-     * @param string $file_name
-     * @param array $config
+     * @param PaykeUser $user
+     * @param PaykeDb $db
      *
      * @return bool
      */
-    public function create_env_file(string $file_name, array $config): string
+    public function create_env_file(PaykeUser $user, PaykeDb $db): string
     {
+        $config = [
+            'DB_DATASOURCE' => 'Database/Mysql',
+            'DB_HOST' => $db['db_host'],
+            'DB_PORT' => 3306,
+            'DB_DATABASE' => $db['db_database'],
+            'DB_USERNAME' => $db['db_username'],
+            'DB_PASSWORD' => $db['db_password'],
+            'DB_PREFIX' => '',
+
+            'SECURITY_SALT' => SecurityHelper::create_salt(),
+            'SECURITY_CIPHER_SEED' => SecurityHelper::create_seed()
+        ];
+
         $base_path = "{$this->root_dir}{$this->resource_dir}templates/.env.php";
-        $to_path = "{$this->root_dir}{$this->resource_dir}tmp/.env_{$file_name}.php";
+        $to_path = "{$this->root_dir}{$this->resource_dir}tmp/.env_{$user->user_folder_id}.php";
 
         $environment = [];
         foreach ($config as $k => $v) {
@@ -185,7 +198,7 @@ class DeployService
 
         $success = file_put_contents($to_path, $contents);
 
-        return $success ? "{$this->resource_dir}tmp/.env_{$file_name}.php" : "";
+        return $success ? "{$this->resource_dir}tmp/.env_{$user->user_folder_id}.php" : "";
     }
 
     /**
@@ -242,20 +255,7 @@ class DeployService
         $params['payke_install_file_path___installed_true'] = $this->payke_install_file_path___installed_true;
         $params['payke_install_file_path___installed_false'] = $this->payke_install_file_path___installed_false;
 
-        $env = [
-            'DB_DATASOURCE' => 'Database/Mysql',
-            'DB_HOST' => $db['db_host'],
-            'DB_PORT' => 3306,
-            'DB_DATABASE' => $db['db_database'],
-            'DB_USERNAME' => $db['db_username'],
-            'DB_PASSWORD' => $db['db_password'],
-            'DB_PREFIX' => '',
-
-            'SECURITY_SALT' => SecurityHelper::create_salt(),
-            'SECURITY_CIPHER_SEED' => SecurityHelper::create_seed()
-        ];
-        $env_file_name = "{$user->user_folder_id}_{$datetime}";
-        $params['payke_env_file_path'] = $is_first ? $this->create_env_file($env_file_name, $env) : '';
+        $params['payke_env_file_path'] = $is_first ? $this->create_env_file($user, $db) : '';
 
         $params['payke_ini_file_path'] = $user->enable_affiliate == 1 ? 
             $this->payke_ini_file_path___affiliate_on : $this->payke_ini_file_path___affiliate_off;
@@ -275,9 +275,10 @@ class DeployService
             $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
             $o = [];
             $this->unlock($host, $user, $db, $payke, $o);
+            return $is_success;
         }
 
-        if($is_first && $is_success && $user->enable_affiliate == 1)
+        if($is_first && $user->enable_affiliate == 1)
         {
             $message = "アフィリエイト機能を有効にしました。";
             $logService->write_other_log($user, 'アフィリエイト有効', $message);
