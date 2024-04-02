@@ -11,8 +11,13 @@
                     <div class="mt-6 divide-y divide-gray-200">
                       <div class="space-y-1">
                         <h3 class="text-2xl font-bold tracking-tight leading-6 text-gray-900">Payke EC</h3>
-                        <p class="max-w-2xl text-sm text-gray-500">こちらのログインURLから、PaykeECをご利用ください。</p>
+                        @if(count($user->PaykeUsers) > 0)
+                          <p class="max-w-2xl text-sm text-gray-500">こちらのログインURLから、PaykeECをご利用ください。</p>
+                        @else
+                          <p class="max-w-2xl text-sm text-gray-500 pb-8">現在、利用できるPaykeECはありません。</p>
+                        @endif
                       </div>
+                      @if(count($user->PaykeUsers) > 0)
                       <div class="mt-6">
                         <dl class="divide-y divide-gray-200">
                           <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
@@ -49,6 +54,7 @@
                           </div>
                         </dl>
                       </div>
+                      @endif
                     </div>
                     <div class="mt-6 divide-y divide-gray-200">
                       <div class="space-y-1">
