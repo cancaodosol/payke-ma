@@ -142,11 +142,17 @@ class IndexController extends Controller
                     return view('common.result', ["errorTitle" => "あちゃ〜、、失敗！", "errorMessage" => "Payke のデプロイに失敗しました！", "info" => $outLog]);
                 }
             case ':put_ma' :
-                $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
-                $deploy = new DeployService();
-                $outLog = [];
-                $is_success = $deploy->put_ma_file($user, $outLog);
-                dd($outLog);
+                $ids = explode(",", $searchWords[1]);
+                $uService = new PaykeUserService();
+                $users = $uService->find_by_ids($ids);
+                $result = [];
+                foreach($users as $user){
+                    $deploy = new DeployService();
+                    $outLog = [];
+                    $is_success = $deploy->put_ma_file($user, $outLog);
+                    $result[] = "user: {$user->user_name}({$user->id}), is_success: {$is_success}";
+                }
+                dd($result);
             case ':d_many' : 
                 $uService = new PaykeUserService();
                 $rService = new PaykeResourceService();

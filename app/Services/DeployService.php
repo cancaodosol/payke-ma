@@ -570,7 +570,7 @@ class DeployService
         $params_string = $this->create_params_string($params);
         if($is_success){
             $message = "maファイルを設置しました。";
-            $logService->write_success_log($user, "maファイル設置", $message, null, $params_string, $outLog);
+            $logService->write_other_log($user, "maファイル設置", $message, null, $params_string, $outLog);
         }else{
             $message = "maファイルを設置に失敗しました。";
             $logService->write_error_log($user, 'maファイル設置失敗', $message, null, $params_string, $outLog);
