@@ -16,7 +16,7 @@ class ErrorMail extends Mailable
 
     public string $title;
     public string $message_text;
-    public string $jsondata;
+    public $jsondata;
     public string $logs;
 
     /**
