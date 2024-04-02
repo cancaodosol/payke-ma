@@ -256,6 +256,7 @@ class DeployService
         $params['payke_install_file_path___installed_false'] = $this->payke_install_file_path___installed_false;
 
         $params['payke_env_file_path'] = $is_first ? $this->create_env_file($user, $db) : '';
+        $params['payke_ma_file_path'] = $is_first ? $this->create_ma_file($user) : '';
 
         $params['payke_ini_file_path'] = $user->enable_affiliate == 1 ? 
             $this->payke_ini_file_path___affiliate_on : $this->payke_ini_file_path___affiliate_off;
