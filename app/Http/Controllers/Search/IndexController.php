@@ -76,13 +76,7 @@ class IndexController extends Controller
                 dd($logs);
             case ':send_email' :
                 $mailser = new MailService($mailer);
-                $user = PaykeUser::where('id', 24)->firstOrFail();
-                // $user->payke_order_id = "1234";
-                // $mailer->to($user->email_address)
-                //     ->send(new PaykeEcOrderdMail($user, "ぉぎん", "hahaha", route("login")));
-                // $mailer->to($user->email_address)
-                //     ->send(new ErrorMail("データなし", "テストでエラーメッセージを送ってみました。"));
-                $mailser->send_to_admin("サービスから", "送ってみたよ。");
+                $mailser->send_to_admin("メール送信テスト", "管理ユーザー向けのメールを送ってみたよ。");
             case ':set_user' :
                 $user = User::where('id', 2)->firstOrFail();
                 // $pUser = PaykeUser::where('id', 30)->firstOrFail();
