@@ -53,6 +53,6 @@ class RegisteredUserController extends Controller
         $mailer->to($request->email)
             ->send(new NewUserIntroduction($user, $password));
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('admin.index');
     }
 }

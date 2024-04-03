@@ -6,6 +6,6 @@ PaykeMAに管理ユーザーに新規ユーザー登録しました。<br />
 - パスワード： {{ $password }}<br />
 <br />
 ▼ こちらからログインしてください。<br />
-{{ route('login') }}<br />
+<a href="{{ route('login') }}">{{ route('login') }}</a><br />
 <br />
 
