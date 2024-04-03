@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -35,22 +36,22 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'string', Rules\Password::defaults()],
         ]);
+
+        $password = Str::random(8);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($password),
+            'role' => User::ROLE__ADMIN
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
         // メールの送信処理を追加
-        $mailer->to('test@example.com')
-            ->send(new NewUserIntroduction());
+        $mailer->to($request->email)
+            ->send(new NewUserIntroduction($user, $password));
 
         return redirect(RouteServiceProvider::HOME);
     }

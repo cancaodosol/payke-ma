@@ -126,6 +126,12 @@ Route::middleware(['auth', 'admin'])->group(
         Route::post('/deploy_setting/edit/', [\App\Http\Controllers\Deploy\SettingController::class, 'post_edit'])
             ->name('deploy_setting.edit.post');
 
+        Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'view_all'])
+            ->name('admin.index');
+
+        Route::post('/admin/edit_password/post', [\App\Http\Controllers\AdminController::class, 'post_edit_password'])
+            ->name('admin.edit.password');
+
         Route::post('/search', \App\Http\Controllers\Search\IndexController::class)
             ->name('search.index');
         

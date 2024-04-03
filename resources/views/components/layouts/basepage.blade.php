@@ -212,7 +212,11 @@
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.index')">
-                                {{ __('ユーザー情報') }}
+                                ユーザー情報
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('admin.index')">
+                                管理ユーザー一覧
                             </x-dropdown-link>
 
                             <!-- Authentication -->
@@ -222,7 +226,7 @@
                                 <x-dropdown-link :href="route('logout')"
                                         onclick="event.preventDefault();
                                                     this.closest('form').submit();">
-                                    {{ __('ログアウト') }}
+                                    ログアウト
                                 </x-dropdown-link>
                             </form>
                         </x-slot>

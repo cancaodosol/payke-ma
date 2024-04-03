@@ -29,12 +29,19 @@ class UserService
         return $user;
     }
 
+    public function edit_password(int $id, string $new_password)
+    {
+        $user = $this->find_by_id($id);
+        $user->password = Hash::make($new_password);
+        $user->save();
+    }
+
     public function find_admin_users()
     {
         return User::where("role", User::ROLE__ADMIN)->get();
     }
 
-    public function find_by_user_id(int $userid)
+    public function find_by_id(int $userid)
     {
         return User::where("id", $userid)->firstOrFail();
     }

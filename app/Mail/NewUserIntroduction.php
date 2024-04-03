@@ -13,16 +13,16 @@ use Illuminate\Queue\SerializesModels;
 class NewUserIntroduction extends Mailable
 {
     use Queueable, SerializesModels;
-    public User $toUser;
-    public User $newUser;
+    public User $user;
+    public string $password;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $toUser, User $newUser)
+    public function __construct(User $user, string $password)
     {
-        $this->toUser = $toUser;
-        $this->newUser = $newUser;
+        $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -31,7 +31,7 @@ class NewUserIntroduction extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New User Introduction',
+            subject: '【PaykeMA】新規ユーザー登録しました。',
         );
     }
 
@@ -41,7 +41,7 @@ class NewUserIntroduction extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'email.new_user_introduction',
+            view: 'email.new_user_introduction',
         );
     }
 

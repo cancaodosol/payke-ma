@@ -76,9 +76,9 @@
                             </dd>
                           </div>
                           <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
-                            <dt class="text-sm font-medium text-gray-500">利用開始日</dt>
+                            <dt class="text-sm font-medium text-gray-500">利用開始</dt>
                             <dd class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              <span class="flex-grow">{{ $user->PaykeUsers[0]->created_at }}</span>
+                              <span class="flex-grow">{{ $user->created_at }}</span>
                             </dd>
                           </div>
                           <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">

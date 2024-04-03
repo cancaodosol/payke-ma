@@ -19,7 +19,14 @@ class ProfileController extends Controller
      */
     public function index(Request $request): View
     {
-        $pUser = $request->user()->PaykeUsers[0];
+        $pUser = count($request->user()->PaykeUsers) > 0 ? $request->user()->PaykeUsers[0] : null;
+
+        if($pUser == null) {
+            return view('profile.index', [
+                'user' => $request->user(),
+            ]);
+        }
+
         if($pUser->is_before_setting())
         {
             return view('profile.init', [
