@@ -80,16 +80,6 @@ class DeployService
     }
 
     /** 
-     * メンテナンス用ユーザーのパスワード設定処理のコマンド実行
-     **/
-    public function exec_update_superadmin_password(array $params): array
-    {
-        $params_string = $this->create_params_string($params);
-        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep update_superadmin_password{$params_string}";
-        return $this->exec($command);
-    }
-
-    /** 
      * ログイン制御処理のコマンド実行
      **/
     public function exec_lock_users(array $params): array
@@ -134,6 +124,12 @@ class DeployService
      **/
     public function exec_deployer_command(string $command, array $params): array
     {
+        if(in_array($command, [
+            "replace_admin_to_superadmin",
+            "put_ma_file"
+        ])){
+            throw new Exception('Not Found Deployer Command ['.$command.'].');
+        }
         $params_string = $this->create_params_string($params);
         $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep {$command}{$params_string}";
         return $this->exec($command);
@@ -421,27 +417,27 @@ class DeployService
     }
 
     /**
-     * メンテナンス用のユーザーのパスワードを変更する
+     * 初回作成されるadminユーザーを置き換えて、メンテナンス用のユーザーにする
      */
-    public function update_superadmin_password(PaykeUser $user, string $passpard, array &$outLog)
+    public function replace_admin_to_superadmin(PaykeUser $user, string $username, string $passpard, array &$outLog)
     {
         // Modelでもらった情報を、配列に詰め直す。
         $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
-        $params['superadmin_username'] = "admin";
+        $params['superadmin_username'] = $username;
         $params['superadmin_password'] = SecurityHelper::transfer_safety_bash_text(SecurityHelper::create_hashed_password($passpard));
 
         // デプロイを実行す。
-        $outLog = $this->exec_update_superadmin_password($params);
+        $outLog = $this->exec_deployer_command("replace_admin_to_superadmin", $params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
 
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "PaykeECのメンテナンス用ユーザーのパスワードを変更しました。";
-            $logService->write_other_log($user, "メンテナンス用ユーザーのパスワード設定", $message, null, $params_string, $outLog);
+            $message = "PaykeECのメンテナンス用ユーザーを作成しました。";
+            $logService->write_other_log($user, "メンテナンス用ユーザー作成", $message, null, $params_string, $outLog);
         }else{
-            $message = "PaykeECのメンテナンス用ユーザーのパスワードの変更に失敗しました。";
-            $logService->write_error_log($user, 'メンテナンス用ユーザーのパスワード設定失敗', $message, null, $params_string, $outLog);
+            $message = "PaykeECのメンテナンス用ユーザーの作成に失敗しました。";
+            $logService->write_error_log($user, 'メンテナンス用ユーザー作成失敗', $message, null, $params_string, $outLog);
         }
 
         return $is_success;

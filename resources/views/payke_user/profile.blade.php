@@ -19,16 +19,15 @@
                                 </td></tr>
                                 <tr><th class="text-right">アフィリ：</th><td>{{ $user->enable_affiliate ? '使用可能' : '使用不可' }}</td></tr>
                                 <tr><th class="text-right">URL：</th><td><a href="{{ $user->app_url }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">{{ $user->app_url }}</a></td></tr>
-                                <tr><th class="text-right">管理パス：</th><td>{{ $user->superadmin_password }}</td></tr>
                                 <tr><th class="text-right">初回作成：</th><td>{{ $user->created_at }}</td></tr>
                                 <tr><th class="text-right">最終更新：</th><td>{{ $user->updated_at }}</td></tr>
                             </table>
                         </div>
                         <div class="mt-5 text-right">
                             <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                >> アップデート履歴</a>
+                                アップデート履歴</a>
                             <a href="{{ route('payke_user.edit', ['id' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                >> 編集画面</a>
+                                編集画面</a>
                         </div>
                     </div>
                 </div>
@@ -64,23 +63,14 @@
                         <div class="text-sm">
                             <table class="mt-2 ml-5">
                                 <tr><td class="text-right">メールアドレス：</td><td>{{ $user->email_address }}</td></tr>
+                                <tr><td class="text-right">注文ID：</td><td>{{ $user->payke_order_id }}</td></tr>
                             </table>
                         </div>
-                        <h4 class="font-bold text-base leading-tight mt-5">購入情報</h4>
-                        <div class="text-sm">
+                        <h4 class="font-bold text-base leading-tight mt-5">メンテナンス用ユーザー</h4>
+                        <div class="my-2 text-sm">
                             <table class="mt-2 ml-5">
-                                <tr>
-                                    <th class="text-center">決済日</th>
-                                    <th class="text-center">決済ID</th>
-                                    <th class="text-center">注文ID</th>
-                                    <th class="text-center">リファレンスID</th>
-                                </tr>
-                                <tr>
-                                    <td> ---- no data ---- </td>
-                                    <td> ---- no data ---- </td>
-                                    <td> {{ $user->payke_order_id }} </td>
-                                    <td> ---- no data ---- </td>
-                                </tr>
+                                <tr><td class="text-right">　　ユーザー名：</td><td>{{ $user->superadmin_username }}</td></tr>
+                                <tr><td class="text-right">　　パスワード：</td><td>{{ $user->superadmin_password }}</td></tr>
                             </table>
                         </div>
                     </div>
@@ -100,7 +90,7 @@
                             </div>
                             <div class="mt-1 text-right">
                                 <button type="submit" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    >> メモを更新</button>
+                                    メモを更新</button>
                             </div>
                         </form>
                     </div>
