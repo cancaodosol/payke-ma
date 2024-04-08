@@ -20,8 +20,13 @@ class DeploySettingService
 
     public function get_value(string $key)
     {
-        $setting = DeploySetting::where('key', $key)->firstOrFail();
+        $setting = $this->find_by_key($key);
         return $setting ? $setting->value : false;
+    }
+
+    public function match_x_auth_token(string $x_auth_token)
+    {
+        return $x_auth_token == $this->get_value("payke_x_auth_token");
     }
 
     public function edit($settings)

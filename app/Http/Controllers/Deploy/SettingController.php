@@ -14,12 +14,14 @@ class SettingController extends Controller
     {
         $service = new DeploySettingService();
         $payke_resource_id = $service->get_value("payke_resource_id");
+        $payke_x_auth_token = $service->get_value("payke_x_auth_token");
 
         $rService = new PaykeResourceService();
         $resources = $rService->find_all_to_array();
 
         $settings = [
-            "payke_resource_id" => $payke_resource_id
+            "payke_resource_id" => $payke_resource_id,
+            "payke_x_auth_token" => $payke_x_auth_token
         ];
 
         return view('deploy_setting.edit', ['settings' => $settings, 'resources' => $resources]);

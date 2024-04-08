@@ -10,7 +10,11 @@ class OrderRequest extends FormRequest
 {
     public function raw(): string
     {
-        return $this->getContent();
+        $raw = [
+            "x-auth-token" => $this->header("X-AUTH-TOKEN", "none"),
+            "content" => json_decode($this->getContent())
+        ];
+        return json_encode($raw);
     }
 
     public function data(): array

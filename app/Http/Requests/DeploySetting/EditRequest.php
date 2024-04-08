@@ -27,12 +27,10 @@ class EditRequest extends FormRequest
 
     public function to_setting_models(): array
     {
-        $settings = [];
-
-        $payke_resource_id = new DeploySetting();
-        $payke_resource_id->key = "payke_resource_id";
-        $payke_resource_id->value = $this->payke_resource_id;
-        $settings[] = $payke_resource_id;
+        $settings = [
+            (new DeploySetting())->set_key_and_value("payke_resource_id", $this->payke_resource_id),
+            (new DeploySetting())->set_key_and_value("payke_x_auth_token", $this->payke_x_auth_token)
+        ];
 
         return $settings;
     }

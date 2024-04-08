@@ -7,6 +7,7 @@ use App\Http\Requests\Payke\OrderRequest;
 use App\Services\UserService;
 use App\Factories\PaykeUserFactory;
 use App\Services\DeployService;
+use App\Services\DeploySettingService;
 use App\Services\DeployLogService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
@@ -83,6 +84,12 @@ class PaykeController extends Controller
             Log::info($request->raw());
             Log::info($request->request_url());
             $request->to_payke_ec_order()->save();
+
+            $dService = new DeploySettingService();
+            if(!$dService->match_x_auth_token($request->header("X-AUTH-TOKEN", "")))
+            {
+                return;
+            }
 
             // [1]PaykeECの新規購入時
             if($request->is_type_placed())
