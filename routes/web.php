@@ -21,6 +21,8 @@ Route::get('/', function () {
 Route::get('/stopped', function () { return view('messages.app_is_stopped'); })
     ->name('app.stopped');
 
+Route::get('/welcome', function () { return view('welcome'); });
+
 Route::post('/payke/ec2ma', [\App\Http\Controllers\PaykeController::class, 'connect_paykeec_to_ma'])
     ->name('payke.ec2ma');
 
@@ -37,8 +39,6 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'admin'])->group(
     function()
     {
-        Route::get('/welcome', function () { return view('welcome'); });
-
         Route::get('/payke_host', [App\Http\Controllers\PaykeHostController::class ,'view_all'])
             ->name('payke_host.index');
         
