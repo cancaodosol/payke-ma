@@ -247,12 +247,12 @@ task('create_admin_user', function () {
 });
 
 /**
- * Update SuperAdmin User
- * メンテナンス用のユーザーのパスワード変更を行う。
+ * Remake Ini User
+ * 初回作成されるadminユーザーを置き換えて、メンテナンス用のユーザーにする。
  */
-task('update_superadmin_password', function () {
+task('replace_admin_to_superadmin', function () {
     $update_superadmin_sql = <<<EOT
-    'UPDATE users SET password = "{{superadmin_password}}", locked = NULL, modified = NOW() WHERE username = "{{superadmin_username}}"'
+    'UPDATE users SET username = "{{superadmin_username}}", password = "{{superadmin_password}}", locked = NULL, modified = NOW() WHERE username = "admin"'
     EOT;
     writeln($update_superadmin_sql);
     writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$update_superadmin_sql}"));

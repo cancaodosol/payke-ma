@@ -6,9 +6,12 @@ use App\Models\PaykeHost;
 use App\Models\PaykeResource;
 use App\Models\PaykeDb;
 use App\Models\PaykeUser;
+use App\Services\UserService;
 use App\Services\DeployService;
 use App\Services\DeployLogService;
 use App\Jobs\DeployJob;
+use App\Jobs\DeployJobOrderd;
+use App\Helpers\SecurityHelper;
 use Carbon\Carbon;
 
 class PaykeUserService
@@ -53,7 +56,12 @@ class PaykeUserService
 
             // Paykeのデプロイ開始。
             // MEMO：初回作成時に、リソース不足でデプロイできなかったものは、ここで行う想定。
-            $deployJob = (new DeployJob($newUser->PaykeHost, $newUser, $newUser->PaykeDb, $newUser->PaykeResource, true))->delay(Carbon::now());
+            $username = $newUser->email_address;
+            $new_password = SecurityHelper::create_ramdam_string(15);
+            $uService = new UserService();
+            $uService->edit_password($currentUser->User->id, $new_password);
+
+            $deployJob = (new DeployJobOrderd($newUser->PaykeHost, $newUser, $newUser->PaykeDb, $newUser->PaykeResource, $username, $new_password))->delay(Carbon::now());
             dispatch($deployJob);
             return;
         }

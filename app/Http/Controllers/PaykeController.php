@@ -97,7 +97,7 @@ class PaykeController extends Controller
                 $order_id = $request->order_id();
                 $user_name = $request->customer_full_name();
                 $email_address = $request->customer_email();
-                $new_password = SecurityHelper::create_ramdam_string();
+                $new_password = SecurityHelper::create_ramdam_string(15);
                 Log::info("ユーザー名: ".$user_name."、 メールアドレス: ".$email_address."、 パスワード: ".$new_password. "、 URL: ".$request->url());
     
                 // ログインユーザーを作成する

@@ -10,6 +10,8 @@ use App\Models\PaykeResource;
 use App\Models\PaykeUser;
 use App\Helpers\SecurityHelper;
 
+use Exception;
+
 class DeployService
 {
     private string $payke_ini_file_path___affiliate_on;
@@ -124,11 +126,11 @@ class DeployService
      **/
     public function exec_deployer_command(string $command, array $params): array
     {
-        if(in_array($command, [
+        if(!in_array($command, [
             "replace_admin_to_superadmin",
             "put_ma_file"
         ])){
-            throw new Exception('Not Found Deployer Command ['.$command.'].');
+            throw new \Exception('Not Found Deployer Command ['.$command.'].');
         }
         $params_string = $this->create_params_string($params);
         $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep {$command}{$params_string}";
