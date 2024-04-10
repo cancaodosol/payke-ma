@@ -20,7 +20,7 @@
                     <th scope="col" class="whitespace-nowrap py-3.5 text-center text-xs font-semibold text-gray-900">@sortablelink('status', '稼働 / 停止 ▼')</th>
                     <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-xs font-semibold text-gray-900">@sortablelink('user_name', '使用者 ▼')</th>
                     <th scope="col" class="whitespace-nowrap text-left text-xs font-semibold text-gray-900 md:hidden"></th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900">@sortablelink('PaykeResource.version', 'リリース状況 ▼')</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900">@sortablelink('PaykeResource.version_for_sort', 'リリース状況 ▼')</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900">@sortablelink('enable_affiliate', 'アフィリエイト ▼')</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900 hidden md:table-cell">更新可能バージョン</th>
                     <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900 hidden md:table-cell">@sortablelink('PaykeHost.name', 'サーバー ▼')</th>
