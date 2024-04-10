@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class PaykeUser extends Model
 {
     use HasFactory;
+    use Sortable; 
 
     const STATUS__ACTIVE = 1;
     const STATUS__BEFORE_DEPLOY = -1;

@@ -28,7 +28,7 @@ class PaykeUserController extends Controller
 
     public function view_all(Request $request)
     {
-        $users = PaykeUser::all();
+        $users = PaykeUser::sortable()->get();
         $rService = new PaykeResourceService();
         $resources = $rService->find_all_to_array();
         return view('payke_user.index', ['users' => $users, 'resources' => $resources]);

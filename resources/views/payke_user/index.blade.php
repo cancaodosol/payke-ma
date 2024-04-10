@@ -16,18 +16,16 @@
             <table class="min-w-full divide-y divide-gray-300">
             <thead>
                 <tr>
-                    <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0 hidden md:table-cell">No.</th>
-                    <th scope="col" class="whitespace-nowrap py-3.5 text-center text-sm font-semibold text-gray-900">稼働 / 停止</th>
-                    <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900">使用者</th>
-                    <th scope="col" class="whitespace-nowrap text-left text-sm font-semibold text-gray-900 md:hidden"></th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">現バージョン</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">更新可能</th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">
-                        <!-- サーバー -->
-                        <img class="w-5 h-5" src="{{ asset('/images/鯖_black.png') }}" alt="サバ" title="サバ">
-                    </th>
-                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">URL</th>
-                    <th scope="col" class="relative whitespace-nowrap text-sm py-3.5 pl-3 pr-4 sm:pr-0">
+                    <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-xs font-semibold text-gray-900 sm:pl-0 hidden md:table-cell">No.</th>
+                    <th scope="col" class="whitespace-nowrap py-3.5 text-center text-xs font-semibold text-gray-900">@sortablelink('status', '稼働 / 停止 ▼')</th>
+                    <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-xs font-semibold text-gray-900">@sortablelink('user_name', '使用者 ▼')</th>
+                    <th scope="col" class="whitespace-nowrap text-left text-xs font-semibold text-gray-900 md:hidden"></th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900">@sortablelink('PaykeResource.version', 'リリース状況 ▼')</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900">@sortablelink('enable_affiliate', 'アフィリエイト ▼')</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900 hidden md:table-cell">更新可能バージョン</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900 hidden md:table-cell">@sortablelink('PaykeHost.name', 'サーバー ▼')</th>
+                    <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-xs font-semibold text-gray-900 hidden md:table-cell">@sortablelink('app_url', 'URL ▼')</th>
+                    <th scope="col" class="relative whitespace-nowrap text-xs py-3.5 pl-3 pr-4 sm:pr-0">
                         詳細
                     </th>
                 </tr>
@@ -140,12 +138,14 @@
                             </svg>
                         </a>
                     </td>
-                    <td class="flex items-center whitespace-nowrap px-2 py-1.5">
+                    <td class="whitespace-nowrap px-2 py-1.5">
                         <span class="w-16 px-2 py-1.5 text-xs md:text-sm font-medium text-gray-900">{{ $user->PaykeResource->version }}</span>
+                    </td>
+                    <td class="whitespace-nowrap px-2 py-1.5 text-xs">
                         @if($user->enable_affiliate)
-                        <img class="ml-2 w-5 h-5" src="{{ asset('/images/アフィリエイト可能アイコン.png') }}" alt="アフィリエイト可能" title="アフィリエイト可能">
+                            可能
                         @else
-                        <img class="ml-2 w-5 h-5" src="{{ asset('/images/アフィリエイト不可アイコン.png') }}" alt="アフィリエイト不可" title="アフィリエイト不可">
+                            不可
                         @endif
                     </td>
                     <td class="whitespace-nowrap px-2 py-1.5 text-xs font-medium text-gray-900 hidden md:table-cell">
@@ -168,7 +168,7 @@
                         </form>
                         @endif
                     </td>
-                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">{{ $user->PaykeHost->name ?? '未設定' }}</td>
+                    <td class="whitespace-nowrap px-2 py-1.5 text-sm text-gray-900 hidden md:table-cell">@if($user->PaykeHost) {{$user->PaykeHost->name}} @else <span class="text-xs">未設定</span> @endif</td>
                     <td class="whitespace-nowrap px-2 py-1.5 text-sm text-blue-500 underline hidden md:table-cell"><a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">{{ $user->app_url }}</a></td>
                     <td class="relative whitespace-nowrap py-1.5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
