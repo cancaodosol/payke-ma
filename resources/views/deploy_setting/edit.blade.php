@@ -16,7 +16,7 @@
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">下記情報を、親PaykeECの商品ページ「注文/決済の情報の配信」にご登録ください。</p>
         <div class="mt-2 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <x-forms.input name="payke_ec2ma_url" value="{{ route('payke.ec2ma') }}" label="送信先" disabled="true" addCopyBtn="コピー"/>
-            <x-forms.input name="payke_x_auth_token" value="{{ $settings['payke_x_auth_token'] ?? false ? $settings['payke_x_auth_token'] : null }}" label="認証鍵" addRandamBtn="再作成"/>
+            <x-forms.input name="payke_x_auth_token" value="{{ $settings['payke_x_auth_token'] ?? false ? $settings['payke_x_auth_token'] : null }}" label="認証鍵" addCopyBtn="コピー" addRandamBtn="再作成"/>
         </div>
         <!-- 保存ボタン -->
         <div class="mt-6 flex items-center justify-end gap-x-6">
