@@ -29,6 +29,7 @@ class PaykeResource extends Model
         $this->version_x = $vx;
         $this->version_y = $vy;
         $this->version_z = $vz;
+        $this->version_for_sort = 100000000 * $vx + 10000 * $vy + $vz;
     }
 
     // MEMO : "."は、アプリのURLに使えないため、"-"に置換する。
