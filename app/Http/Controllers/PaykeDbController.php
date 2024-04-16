@@ -34,7 +34,7 @@ class PaykeDbController extends Controller
 
         session()->flash('successTitle', '成功！');
         session()->flash('successMessage', "データベース情報を新規登録しました。");
-        return redirect()->route('payke_user.index');
+        return redirect()->route('payke_db.create');
     }
 
     public function view_edit(int $id)
