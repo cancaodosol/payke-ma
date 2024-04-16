@@ -287,8 +287,6 @@ class DeployService
             }
     
             return $is_success;    
-        return $is_success;
-            return $is_success;    
         }
         catch(Exception $e)
         {
