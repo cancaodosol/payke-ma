@@ -259,31 +259,44 @@ class DeployService
         $params['payke_ini_file_path'] = $user->enable_affiliate == 1 ? 
             $this->payke_ini_file_path___affiliate_on : $this->payke_ini_file_path___affiliate_off;
 
-        // デプロイを実行す。
-        $outLog = $this->exec_deply($params);
-        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
-
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
-        $title = "{$payke->version} 更新";
-        if($is_success){
-            $message = "Payke {$payke->version}のデプロイに成功しました。";
-            $logService->write_version_log($user, $title, $message, $payke, $params_string, $outLog);
-        }else{
-            $message = "Payke {$payke->version}のデプロイに失敗しました。";
-            $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
-            $o = [];
-            $this->unlock($host, $user, $db, $payke, $o);
-            return $is_success;
-        }
 
-        if($is_first && $user->enable_affiliate == 1)
+        try
         {
-            $message = "アフィリエイト機能を有効にしました。";
-            $logService->write_other_log($user, 'アフィリエイト有効', $message);
-        }
-
+            // デプロイを実行す。
+            $outLog = $this->exec_deply($params);
+            $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] info successfully deployed!';
+    
+            $title = "{$payke->version} 更新";
+            if($is_success){
+                $message = "Payke {$payke->version}のデプロイに成功しました。";
+                $logService->write_version_log($user, $title, $message, $payke, $params_string, $outLog);
+            }else{
+                $message = "Payke {$payke->version}のデプロイに失敗しました。";
+                $logService->write_error_log($user, $title, $message, $payke, $params_string, $outLog);
+                $o = [];
+                $this->unlock($host, $user, $db, $payke, $o);
+                return $is_success;
+            }
+    
+            if($is_first && $user->enable_affiliate == 1)
+            {
+                $message = "アフィリエイト機能を有効にしました。";
+                $logService->write_other_log($user, 'アフィリエイト有効', $message);
+            }
+    
+            return $is_success;    
         return $is_success;
+            return $is_success;    
+        }
+        catch(Exception $e)
+        {
+            $title = "想定外のエラー";
+            $message = "デプロイ中に、想定外のエラーが発生しました。";
+            $logService->write_error_log($user, $title, $message, $payke, $params_string, [$e->getMessage()]);
+            return false;
+        }
     }
 
     /** 
