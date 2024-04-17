@@ -82,7 +82,6 @@ class PaykeController extends Controller
         try
         {
             Log::info($request->raw());
-            Log::info($request->request_url());
             $request->to_payke_ec_order()->save();
 
             $dService = new DeploySettingService();
@@ -92,7 +91,7 @@ class PaykeController extends Controller
             }
 
             // [1]PaykeECの新規購入時
-            if($request->is_type_placed())
+            if($request->is_type_paid_or_registered())
             {
                 $order_id = $request->order_id();
                 $user_name = $request->customer_full_name();
@@ -163,7 +162,7 @@ class PaykeController extends Controller
                     return;
                 }
                 Log::info($user->user_name);
-    
+
                 // [3]継続決済の支払停止時（お客さんの支払いが滞っている時）
                 // order.payment_stopped
                 if($request->is_type_payment_stopped())
@@ -172,7 +171,7 @@ class PaykeController extends Controller
                     $user->status = PaykeUser::STATUS__HAS_UNPAID;
                     $service->edit($user->id, $user, false);
                 }
-    
+
                 // [4]継続決済の支払再開時
                 // order.payment_restarted
                 if($request->is_type_payment_restarted())
@@ -181,10 +180,18 @@ class PaykeController extends Controller
                     $user->status = PaykeUser::STATUS__ACTIVE;
                     $service->edit($user->id, $user, false);
                 }
-    
+
                 // [5]キャンセル時（お客さんの意思で、アプリの利用を辞めたい時）
                 // order.canceled
                 if($request->is_type_order_canceled())
+                {
+                    $user->status = PaykeUser::STATUS__UNUSED;
+                    $service->edit($user->id, $user, false);
+                }
+
+                // [6]決済完了時（利用期間満了で、継続支払い終了）
+                // order.placed
+                if($request->is_type_placed())
                 {
                     $user->status = PaykeUser::STATUS__UNUSED;
                     $service->edit($user->id, $user, false);

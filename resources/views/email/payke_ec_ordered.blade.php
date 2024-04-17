@@ -4,7 +4,7 @@ Payke EC のご購入ありがとうございます。<br>
 <br>
 こちらから初期設定を行い、Payke ECをご利用ください。<br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー<br>
-URL: {{$login_url}}<br>
+URL: <a href="{{$login_url}}">{{$login_url}}</a><br>
 ID: {{$login_id}}<br>
 パスワード： {{$login_password}}<br>
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー<br>

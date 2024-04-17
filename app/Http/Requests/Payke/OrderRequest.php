@@ -44,12 +44,12 @@ class OrderRequest extends FormRequest
     }
 
     // [1]PaykeECの新規購入時
-    public function is_type_placed(): bool
+    public function is_type_paid_or_registered(): bool
     {
-        return $this->type() == "order.placed";
+        return $this->type() == "order.paid_or_registered";
     }
 
-    // [2]決済成功時
+    // [2]各サイクルの支払時
     public function is_type_payment_succeeded(): bool
     {
         return $this->type() == "payment.succeeded";
@@ -73,13 +73,20 @@ class OrderRequest extends FormRequest
         return $this->type() == "order.canceled";
     }
 
+    // [6]決済完了時（利用期間満了で、継続支払い終了）
+    public function is_type_placed(): bool
+    {
+        return $this->type() == "order.placed";
+    }
+
     public function order_id(): string
     {
-        if($this->is_type_placed()) return $this->data()["id"];
+        if($this->is_type_paid_or_registered()) return $this->data()["id"];
         if($this->is_type_payment_succeeded()) return $this->data()["order_id"];
         if($this->is_type_payment_stopped()) return $this->data()["id"];
         if($this->is_type_payment_restarted()) return $this->data()["id"];
         if($this->is_type_order_canceled()) return $this->data()["id"];
+        if($this->is_type_placed()) return $this->data()["id"];
         return "";
     }
 

@@ -10,11 +10,12 @@ class PaykeEcOrder extends Model
     use HasFactory;
 
     const TYPE_NAMES = [
-        "order.placed" => "注文完了",
+        "order.paid_or_registered" => "注文時",
         "payment.succeeded" => "支払い完了",
         "order.payment_stopped" => "未払い",
         "order.payment_restarted" => "支払い再開",
-        "order.canceled" => "キャンセル"
+        "order.canceled" => "キャンセル",
+        "order.placed" => "期間満了"
     ];
 
     protected $fillable = [
