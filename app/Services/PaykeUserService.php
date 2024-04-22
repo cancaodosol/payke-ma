@@ -201,6 +201,18 @@ class PaykeUserService
                 return $newUser;
             }
         }
+
+        // ステータス「利用終了」を解除したときは、アクセス可能に。
+        if($currentUser->status == PaykeUser::STATUS__UNUSED
+            && ($newUser->status == PaykeUser::STATUS__ACTIVE || $newUser->status == PaykeUser::STATUS__DISABLE_ADMIN)) {
+            $log = [];
+            $is_success = $deployService->restart_app($currentUser, $log);
+            if(!$is_success)
+            {
+                $newUser->status = PaykeUser::STATUS__HAS_ERROR;
+                return $newUser;
+            }
+        }
         
         $logService->write_other_log($currentUser, "ステータス変更{$hand_label}", $message);
         return $newUser;
