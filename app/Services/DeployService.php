@@ -127,6 +127,7 @@ class DeployService
     public function exec_deployer_command(string $command, array $params): array
     {
         if(!in_array($command, [
+            "check_db_connection",
             "replace_admin_to_superadmin",
             "put_ma_file"
         ])){
@@ -584,6 +585,33 @@ class DeployService
             $message = "maファイルを設置に失敗しました。";
             $logService->write_error_log($user, 'maファイル設置失敗', $message, null, $params_string, $outLog);
         }
+
+        return $is_success;
+    }
+
+    /**
+     * データベースの接続確認
+     */
+    public function check_db_connection(PaykeDb $db, array &$outLog)
+    {
+        // Modelでもらった情報を、配列に詰め直す。
+        $host = $db->PaykeHost;
+        $params = [
+            'hostname' => $host->hostname,
+            'remote_user' => $host->remote_user,
+            'port' => $host->port,
+            'identity_file' => $host->identity_file,
+            'resource_dir' => $host->resource_dir,
+            'public_html_dir' => $host->public_html_dir,
+            'db_host' => $db->db_host,
+            'db_username' => $db->db_username,
+            'db_password' => $db->db_password,
+            'db_database' => $db->db_database
+        ];
+
+        // デプロイを実行す。
+        $outLog = $this->exec_deployer_command("check_db_connection", $params);
+        $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
 
         return $is_success;
     }

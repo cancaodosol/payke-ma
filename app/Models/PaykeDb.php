@@ -18,6 +18,11 @@ class PaykeDb extends Model
         return $this->hasOne('App\Models\PaykeUser');
     }
 
+    public function PaykeHost()
+    {
+        return $this->belongsTo('App\Models\PaykeHost');
+    }
+
     protected $fillable = [
         'status'
         ,'payke_host_id'

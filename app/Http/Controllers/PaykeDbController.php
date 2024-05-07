@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaykeDb\CreateRequest;
+use App\Http\Requests\PaykeDb\CreateRequestMany;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
 use Illuminate\Http\Request;
@@ -31,6 +32,20 @@ class PaykeDbController extends Controller
 
         $service = new PaykeDbService();
         $service->add($db);
+
+        session()->flash('successTitle', '成功！');
+        session()->flash('successMessage', "データベース情報を新規登録しました。");
+        return redirect()->route('payke_db.create');
+    }
+
+    public function post_add_many(CreateRequestMany $request)
+    {
+        $dbs = $request->to_payke_dbs();
+
+        $service = new PaykeDbService();
+        foreach ($dbs as $db) {
+            $service->add($db);
+        }
 
         session()->flash('successTitle', '成功！');
         session()->flash('successMessage', "データベース情報を新規登録しました。");

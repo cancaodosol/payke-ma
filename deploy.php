@@ -309,3 +309,12 @@ task('restart_app', function () {
     writeln(run('ls -l {{public_html_dir}}'));
     writeln('ok!');
 });
+
+/**
+ * Check Database Connection
+ * データベースの接続確認。
+ */
+task('check_db_connection', function () {
+    writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}}"));
+    writeln('ok!');
+});

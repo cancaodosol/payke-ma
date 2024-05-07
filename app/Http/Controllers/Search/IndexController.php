@@ -8,6 +8,7 @@ use App\Mail\PaykeEcOrderdMail;
 use App\Mail\ErrorMail;
 use App\Models\DeployLog;
 use App\Models\PaykeUser;
+use App\Models\PaykeDb;
 use App\Models\User;
 use App\Models\Job;
 use App\Models\FailedJob;
@@ -45,6 +46,19 @@ class IndexController extends Controller
         Log::info("search by ".$inputSearchWord);
         switch($searchWords[0])
         {
+            case ':dbs_view' :
+                $dbs = PaykeDb::all();
+                dd($dbs);
+            case ':check_dbs' :
+                $dbs = PaykeDb::where('id', '>=', $searchWords[1])->get();
+                $deploy = new DeployService();
+                $alllogs = [];
+                foreach ($dbs as $db) {
+                    $logs = [];
+                    $is_success = $deploy->check_db_connection($db, $logs);
+                    $alllogs[$db->id.":".$db->db_database] = $logs;
+                }
+                dd($alllogs);
             case ':jobs_view' :
                 $jobs = Job::all();
                 dd($jobs);

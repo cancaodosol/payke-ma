@@ -63,6 +63,9 @@ Route::middleware(['auth', 'admin'])->group(
         Route::post('/payke_db/create', [\App\Http\Controllers\PaykeDbController::class, 'post_add'])
             ->name('payke_db.create.post');
         
+        Route::post('/payke_db/create_many', [\App\Http\Controllers\PaykeDbController::class, 'post_add_many'])
+            ->name('payke_db.create_many.post');
+        
         Route::get('/payke_db/e/{id}', [\App\Http\Controllers\PaykeDbController::class, 'view_edit'])
             ->name('payke_db.edit');
         
