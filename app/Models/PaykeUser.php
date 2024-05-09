@@ -57,6 +57,11 @@ class PaykeUser extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function Tag()
+    {
+        return $this->belongsTo('App\Models\PaykeUserTag');
+    }
+
     public function is_active() { return $this->status == PaykeUser::STATUS__ACTIVE; }
     public function is_before_deploy() { return $this->status == PaykeUser::STATUS__BEFORE_DEPLOY; }
     public function is_update_waiting() { return $this->status == PaykeUser::STATUS__UPDATE_WAITING; }
@@ -71,6 +76,7 @@ class PaykeUser extends Model
 
     protected $fillable = [
         'status'
+        ,'tag_id'
         ,'payke_host_id'
         ,'payke_db_id'
         ,'payke_resource_id'

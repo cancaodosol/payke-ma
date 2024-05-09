@@ -11,6 +11,25 @@
     </div>
     <ul id="job_message_box" class="mt-4 text-xs"></ul>
     <div class="mt-4 flow-root">
+        <div class="">
+            <a href="{{ route('payke_user.index') }}" class="hover:bg-gray-100 text-xs font-semibold me-0.5 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400 inline-flex items-center justify-center">
+                一覧
+            </a>
+            @foreach($tags as $tag)
+                @if(!$tag->color || $tag->color == "none")
+                <a href="{{ route('payke_user.index.tagId', ['tagId' => $tag->id]) }}" class="hover:bg-gray-100 text-xs font-semibold me-0.5 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400 inline-flex items-center justify-center">
+                    {{ $tag->name }}
+                </a>
+                @else
+                <a href="{{ route('payke_user.index.tagId', ['tagId' => $tag->id]) }}" class="bg-{{$tag->color}}-100 hover:bg-{{$tag->color}}-200 text-{{$tag->color}}-800 text-xs font-semibold me-0.5 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-{{$tag->color}}-400 border border-{{$tag->color}}-400 inline-flex items-center justify-center">
+                    {{ $tag->name }}
+                </a>
+                @endif
+            @endforeach
+            <a href="{{ route('payke_user_tags.index') }}" class="bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-semibold me-0.5 px-2.5 py-0.5 rounded border border-emerald-400 inline-flex items-center justify-center">
+                ＋ 編集
+            </a>
+        </div>
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table class="min-w-full divide-y divide-gray-300">

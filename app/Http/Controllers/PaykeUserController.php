@@ -26,12 +26,40 @@ class PaykeUserController extends Controller
         return view('payke_user.profile', ['user' => $user, 'payke_ec_orders' => $orders]);
     }
 
-    public function view_all(Request $request)
+    public function view_by_tag_id(int $tagId)
     {
-        $users = PaykeUser::sortable()->get();
+        $allusers = PaykeUser::sortable()->get();
+        $users = [];
+        foreach ($allusers as $user) {
+            if(!$user->Tag || $user->Tag->id != $tagId) continue;
+            $users[] = $user;
+        }
+
         $rService = new PaykeResourceService();
         $resources = $rService->find_all_to_array();
-        return view('payke_user.index', ['users' => $users, 'resources' => $resources]);
+
+        $uService = new PaykeUserService();
+        $tags = $uService->get_tags();
+
+        return view('payke_user.index', ['users' => $users, 'resources' => $resources, 'tags' => $tags]);
+    }
+
+    public function view_all(Request $request)
+    {
+        $allusers = PaykeUser::sortable()->get();
+        $users = [];
+        foreach ($allusers as $user) {
+            if($user->Tag && $user->Tag->is_hidden) continue;
+            $users[] = $user;
+        }
+
+        $rService = new PaykeResourceService();
+        $resources = $rService->find_all_to_array();
+
+        $uService = new PaykeUserService();
+        $tags = $uService->get_tags();
+
+        return view('payke_user.index', ['users' => $users, 'resources' => $resources, 'tags' => $tags]);
     }
 
     public function view_by_payke_id(int $paykeId)

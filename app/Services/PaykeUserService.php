@@ -6,6 +6,7 @@ use App\Models\PaykeHost;
 use App\Models\PaykeResource;
 use App\Models\PaykeDb;
 use App\Models\PaykeUser;
+use App\Models\PaykeUserTag;
 use App\Services\UserService;
 use App\Services\DeployService;
 use App\Services\DeployLogService;
@@ -40,6 +41,7 @@ class PaykeUserService
             $newUser->PaykeDb->status = PaykeDb::STATUS__IN_USE;
             $currentUser->update([
                 "status" => $newUser->status
+                ,"tag_id" => $newUser->tag_id
                 ,"payke_host_id" => $newUser->payke_host_id
                 ,"payke_db_id" => $newUser->payke_db_id
                 ,"payke_resource_id" => $newUser->payke_resource_id
@@ -125,6 +127,7 @@ class PaykeUserService
 
         $currentUser->update([
             "status" => $newUser->status
+            ,"tag_id" => $newUser->tag_id
             ,"payke_resource_id" => $newUser->payke_resource_id
             ,"user_app_name" => $newUser->user_app_name
             ,"app_url" => $newUser->app_url
@@ -324,5 +327,18 @@ class PaykeUserService
             ["id" => PaykeUser::STATUS__UNUSED, "name" => "利用停止"],
         ];
         return $statuses;
+    }
+
+    public function get_tags()
+    {
+        return PaykeUserTag::orderByRaw("order_no ASC")->get();
+    }
+
+    public function get_tags_array()
+    {
+        $tags = PaykeUserTag::orderByRaw("order_no ASC")->get();
+        return array_map(function($x){
+            return ["id" => $x['id'], "name" => $x['name']];
+        }, $tags->toarray());
     }
 }

@@ -95,6 +95,9 @@ Route::middleware(['auth', 'admin'])->group(
         
         Route::get('api/payke_user/p/{userId}', [\App\Http\Controllers\PaykeUserController::class, 'api_get_user'])
             ->name('api.payke_user.profile');
+
+        Route::get('/payke_user/t/{tagId}', [\App\Http\Controllers\PaykeUserController::class, 'view_by_tag_id'])
+            ->name('payke_user.index.tagId');
         
         Route::get('/payke_user/create', [\App\Http\Controllers\PaykeUserController::class, 'view_add'])
             ->name('payke_user.create');
@@ -113,6 +116,12 @@ Route::middleware(['auth', 'admin'])->group(
         
         Route::post('/payke_user/version/up', [\App\Http\Controllers\PaykeController::class, 'post_edit_version'])
             ->name('payke_user.version.up');
+
+        Route::get('/payke_user_tags', [\App\Http\Controllers\PaykeUserTagController::class, 'view_all'])
+            ->name('payke_user_tags.index');
+        
+        Route::post('/payke_user_tags/edit', [\App\Http\Controllers\PaykeUserTagController::class, 'post_edit'])
+            ->name('payke_user_tags.edit.post');
         
         Route::get('/deploy_log/{userId}', [\App\Http\Controllers\Deploy\LogController::class, 'view_all'])
             ->name('deploy_log.index');

@@ -46,6 +46,7 @@ class CreateRequest extends FormRequest
 
         if($this->input("id")) $user->id = $this->input("id");
         if($this->input("status") !== null) $user->status = $this->input("status");
+        $user->tag_id = $this->input("tag_id");
         $user->payke_host_id = $this->paykeHostId();
         $user->payke_db_id = $this->paykeDbId();
         $user->payke_resource_id = $this->input('payke_resource_id');
