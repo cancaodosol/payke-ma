@@ -89,6 +89,8 @@ class PaykeUserController extends Controller
     {
         $service = new PaykeUserService();
         $statuses = $service->get_statuses();
+        $tags = $service->get_tags_array();
+        array_unshift($tags, ["id" => null, "name" => "-"]);
         $user = $service->find_by_id($id);
 
         $resService = new PaykeResourceService();
@@ -99,6 +101,7 @@ class PaykeUserController extends Controller
         {
             $dbService = new PaykeDbService();
             $host_dbs = $dbService->find_ready_host_dbs();
+            array_unshift($host_dbs, ["id" => null, "name" => "-"]);
         } else {
             $host_dbs = [[
                 "id" => $user->host_db_id(),
@@ -106,7 +109,7 @@ class PaykeUserController extends Controller
             ]];
         }
 
-        return view('payke_user.edit', ["user" => $user, "statuses" => $statuses, "host_dbs" => $host_dbs, "resources" => $resources]);
+        return view('payke_user.edit', ["user" => $user, "statuses" => $statuses, "tags" => $tags, "host_dbs" => $host_dbs, "resources" => $resources]);
     }
 
     public function post_edit(CreateRequest $request)
