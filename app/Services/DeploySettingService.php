@@ -15,7 +15,13 @@ class DeploySettingService
 
     public function find_by_key(string $key)
     {
-        return DeploySetting::where('key', $key)->firstOrFail();
+        $setting = DeploySetting::where('key', $key)->first();
+        if($setting) return $setting;
+
+        $newSetting =  new DeploySetting();
+        $newSetting->key = $key;
+        $newSetting->value = null;
+        return $newSetting;
     }
 
     public function get_value(string $key)

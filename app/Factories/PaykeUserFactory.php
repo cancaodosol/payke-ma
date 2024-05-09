@@ -5,6 +5,7 @@ namespace App\Factories;
 use App\Services\PaykeUserService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeResourceService;
+use App\Services\DeploySettingService;
 use App\Models\PaykeUser;
 use App\Helpers\SecurityHelper;
 
@@ -22,9 +23,10 @@ class PaykeUserFactory
         // 公開アプリ名をランダムで作成する。
         $app_name = $this->create_randam_app_name($host_id);
 
-        // リリースするPaykeECバージョンを取得する。
-        $rService = new PaykeResourceService();
-        $payke = $rService->get_release_version();
+        // 自動デプロイ設定を取得する。
+        $dsService = new DeploySettingService();
+        $payke_resource_id = $dsService->get_value("payke_resource_id");
+        $payke_tag_id = $dsService->get_value("payke_tag_id");
 
         // ここまで取得したデータを、Paykeユーザーにまとめていく。
         $user = new PaykeUser();
@@ -35,9 +37,10 @@ class PaykeUserFactory
         $user->enable_affiliate = false;
         $user->memo = "";
 
+        $user->tag_id = $payke_tag_id;
         $user->payke_host_id = $host_id;
         $user->payke_db_id = $db_id;
-        $user->payke_resource_id = $payke->id;
+        $user->payke_resource_id = $payke_resource_id;
         $user->user_app_name = $app_name;
 
         if($host_id != null)

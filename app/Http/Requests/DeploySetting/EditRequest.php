@@ -29,6 +29,7 @@ class EditRequest extends FormRequest
     {
         $settings = [
             (new DeploySetting())->set_key_and_value("payke_resource_id", $this->payke_resource_id),
+            (new DeploySetting())->set_key_and_value("payke_tag_id", $this->payke_tag_id),
             (new DeploySetting())->set_key_and_value("payke_x_auth_token", $this->payke_x_auth_token)
         ];
 

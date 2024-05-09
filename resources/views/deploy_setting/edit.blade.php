@@ -26,6 +26,7 @@
         <h3 class="text-base font-semibold leading-7 text-gray-900 mt-2">- PaykeEC環境設定</h3>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">親Paykeからの決済データ受信後に、下記の設定でPaykeECの環境を作成します。<br />※作成先のデータベースはあらかじめ用意しておく必要があります。</p>
         <div class="mt-2 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
+            <x-forms.list name="payke_tag_id" value="{{ $settings['payke_tag_id'] ?? false ? $settings['payke_tag_id'] : null }}" label="タグ" :list="$tags" addPageLink="{{ route('payke_user_tags.index') }}"/>
             <x-forms.list name="payke_resource_id" value="{{ $settings['payke_resource_id'] ?? false ? $settings['payke_resource_id'] : null }}" label="Paykeバージョン" :list="$resources" addPageLink="{{ route('payke_resource.index') }}"/>
         </div>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-red-500">※ v3.26.0 ~ v3.26.17で、マイグレーションエラーが発生します。選択しないでください。</p>
