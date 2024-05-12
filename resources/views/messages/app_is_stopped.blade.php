@@ -6,7 +6,7 @@
             content="width=device-width, user-scalable=no, initial-scale=1.0,
             maximum-scale=1.0, minimum-slace=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ asset('/favicon_v2.png') }}">
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {

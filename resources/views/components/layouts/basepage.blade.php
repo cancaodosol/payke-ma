@@ -6,7 +6,7 @@
             content="width=device-width, user-scalable=no, initial-scale=1.0,
             maximum-scale=1.0, minimum-slace=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ asset('/favicon_v2.png') }}">
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
@@ -21,7 +21,7 @@
         </script>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <title>{{ $title ? 'Payke MA - '.$title : 'Payke Manager' }}</title>
+        <title>{{ $title ? 'Payke MA - '.$title : 'Payke MA' }}</title>
     </head>
     <body class="h-full">
     <div>
@@ -64,7 +64,7 @@
                 <!-- Sidebar component, swap this element with another sidebar if you like -->
                 <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
                 <div class="flex h-16 shrink-0 items-center">
-                    <img class="h-8 w-auto" src="/app_icon.svg?color=indigo&shade=600" alt="Your Company">
+                    <img class="h-8 w-auto" src="{{ asset('/app_icon_v2.png') }}?color=indigo&shade=600" alt="Payke MA">
                 </div>
                 <nav class="flex flex-1 flex-col">
                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -117,10 +117,10 @@
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
             <div class="flex h-16 shrink-0 items-center">
-                <a href="{{ route('home') }}" class="flex">
-                    <img class="h-8 w-auto" src="{{ asset('/app_icon.svg') }}?color=indigo&shade=600" alt="Your Company">
-                    <span class="ml-2 mt-1 font-mono">Payke MA<span>
-                    <span class="ml-1 mt-1 font-mono text-xs">{{ config('app.version') }}<span>
+                <a href="{{ route('home') }}" class="flex items-end">
+                    <img class="h-10 w-auto" src="{{ asset('/app_icon_v2.png') }}?color=indigo&shade=600" alt="Payke MA">
+                    <span class="ml-3 mb-1 font-mono">Payke MA<span>
+                    <span class="ml-1 mb-1 font-mono text-xs">{{ config('app.version') }}<span>
                 </a>
             </div>
             <nav class="flex flex-1 flex-col">
