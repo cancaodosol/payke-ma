@@ -138,6 +138,9 @@ Route::middleware(['auth', 'admin'])->group(
         Route::post('/deploy_setting/edit/', [\App\Http\Controllers\Deploy\SettingController::class, 'post_edit'])
             ->name('deploy_setting.edit.post');
 
+        Route::get('/release_notes', [\App\Http\Controllers\ReleaseNoteController::class, 'view_all'])
+            ->name('release_note.index');
+
         Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'view_all'])
             ->name('admin.index');
 
