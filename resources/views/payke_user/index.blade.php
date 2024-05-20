@@ -149,7 +149,9 @@
                         </div>
                         </a>
                     </td>
-                    <td class="whitespace-nowrap pl-2 py-1.5 text-sm text-gray-900">{{ $user->user_name }}</td>
+                    <td class="whitespace-nowrap pl-2 py-1.5 text-sm text-gray-900">
+                        <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}">{{ $user->user_name }}</a>
+                    </td>
                     <td class="whitespace-nowrap md:hidden">
                         <a href="{{ $user->app_url }}" target="_blank" rel="noopener noreferrer">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 text-gray-500">
