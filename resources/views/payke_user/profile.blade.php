@@ -12,6 +12,21 @@
                         <h4 class=" font-bold text-base leading-tight">稼働情報</h4>
                         <div class="my-2 text-sm">
                             <table class="mt-5 ml-5">
+                                <tr><th class="text-right">タグ：</th>
+                                    <td>
+                                        @if(!$user->Tag)
+                                        なし
+                                        @elseif(!$user->Tag->color || $user->Tag->color == "none")
+                                        <a href="{{ route('payke_user.index.tagId', ['tagId' => $user->Tag->id]) }}" class="hover:bg-gray-100 text-xs font-semibold me-0.5 px-2.5 py-0.2 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400 inline-flex items-center justify-center">
+                                            {{ $user->Tag->name }}
+                                        </a>
+                                        @else
+                                        <a href="{{ route('payke_user.index.tagId', ['tagId' => $user->Tag->id]) }}" class="bg-{{$user->Tag->color}}-100 hover:bg-{{$user->Tag->color}}-200 text-{{$user->Tag->color}}-800 text-xs font-semibold me-0.5 px-2.5 py-0.2 rounded dark:bg-gray-700 dark:text-{{$user->Tag->color}}-400 border border-{{$user->Tag->color}}-400 inline-flex items-center justify-center">
+                                            {{ $user->Tag->name }}
+                                        </a>
+                                        @endif
+                                    </td>
+                                </tr>
                                 <tr><th class="text-right">稼働状況：</th><td>{{ $user->status_name() }}</td></tr>
                                 <tr><th class="text-right">バージョン：</th><td>Payke EC {{ $user->PaykeResource->version }} 
                                 <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
