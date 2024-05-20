@@ -190,7 +190,9 @@ return [
     "you_have_been_invited_to_join_team" => ":TeamNameチームにあなたは招待されています！",
     "you_have_x_invitations_remaining" => ":Count件の招待が来ています。",
     "you_have_x_teams_remaining" => ":TeamCount件のチームが残っています。",
-
+    "We have emailed your password reset link." => "パスワードリセットメールを送信しました。",
+    "Please wait before retrying." => "メース送信済みです。今しばらくお待ちください。",
+    
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
