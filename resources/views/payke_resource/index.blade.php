@@ -23,6 +23,9 @@
         .payke_memo ol, .payke_memo ul {
             list-style: inside;
         }
+        .payke_memo ol ol, .payke_memo ul ul {
+            padding: 0 0 0 15px;
+        }
     </style>
     <div class="mt-5 ml-1">
         <ul role="list" class="space-y-6">
