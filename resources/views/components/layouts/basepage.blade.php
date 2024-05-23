@@ -281,9 +281,10 @@
                     {{ $slot }}
                 </div>
             </main>
-            <footer class="py-5">
+            <hr class="my-4 h-0.5 border-t-0 bg-neutral-100 dark:bg-white/10" />
+            <footer class="pb-12">
                 <div class="mx-auto">
-                    <ul class="sm:flex">
+                    <ul class="sm:flex px-4">
                         <li class="ml-5">
                             <a href="{{ route('payke_user.index') }}" class="text-sm text-gray-500 hover:text-gray-900">
                                 Payke一覧
