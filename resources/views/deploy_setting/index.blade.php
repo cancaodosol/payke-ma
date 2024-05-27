@@ -44,7 +44,7 @@
               </p>
               @endif
               <p class="mt-0.5 px-1.0 py-0.5 text-xs font-medium">
-                空き：{{ $unit->ready_dbs_count }}
+                空きDB：{{ $unit->ready_dbs_count }}
               </p>
             </div>
             <div class="flex flex-wrap items-center text-xs leading-5 text-gray-500">
