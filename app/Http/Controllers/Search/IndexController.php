@@ -14,8 +14,10 @@ use App\Models\Job;
 use App\Models\FailedJob;
 use App\Models\PaykeEcOrder;
 use App\Models\DeploySetting;
+use App\Models\PaykeUserTag;
 use App\Services\UserService;
 use App\Services\DeployService;
+use App\Services\DeploySettingService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
 use App\Services\PaykeUserService;
@@ -23,11 +25,13 @@ use App\Services\PaykeResourceService;
 use App\Services\DeployLogService;
 use App\Services\SearchService;
 use App\Services\MailService;
+use App\Services\ReleaseNoteService;
 use App\Factories\PaykeUserFactory;
 use App\Helpers\SecurityHelper;
 use App\Jobs\DeployJob;
 use App\Jobs\DeployJobOrderd;
 use App\Jobs\DeployManyJob;
+use App\Jobs\TestEmailJob;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -46,6 +50,13 @@ class IndexController extends Controller
         Log::info("search by ".$inputSearchWord);
         switch($searchWords[0])
         {
+            case ':test' :
+                $ser = new DeploySettingService();
+                // dd($ser->find_by_no(1)->get_value("payke_x_auth_token"));
+                dd($ser->find_units_all());
+                $settings = DeploySetting::all();
+                dd($settings);
+                return;
             case ':dbs_view' :
                 $dbs = PaykeDb::all();
                 dd($dbs);
@@ -90,7 +101,7 @@ class IndexController extends Controller
                 dd($logs);
             case ':send_email' :
                 $mailser = new MailService($mailer);
-                $mailser->send_to_admin("メール送信テスト", "管理ユーザー向けのメールを送ってみたよ。");
+                $mailser->send_to_admin("メール送信テスト", "管理ユーザー向けのメールをテスト的に送ってみました。");
             case ':set_user' :
                 $user = User::where('id', 2)->firstOrFail();
                 // $pUser = PaykeUser::where('id', 30)->firstOrFail();
@@ -178,7 +189,7 @@ class IndexController extends Controller
                         "user_name" => $user->user_name,
                         "payke_order_id" => $user->payke_order_id,
                     ];
-                    dd($data);
+                    dd($user);
                 }else{
                     $users = PaykeUser::all();
                     $data = [];
@@ -253,6 +264,15 @@ class IndexController extends Controller
                 $is_success = $deployService->update_superadmin_password($user, "superadmin", $outLog);
                 dd($outLog);
                 return;
+            case ':test_f':
+                if(count($searchWords) != 2) dd("test_f <no>");
+                // Paykeユーザーを仮作成。
+                $dser = new DeploySettingService();
+                $settingUnit = $dser->find_by_no($searchWords[1]);
+                $factory = new PaykeUserFactory();
+                $pUser = $factory->create_new_user("ユーザー名", "メールアドレス",$settingUnit);
+                dd($pUser);
+
             case ':f' :
                 $user_name = "test10";
                 $email_address = "test10@bbb.com";
