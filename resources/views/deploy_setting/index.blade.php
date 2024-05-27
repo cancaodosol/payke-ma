@@ -50,7 +50,7 @@
             <div class="flex flex-wrap items-center text-xs leading-5 text-gray-500">
               <div class="flex gap-x-2 mt-2">
                   <span>送信先：</span>
-                  <span>http://localhost/payke/ec2ma/{{ $unit->no }}</span>
+                  <span>{{ route('payke.ec2ma', ['no' => $unit->no]) }}</span>
                   <button id="copy_btn" title="コピー" onClick="return false;" class="inline-flex justify-center text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold px-2 py-0.5 border border-gray-300 rounded-lg shadow">
                       <span>コピー</span>
                   </button>
