@@ -70,11 +70,4 @@ class PaykeResourceService
         $resource = $this->find_by_id($id);
         $resource->update($values);
     }
-
-    public function get_release_version(): PaykeResource
-    {
-        $service = new DeploySettingService();
-        $payke_resource_id = $service->get_value("payke_resource_id");
-        return $this->find_by_id(intval($payke_resource_id));
-    }
 }

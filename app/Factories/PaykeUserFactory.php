@@ -7,15 +7,16 @@ use App\Services\PaykeDbService;
 use App\Services\PaykeResourceService;
 use App\Services\DeploySettingService;
 use App\Models\PaykeUser;
+use App\Models\DeploySettingUnit;
 use App\Helpers\SecurityHelper;
 
 class PaykeUserFactory
 {
-    public function create_new_user(string $user_name, string $email_address): PaykeUser
+    public function create_new_user(string $user_name, string $email_address, DeploySettingUnit $settingUnit): PaykeUser
     {
         // PaykeECで使用するデータベースをさがす。
         $dbService = new PaykeDbService();
-        $host_dbs = $dbService->find_ready_host_dbs();
+        $host_dbs = $dbService->find_ready_host_dbs($settingUnit->get_value("payke_host_id"));
 
         $host_id = count($host_dbs) == 0 ? null : $host_dbs[0]["host_id"];
         $db_id =  count($host_dbs) == 0 ? null : $host_dbs[0]["db_id"];
@@ -23,24 +24,19 @@ class PaykeUserFactory
         // 公開アプリ名をランダムで作成する。
         $app_name = $this->create_randam_app_name($host_id);
 
-        // 自動デプロイ設定を取得する。
-        $dsService = new DeploySettingService();
-        $payke_resource_id = $dsService->get_value("payke_resource_id");
-        $payke_tag_id = $dsService->get_value("payke_tag_id");
-
         // ここまで取得したデータを、Paykeユーザーにまとめていく。
         $user = new PaykeUser();
 
         $user->user_name = $user_name;
         $user->email_address = $email_address;
 
-        $user->enable_affiliate = false;
+        $user->enable_affiliate = $settingUnit->get_value("payke_enable_affiliate");
         $user->memo = "";
 
-        $user->tag_id = $payke_tag_id;
+        $user->tag_id = $settingUnit->get_value("payke_tag_id");
         $user->payke_host_id = $host_id;
         $user->payke_db_id = $db_id;
-        $user->payke_resource_id = $payke_resource_id;
+        $user->payke_resource_id = $settingUnit->get_value("payke_resource_id");
         $user->user_app_name = $app_name;
 
         if($host_id != null)

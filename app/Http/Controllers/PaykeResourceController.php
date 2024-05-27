@@ -14,9 +14,15 @@ class PaykeResourceController extends Controller
     {
         $service = new PaykeResourceService();
         $resources = $service->find_all();
+        $payke_resource_ids = [];
         $dService = new DeploySettingService();
-        $payke_resource_id = $dService->get_value("payke_resource_id");
-        return view('payke_resource.index', ['paykes' => $resources, 'setting_payke_resource_id' => $payke_resource_id]);
+        $units = $dService->find_units_all();
+        foreach ($units as $unit) {
+            if($unit->get_value("payke_resource_id")){
+                $payke_resource_ids[] = $unit->get_value("payke_resource_id");
+            }
+        }
+        return view('payke_resource.index', ['paykes' => $resources, 'setting_payke_resource_ids' => $payke_resource_ids]);
     }
 
     public function post_add(CreateRequest $request)

@@ -21,7 +21,7 @@ Route::get('/', function () {
 Route::get('/stopped', function () { return view('messages.app_is_stopped'); })
     ->name('app.stopped');
 
-Route::post('/payke/ec2ma', [\App\Http\Controllers\PaykeController::class, 'connect_paykeec_to_ma'])
+Route::post('/payke/ec2ma/{no}', [\App\Http\Controllers\PaykeController::class, 'connect_paykeec_to_ma'])
     ->name('payke.ec2ma');
 
 Route::middleware('auth')->group(function () {
@@ -132,7 +132,13 @@ Route::middleware(['auth', 'admin'])->group(
         Route::post('/deploy_log/edit/post', [\App\Http\Controllers\Deploy\LogController::class, 'post_edit'])
             ->name('deploy_log.edit.post');
 
-        Route::get('/deploy_setting/edit/', [\App\Http\Controllers\Deploy\SettingController::class, 'view_edit'])
+        Route::get('/deploy_settings', [\App\Http\Controllers\Deploy\SettingController::class, 'view_all'])
+            ->name('deploy_setting.index');
+
+        Route::get('/deploy_setting/create', [\App\Http\Controllers\Deploy\SettingController::class, 'view_create'])
+            ->name('deploy_setting.create');
+
+        Route::get('/deploy_setting/edit/{no}', [\App\Http\Controllers\Deploy\SettingController::class, 'view_edit'])
             ->name('deploy_setting.edit');
         
         Route::post('/deploy_setting/edit/', [\App\Http\Controllers\Deploy\SettingController::class, 'post_edit'])

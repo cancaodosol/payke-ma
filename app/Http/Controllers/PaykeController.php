@@ -76,16 +76,21 @@ class PaykeController extends Controller
         return response()->json(["jobs" => $ret]);
     }
 
-    public function connect_paykeec_to_ma(OrderRequest $request, Mailer $mailer)
+    public function connect_paykeec_to_ma(OrderRequest $request, Mailer $mailer, int $no)
     {
-        Log::info("Accessed in /payke/ec2ma. \ndata ->");
+        Log::info("Accessed in /payke/ec2ma/".$no.". \ndata ->");
         try
         {
             Log::info($request->raw());
             $request->to_payke_ec_order()->save();
 
             $dService = new DeploySettingService();
-            if(!$dService->match_x_auth_token($request->header("X-AUTH-TOKEN", "")))
+            $settingUnit = $dService->find_by_no($no);
+            if(!$settingUnit)
+            {
+                return;
+            }
+            if(!$settingUnit->match_x_auth_token($request->header("X-AUTH-TOKEN", "")))
             {
                 return;
             }

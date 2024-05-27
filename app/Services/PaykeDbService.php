@@ -17,10 +17,10 @@ class PaykeDbService
         return PaykeDb::where('id', $id)->firstOrFail();
     }
 
-    public function find_ready_host_dbs()
+    public function find_ready_host_dbs($host_id = null)
     {
         $host_dbs = [];
-        $hosts = PaykeHost::orderBy('id', 'ASC')->get();
+        $hosts = $host_id == null ? PaykeHost::orderBy('id', 'ASC')->get() : PaykeHost::where('id', $host_id)->get();
         foreach ($hosts as $host) {
             $dbs = PaykeDb::where(([
                 ['payke_host_id', '=', $host->id],
