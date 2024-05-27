@@ -46,6 +46,11 @@ class UserService
         return User::where("id", $userid)->firstOrFail();
     }
 
+    public function exists_user(string $email)
+    {
+        return User::where("email", $email)->exists();
+    }
+
     public function get_roles()
     {
         $roles = [

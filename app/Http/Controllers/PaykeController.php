@@ -88,10 +88,12 @@ class PaykeController extends Controller
             $settingUnit = $dService->find_by_no($no);
             if(!$settingUnit)
             {
+                Log::info("指定の設定Noが存在しません。");
                 return;
             }
             if(!$settingUnit->match_x_auth_token($request->header("X-AUTH-TOKEN", "")))
             {
+                Log::info("X-AUTH-TOKENが一致しませんでした。");
                 return;
             }
 
@@ -106,6 +108,10 @@ class PaykeController extends Controller
     
                 // ログインユーザーを作成する
                 $uService = new UserService();
+                if($uService->exists_user($email_address)){
+                    Log::info("ユーザー名: ".$user_name."、 メールアドレス: ".$email_address."：メールアドレスが重複しています。デプロイを中止しました。");
+                    return;
+                }
                 $user = $uService->save_user($user_name, $email_address, $new_password);
     
                 // Paykeユーザーを仮作成。
