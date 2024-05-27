@@ -110,7 +110,7 @@ class PaykeController extends Controller
     
                 // Paykeユーザーを仮作成。
                 $factory = new PaykeUserFactory();
-                $pUser = $factory->create_new_user($user_name, $email_address);
+                $pUser = $factory->create_new_user($user_name, $email_address, $settingUnit);
                 $pUser->user_id = $user->id;
                 $pUser->payke_order_id = $order_id;
                 $has_error = $pUser->payke_host_id == null;
