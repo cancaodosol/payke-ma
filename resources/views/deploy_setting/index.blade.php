@@ -51,14 +51,14 @@
               <div class="flex gap-x-2 mt-2">
                   <span>送信先：</span>
                   <span>{{ route('payke.ec2ma', ['no' => $unit->no]) }}</span>
-                  <button id="copy_btn" title="コピー" onClick="return false;" class="inline-flex justify-center text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold px-2 py-0.5 border border-gray-300 rounded-lg shadow">
+                  <button title="コピー" onClick="return false;" class="copy_btn inline-flex justify-center text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold px-2 py-0.5 border border-gray-300 rounded-lg shadow">
                       <span>コピー</span>
                   </button>
               </div>
               <div class="flex gap-x-2 mt-2">
                   <span class="sm:ml-4">認証鍵：</span>
                   <span>{{ $unit->get_value('payke_x_auth_token') }}</span>
-                  <button id="copy_btn" title="コピー" onClick="return false;" class="inline-flex justify-center text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold px-2 py-0.5 border border-gray-300 rounded-lg shadow">
+                  <button title="コピー" onClick="return false;" class="copy_btn inline-flex justify-center text-xs bg-white hover:bg-gray-100 text-gray-900 font-semibold px-2 py-0.5 border border-gray-300 rounded-lg shadow">
                       <span>コピー</span>
                   </button>
               </div>
@@ -73,4 +73,16 @@
         @endforeach
       </ul>
     </div>
+    <script>
+      function onload() {
+        const copy_btns = document.querySelectorAll(".copy_btn");
+        copy_btns.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const copyTarget = e.target.parentElement.previousElementSibling;
+            navigator.clipboard.writeText(copyTarget.innerText);
+          });
+        });
+      }
+      onload();
+    </script>
 </x-layouts.basepage>
