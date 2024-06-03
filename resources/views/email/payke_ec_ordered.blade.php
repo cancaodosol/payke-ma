@@ -1,12 +1,30 @@
-{{$name}} 様<br>
+{{ $name }} 様<br>
+（注文ID： {{ $order_id }}）<br>
 <br>
-Payke EC のご購入ありがとうございます。<br>
 <br>
-こちらから初期設定を行い、Payke ECをご利用ください。<br>
+Payke ご利用お手続き、ありがとうございます。<br>
+<br>
+下記にログインし初期設定を行うことで<br>
+Payke がご利用いただけるようになります。<br>
+<br>
 ーーーーーーーーーーーーーーー<br>
-URL: <a href="{{route('login')}}">{{route("login")}}</a><br>
-メールアドレス: {{$login_id}}<br>
-パスワード： {{$login_password}}<br>
+Paykeマネージメントシステムにログイン<br>
+URL: <a href="{{ route('login') }}">{{ route("login") }}</a><br>
+メールアドレス: {{ $login_id }}<br>
+パスワード： {{ $login_password }}<br>
 ーーーーーーーーーーーーーーー<br>
 <br>
-注文ID： {{$order_id}}<br>
+初期設定が完了しましたのち、<br>
+上記画面よりご自身のPayke管理画面URLの確認と、<br>
+プランの変更やキャンセルのお手続きが可能となりますので<br>
+このメールを保管いただきますようお願いいたします。<br>
+<br>
+もしご不明な点などございましたら<br>
+このメールに返信にてお問い合わせください。<br>
+<br>
+<br>
+それでは今後とも、どうぞよろしくお願いいたします。<br>
+<br>
+ーーーーーーーーーーーーーーー<br>
+Payke事務局<br>
+<br>
