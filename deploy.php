@@ -200,14 +200,21 @@ task('deploy:symlink:public_app', function () {
 });
 
 /**
- * Setting Payke Ini
- * アフィリエイト機能の有効/無効を制御するため、設定ファイルを更新する。
+ * Open Affiate
+ * アフィリエイト機能の有効にするため、設定ファイルを更新する。
  */
-task('set_ini', function () {
-    writeln('from {{root_dir}}{{payke_ini_file_path}}');
-    writeln('to {{deploy_path}}/shared/app/Config/paykeec.ini');
-    writeln('▼ {{deploy_path}}/shared/app/Config/paykeec.ini');
-    upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
+task('open_affiliate', function () {
+    run('echo membrino=1 > {{deploy_path}}/shared/app/Config/paykeec.ini');
+    writeln(run('cat {{deploy_path}}/shared/app/Config/paykeec.ini'));
+    writeln('ok!');
+});
+
+/**
+ * Close Affiate
+ * アフィリエイト機能の無効にするため、設定ファイルを更新する。
+ */
+task('close_affiliate', function () {
+    run('echo membrino=0 > {{deploy_path}}/shared/app/Config/paykeec.ini');
     writeln(run('cat {{deploy_path}}/shared/app/Config/paykeec.ini'));
     writeln('ok!');
 });

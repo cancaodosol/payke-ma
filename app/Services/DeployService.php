@@ -52,16 +52,6 @@ class DeployService
     }
 
     /** 
-     * 設定ファイルのセット処理をコマンド実行
-     **/
-    public function exec_set_ini(array $params): array
-    {
-        $params_string = $this->create_params_string($params);
-        $command = "cd {$this->root_dir} && {$this->execute_php_command} vendor/bin/dep set_ini{$params_string}";
-        return $this->exec($command);
-    }
-
-    /** 
      * アプリ名変更の処理をコマンド実行
      **/
     public function exec_rename_app_name(array $params): array
@@ -127,6 +117,8 @@ class DeployService
     public function exec_deployer_command(string $command, array $params): array
     {
         if(!in_array($command, [
+            "open_affiliate",
+            "close_affiliate",
             "check_db_connection",
             "replace_admin_to_superadmin",
             "put_ma_file"
@@ -357,10 +349,9 @@ class DeployService
     {
         // Modelでもらった情報を、配列に詰め直す。
         $params = $this->model_to_params($host, $user, new PaykeDb(), new PaykeResource());
-        $params['payke_ini_file_path'] = $this->payke_ini_file_path___affiliate_on;
 
         // デプロイを実行す。
-        $outLog = $this->exec_set_ini($params);
+        $outLog = $this->exec_deployer_command("open_affiliate", $params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
 
         $logService = new DeployLogService();
@@ -383,10 +374,9 @@ class DeployService
     {
         // Modelでもらった情報を、配列に詰め直す。
         $params = $this->model_to_params($host, $user, new PaykeDb(), new PaykeResource());
-        $params['payke_ini_file_path'] = $this->payke_ini_file_path___affiliate_off;
 
         // デプロイを実行す。
-        $outLog = $this->exec_set_ini($params);
+        $outLog = $this->exec_deployer_command("close_affiliate", $params);
         $is_success = $outLog[count((array)$outLog)-1] == '[payke_release] ok!';
 
         $logService = new DeployLogService();
