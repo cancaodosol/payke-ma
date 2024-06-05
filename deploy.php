@@ -35,7 +35,7 @@ set('public_app_path_old' ,'{{public_html_dir}}/{{user_app_name_old}}');
 set('release_name', '{{payke_name}}_{{deploy_datetime}}');
 set('deploy_path', '{{resource_dir}}/{{user_folder_id}}');
 set('shared_dirs', ['app/tmp/logs']);
-set('shared_files', ['app/Config/.ma.php', 'app/Config/.env.php', 'app/Config/install.php', 'app/Config/paykeec.ini']);
+set('shared_files', ['app/Config/.ma.php', 'app/Config/.env.php', 'app/Config/paykeec.ini']);
 set('keep_releases', 7);
 
 // Return release path.
@@ -128,8 +128,6 @@ task('deploy:update_code', function() {
         upload('{{root_dir}}{{payke_ma_file_path}}', '{{deploy_path}}/shared/app/Config/.ma.php');
         writeln('▼ {{deploy_path}}/shared/app/Config/paykeec.ini');
         upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
-        writeln('▼ {{deploy_path}}/shared/app/Config/install.php');
-        upload('{{root_dir}}{{payke_install_file_path___installed_false}}', '{{deploy_path}}/shared/app/Config/install.php');
     }
 
     // Save revision in REVISION file.
@@ -173,12 +171,6 @@ task('deploy:run_migrations', function () {
     $is_success = strpos($migration_result, 'All migrations have completed.') !== false;
     if($is_success && get('is_first'))
     {
-        writeln('install.phpのinstalledをtrueに更新。');
-        // MEMO: installedをtrueの状態で、マイグレーションを行うと、初回マイグレーションの場合エラーが発生する。
-        //       なので、install.phpの更新は、マイグレーション実行後に行う。
-        writeln('▼ {{deploy_path}}/shared/app/Config/install.php');
-        upload('{{root_dir}}{{payke_install_file_path___installed_true}}', '{{deploy_path}}/shared/app/Config/install.php');
-
         // AmazonPayの集信実行のCRONを設定
         writeln('AmazonPayの集信実行のCRONを設定。');
         run("echo '{{ current_app_path }}/app/Console/cake-for-Xserver recurring_payment process_next_charge' >> {{ resource_dir }}/payke_amazon_pay.sh");
@@ -187,6 +179,11 @@ task('deploy:run_migrations', function () {
         writeln('アフィリエイトの集計実行のCRONを設定。');
         run("echo '#{{ current_app_path }}/app/Console/cake-for-Xserver affiliate affiliate_reward' >> {{ resource_dir }}/payke_affiliate.sh");
     }
+    writeln('install.phpのinstalledをtrueに更新。');
+    // MEMO: installedをtrueの状態でマイグレーションを行うと、エラーが発生することがあるので、
+    //       毎度、ここでtrueにし直す。(デプロイのスタートは、zipのpaykeなので、初期値はfalse。)
+    writeln('▼ {{release_path}}/app/Config/install.php');
+    upload('{{root_dir}}{{payke_install_file_path___installed_true}}', '{{release_path}}/app/Config/install.php');
 })->desc('Run migrations');
 
 /**
