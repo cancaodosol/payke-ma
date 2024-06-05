@@ -2,7 +2,7 @@
 
 return array(
     // アプリ名
-    'APP_NAME' => 'Payke EC',
+    'APP_NAME' => 'Payke',
 
     // Debugレベル
     'DEBUG' => 0,
