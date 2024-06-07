@@ -18,6 +18,7 @@ use App\Models\PaykeUserTag;
 use App\Services\UserService;
 use App\Services\DeployService;
 use App\Services\DeploySettingService;
+use App\Services\PaykeApiService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeHostService;
 use App\Services\PaykeUserService;
@@ -51,6 +52,8 @@ class IndexController extends Controller
         switch($searchWords[0])
         {
             case ':test' :
+                $aSer = new PaykeApiService();
+                dd($aSer->get_order(10056));
                 $ser = new DeploySettingService();
                 // dd($ser->find_by_no(1)->get_value("payke_x_auth_token"));
                 dd($ser->find_units_all());

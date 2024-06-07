@@ -141,8 +141,14 @@ Route::middleware(['auth', 'admin'])->group(
         Route::get('/deploy_setting/edit/{no}', [\App\Http\Controllers\Deploy\SettingController::class, 'view_edit'])
             ->name('deploy_setting.edit');
         
-        Route::post('/deploy_setting/edit/', [\App\Http\Controllers\Deploy\SettingController::class, 'post_edit'])
+        Route::post('/deploy_setting/edit', [\App\Http\Controllers\Deploy\SettingController::class, 'post_edit'])
             ->name('deploy_setting.edit.post');
+
+        Route::get('/deploy_setting/edit_base', [\App\Http\Controllers\Deploy\SettingController::class, 'view_edit_base'])
+            ->name('deploy_setting.edit_base');
+        
+        Route::post('/deploy_setting/edit_base', [\App\Http\Controllers\Deploy\SettingController::class, 'post_edit_base'])
+            ->name('deploy_setting.edit_base.post');
 
         Route::get('/release_notes', [\App\Http\Controllers\ReleaseNoteController::class, 'view_all'])
             ->name('release_note.index');

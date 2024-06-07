@@ -14,7 +14,12 @@ class DeploySettingService
 {
     public function find_all()
     {
-        return DeploySetting::all();
+        return DeploySetting::where("no", "<>", 0)->get();
+    }
+
+    public function find_base()
+    {
+        return DeploySetting::where("no", "=", 0)->get();
     }
 
     public function find_units_all()

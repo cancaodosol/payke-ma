@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Deploy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeploySetting\EditRequest;
+use App\Http\Requests\DeploySetting\EditBaseRequest;
 use App\Services\DeploySettingService;
 use App\Services\PaykeUserService;
 use App\Services\PaykeHostService;
@@ -80,7 +81,28 @@ class SettingController extends Controller
 
         $service->edit($request->to_setting_models());
 
-        session()->flash('successTitle', '自動デプロイ設定を更新しました。');
+        session()->flash('successTitle', '接続設定を更新しました。');
+        return redirect()->route('deploy_setting.index');
+    }
+
+    public function view_edit_base()
+    {
+        $service = new DeploySettingService();
+        $bases = $service->find_base();
+        $settings = [];
+        foreach ($bases as $base) {
+            $settings[$base->key] = $base->value;
+        }
+        return view('deploy_setting.edit_base', ['settings' => $settings]);
+    }
+
+    public function post_edit_base(EditBaseRequest $request)
+    {
+        $service = new DeploySettingService();
+
+        $service->edit($request->to_setting_models());
+
+        session()->flash('successTitle', '接続設定を更新しました。');
         return redirect()->route('deploy_setting.index');
     }
 }

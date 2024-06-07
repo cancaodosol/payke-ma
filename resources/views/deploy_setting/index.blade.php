@@ -10,8 +10,30 @@
           </a>
         </div>
     </div>
-    <div class="mt-10">  
-      <ul role="list" class="divide-y divide-gray-100">
+    <div class="mt-5">
+      <ul role="list1" class="divide-y divide-gray-100">
+        <li class="flex items-center justify-between gap-x-6 py-5 px-3 rounded-lg hover:bg-gray-50 border">
+          <div class="min-w-0">
+            <div class="flex items-start gap-x-3">
+              <p class="text-sm font-semibold leading-6 text-gray-900">
+                基本設定
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center text-xs leading-5 text-gray-500">
+              <div class="flex gap-x-2 mt-2">
+                  <pre>APIの接続設定などを行います。</pre>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-none items-center gap-x-4">
+              <a href="{{ route('deploy_setting.edit_base') }}" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                参照・編集
+              </a>
+          </div>
+        </li>
+      </ul>
+      
+      <ul role="list" class="divide-y divide-gray-100 mt-10">
         @foreach($units as $unit)
         <li class="flex items-center justify-between gap-x-6 py-5 px-3 rounded-lg hover:bg-gray-50">
           <div class="min-w-0">
