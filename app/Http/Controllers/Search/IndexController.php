@@ -53,7 +53,7 @@ class IndexController extends Controller
         {
             case ':test' :
                 $aSer = new PaykeApiService();
-                dd($aSer->get_order(10056));
+                dd($aSer->cancel_order(10054));
                 $ser = new DeploySettingService();
                 // dd($ser->find_by_no(1)->get_value("payke_x_auth_token"));
                 dd($ser->find_units_all());

@@ -33,4 +33,20 @@ class PaykeApiService
         return new Order($data);
     }
 
+    function cancel_order(int $order_id){
+        $responce = Http::withHeaders([
+            "Accept" => "application/json",
+            "Content-Type" => "application/json",
+            "Authorization" => "{$this->api_token}",
+        ])->post("{$this->api_url}/api/orders/updateStatus/{$order_id}.json",[
+            "Order" => [
+                "status" => "canceled"
+            ]
+        ]);
+
+        $data = json_decode($responce->getBody()->getContents());
+        $is_success = $data->success == "true";
+        
+        return $is_success;
+    }
 }
