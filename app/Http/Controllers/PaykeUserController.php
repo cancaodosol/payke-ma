@@ -14,6 +14,7 @@ use App\Services\PaykeUserService;
 use App\Services\DeployLogService;
 use App\Jobs\DeployJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class PaykeUserController extends Controller
@@ -86,6 +87,7 @@ class PaykeUserController extends Controller
     public function post_add(CreateRequest $request)
     {
         $user = $request->to_payke_user();
+        $user->uuid = (string)Str::uuid();
 
         // いったん、ここでユーザーは登録する。
         // 指定したDBは、このタイミングで使用中にする。デプロイエラーが起こっても、そのDBは確保。

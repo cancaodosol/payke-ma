@@ -76,6 +76,7 @@ class PaykeUser extends Model
 
     protected $fillable = [
         'status'
+        ,'uuid'
         ,'tag_id'
         ,'payke_host_id'
         ,'payke_db_id'

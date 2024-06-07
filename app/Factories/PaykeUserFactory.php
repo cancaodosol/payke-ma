@@ -2,6 +2,8 @@
 
 namespace App\Factories;
 
+use Illuminate\Support\Str;
+
 use App\Services\PaykeUserService;
 use App\Services\PaykeDbService;
 use App\Services\PaykeResourceService;
@@ -26,6 +28,8 @@ class PaykeUserFactory
 
         // ここまで取得したデータを、Paykeユーザーにまとめていく。
         $user = new PaykeUser();
+
+        $user->uuid = (string)Str::uuid();
 
         $user->user_name = $user_name;
         $user->email_address = $email_address;
