@@ -17,15 +17,27 @@
                           <p class="max-w-2xl text-sm text-gray-500 pb-8">現在、利用できるPaykeECはありません。</p>
                         @endif
                       </div>
-                      @if(count($user->PaykeUsers) > 0)
+                      @foreach($user->PaykeUsers as $pUser)
                       <div class="mt-6">
                         <dl class="divide-y divide-gray-200">
+                          <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
+                            <dt class="text-sm font-medium text-gray-500">プラン</dt>
+                            <dd class="mt-1 flex items-end text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <span>{{ $pUser->deploy_setting_name() }}</span>
+                              <form action="{{ route('profile.plan_view') }}" method="post">
+                                @method('POST')
+                                @csrf
+                                <input type="hidden" name="payke_user_id" value="{{ $pUser->id }}"/>
+                                <button class="text-xs text-blue-500 ml-2">変更</button>
+                              </form>
+                            </dd>
+                          </div>
                           <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
                             <dt class="text-sm font-medium text-gray-500">ログインURL</dt>
                             <dd class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                               <a href="{{ $user->PaykeUsers[0]->app_url }}">
                                 <div class="flex">
-                                    <span class="flex-grow text-blue-500 underline">{{ $user->PaykeUsers[0]->app_url }}</span>
+                                    <span class="flex-grow text-blue-500 underline">{{ $pUser->app_url }}</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-2 text-gray-500">
                                         <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z" clip-rule="evenodd" />
                                         <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z" clip-rule="evenodd" />
@@ -54,7 +66,7 @@
                           </div>
                         </dl>
                       </div>
-                      @endif
+                      @endforeach
                     </div>
                     <div class="mt-6 divide-y divide-gray-200">
                       <div class="space-y-1">

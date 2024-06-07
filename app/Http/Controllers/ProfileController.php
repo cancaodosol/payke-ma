@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Services\PaykeUserService;
 use App\Services\DeployLogService;
+use App\Services\DeploySettingService;
 use App\Models\PaykeUser;
 
 class ProfileController extends Controller
@@ -21,19 +22,77 @@ class ProfileController extends Controller
     {
         $pUser = count($request->user()->PaykeUsers) > 0 ? $request->user()->PaykeUsers[0] : null;
 
+        // 稼働中のPayke環境がない場合
         if($pUser == null) {
             return view('profile.index', [
                 'user' => $request->user(),
             ]);
         }
 
+        // 稼働中のPayke環境の初期設定が終わってない場合
         if($pUser->is_before_setting())
         {
             return view('profile.init', [
                 'user' => $request->user(),
             ]);
         }
+
+        $service = new DeploySettingService();
+        $units = $service->find_units_all();
+        foreach ($request->user()->PaykeUsers as $paykeUser) {
+            $paykeUser->set_deploy_setting_name("なし");
+            foreach ($units as $unit) {
+                if($unit->get_value("is_plan") && $unit->no == $paykeUser->deploy_setting_no){
+                    $paykeUser->set_deploy_setting_name($unit->get_value("setting_title"));
+                }
+            }
+        }
+
         return view('profile.index', [
+            'user' => $request->user()
+        ]);
+    }
+
+    /**
+     * Show Payke Plan.
+     */
+    public function plan_view(Request $request): View
+    {
+        $pUser = null;
+        foreach ($request->user()->PaykeUsers as $paykeUser) {
+            if($paykeUser->id == $request->payke_user_id){
+                $pUser = $paykeUser;
+                break;
+            }
+        }
+
+        if($pUser == null){
+            return redirect("profile.index");
+        }
+
+        $service = new DeploySettingService();
+        $allunits = $service->find_units_all();
+        $units = [];
+        foreach ($allunits as $unit) {
+            if($unit->no == $pUser->deploy_setting_no) continue;
+            if($unit->get_value("is_plan")){
+                $units[] = $unit;
+            }
+        }
+
+        return view('profile.plan_list', [
+            'user' => $request->user(),
+            'pUser' => $pUser,
+            'units' => $units
+        ]);
+    }
+
+    /**
+     * Change Payke Plan.
+     */
+    public function edit_plan(Request $request): View
+    {
+        return view('profile.edit', [
             'user' => $request->user(),
         ]);
     }

@@ -81,6 +81,7 @@ class PaykeUser extends Model
         ,'payke_host_id'
         ,'payke_db_id'
         ,'payke_resource_id'
+        ,'deploy_setting_no'
         ,'user_folder_id'
         ,'user_app_name'
         ,'app_url'
@@ -111,6 +112,11 @@ class PaykeUser extends Model
         return "{$this->payke_host_id}_{$this->payke_db_id}";
     }
 
+    public function deploy_setting_name(): string
+    {
+        return $this->deploy_setting_name;
+    }
+
     public function set_user_folder_id(int $host_id, int $db_id): void
     {
         $this->user_folder_id = "user_{$host_id}_{$db_id}";
@@ -119,6 +125,11 @@ class PaykeUser extends Model
     public function set_app_url(string $hostname, string $user_app_name): void
     {
         $this->app_url = "https://{$hostname}/{$user_app_name}/admin/users";
+    }
+
+    public function set_deploy_setting_name(string $name): void
+    {
+        $this->deploy_setting_name = $name;
     }
 
     public function to_array()
