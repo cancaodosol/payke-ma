@@ -31,6 +31,9 @@ class EditRequest extends FormRequest
 
         $settings = [
             (new DeploySetting())->set_no($no)->set_key_and_value("setting_title", $this->setting_title),
+            (new DeploySetting())->set_no($no)->set_key_and_value("is_plan", (bool)$this->is_plan),
+            (new DeploySetting())->set_no($no)->set_key_and_value("payke_order_url", $this->payke_order_url),
+            (new DeploySetting())->set_no($no)->set_key_and_value("plan_explain", $this->plan_explain),
             (new DeploySetting())->set_no($no)->set_key_and_value("payke_x_auth_token", $this->payke_x_auth_token),
             (new DeploySetting())->set_no($no)->set_key_and_value("payke_enable_affiliate", (bool)$this->payke_enable_affiliate),
             (new DeploySetting())->set_no($no)->set_key_and_value("payke_host_id", $this->payke_host_id),

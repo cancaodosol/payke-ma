@@ -12,12 +12,16 @@
             <p style="color: green">{{ session('feedback.success') }}</p>
         @endif
 
-        <h3 class="mt-10 text-base font-semibold leading-7 text-gray-900">- 接続名</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">親Payke連携設定一覧に表示される名前です。</p>
+        <h3 class="mt-10 text-base font-semibold leading-7 text-gray-900">- 接続名・プラン設定</h3>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">親Payke連携設定一覧に表示される名前を設定します。<br>また、プランとして使用する場合は、その設定を行います。</p>
         <div class="mt-2 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <x-forms.input name="setting_title" value="{{ $settings['setting_title'] ?? false ? $settings['setting_title'] : null }}" label="接続名"/>
+            <x-forms.checkbox name="is_plan" value="{{ $settings['is_plan'] ?? false ? $settings['is_plan'] : null }}" label="プランとして" cbText="使用する"/>
+            <x-forms.input name="payke_order_url" value="{{ $settings['payke_order_url'] ?? false ? $settings['payke_order_url'] : null }}" label="購入ページURL"/>
+            <x-forms.textarea name="plan_explain" value="{{ $settings['plan_explain'] ?? false ? $settings['plan_explain'] : null }}" label="プラン説明文" row="1"/>
             <input type="hidden" name="no" value="{{ $settings['no'] }}"/>
         </div>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-red-500">※ 購入ページURLは、プラン変更時にお客さんの決済に使用します。</p>
 
         <h3 class="mt-10 text-base font-semibold leading-7 text-gray-900">- 注文/決済の受信設定</h3>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">下記情報を、親PaykeECの商品ページ「注文/決済の情報の配信」にご登録ください。</p>

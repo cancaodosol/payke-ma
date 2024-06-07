@@ -26,6 +26,9 @@ class SettingController extends Controller
         $settings = [
             "no" => $service->next_no(),
             "setting_title" => "",
+            "is_plan" => false,
+            "payke_order_url" => "https://",
+            "plan_explain" => "",
             "payke_resource_id" => null,
             "payke_tag_id" => null,
             "payke_host_id" => null,
@@ -51,15 +54,7 @@ class SettingController extends Controller
     {
         $service = new DeploySettingService();
         $unit = $service->find_by_no($no);
-        $settings = [
-            "no" => $no,
-            "setting_title" => $unit->get_value("setting_title"),
-            "payke_resource_id" => $unit->get_value("payke_resource_id"),
-            "payke_tag_id" => $unit->get_value("payke_tag_id"),
-            "payke_host_id" => $unit->get_value("payke_host_id"),
-            "payke_enable_affiliate" => $unit->get_value("payke_enable_affiliate"),
-            "payke_x_auth_token" => $unit->get_value("payke_x_auth_token")
-        ];
+        $settings = $unit->to_array();
 
         $hService = new PaykeHostService();
         $hosts = $hService->find_all_to_array();

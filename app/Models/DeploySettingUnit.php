@@ -10,6 +10,9 @@ class DeploySettingUnit
         $this->settings = [];
         foreach ($settings as $setting) {
             if($setting->key == "setting_title") $this->settings["setting_title"] = $setting;
+            if($setting->key == "is_plan") $this->settings["is_plan"] = $setting;
+            if($setting->key == "payke_order_url") $this->settings["payke_order_url"] = $setting;
+            if($setting->key == "plan_explain") $this->settings["plan_explain"] = $setting;
             if($setting->key == "payke_resource_id") $this->settings["payke_resource_id"] = $setting;
             if($setting->key == "payke_tag_id") $this->settings["payke_tag_id"] = $setting;
             if($setting->key == "payke_host_id") $this->settings["payke_host_id"] = $setting;
@@ -55,5 +58,21 @@ class DeploySettingUnit
     {
         $this->ready_dbs_count = $ready_dbs_count;
         return $this;
+    }
+
+    public function to_array()
+    {
+        return [
+            "no" => $this->no,
+            "setting_title" => $this->get_value("setting_title"),
+            "is_plan" => $this->get_value("is_plan"),
+            "payke_order_url" => $this->get_value("payke_order_url"),
+            "plan_explain" => $this->get_value("plan_explain"),
+            "payke_resource_id" => $this->get_value("payke_resource_id"),
+            "payke_tag_id" => $this->get_value("payke_tag_id"),
+            "payke_host_id" => $this->get_value("payke_host_id"),
+            "payke_enable_affiliate" => $this->get_value("payke_enable_affiliate"),
+            "payke_x_auth_token" => $this->get_value("payke_x_auth_token")
+        ];
     }
 }
