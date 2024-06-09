@@ -15,6 +15,7 @@ use App\Models\FailedJob;
 use App\Models\PaykeEcOrder;
 use App\Models\DeploySetting;
 use App\Models\PaykeUserTag;
+use App\Models\OrderCancelWaiting;
 use App\Services\UserService;
 use App\Services\DeployService;
 use App\Services\DeploySettingService;
@@ -60,6 +61,8 @@ class IndexController extends Controller
                 $settings = DeploySetting::all();
                 dd($settings);
                 return;
+            case ':waiting_view' :
+                dd(OrderCancelWaiting::where([["is_active", "=", true], ["has_canceled", "=", false]])->get());
             case ':dbs_view' :
                 $dbs = PaykeDb::all();
                 dd($dbs);
@@ -80,8 +83,13 @@ class IndexController extends Controller
                 $jobs = FailedJob::all();
                 dd($jobs);
             case ':settings_view' :
-                $settings = DeploySetting::all();
-                dd($settings);
+                $ser = new DeploySettingService();
+                $units = $ser->find_units_all();
+                $units_array = [];
+                foreach ($units as $unit) {
+                    $units_array[] = $unit->to_array();
+                }
+                dd($units_array);
             case ':logs_view' :
                 if(count($searchWords) > 1)
                 {

@@ -11,12 +11,14 @@ use App\Services\DeploySettingService;
 use App\Services\DeployLogService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
+use App\Services\PaykeApiService;
 use App\Services\MailService;
 use App\Jobs\DeployJob;
 use App\Jobs\DeployJobOrderd;
 use App\Helpers\SecurityHelper;
 use App\Models\Job;
 use App\Models\PaykeUser;
+use App\Models\OrderCancelWaiting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Mail\Mailer;
@@ -103,15 +105,55 @@ class PaykeController extends Controller
                 $order_id = $request->order_id();
                 $user_name = $request->customer_full_name();
                 $email_address = $request->customer_email();
-                $new_password = SecurityHelper::create_ramdam_string(15);
-                Log::info("ユーザー名: ".$user_name."、 メールアドレス: ".$email_address."、 パスワード: ".$new_password. "、 URL: ".$request->url());
     
-                // ログインユーザーを作成する
+                // ログインユーザー存在チェック
                 $uService = new UserService();
                 if($uService->exists_user($email_address)){
-                    Log::info("ユーザー名: ".$user_name."、 メールアドレス: ".$email_address."：メールアドレスが重複しています。デプロイを中止しました。");
+
+                    // ログインユーザーが存在した場合は、プラン変更データとして正しいかどうかをチェックする
+                    $ser = new PaykeApiService();
+                    $order = $ser->get_order($order_id);
+                    if(!$order || $order->arg1 == "" ){
+                        $title = "【Payke連携エラー】指定の注文形式でない注文IDのデータを受信";
+                        $message = "受信した注文IDが見つからないか、指定の注文形式でありません。[ID:{$order_id}]";
+                        $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
+                        return;
+                    }
+                    $pSer = new PaykeUserService();
+                    $pUser = $pSer->find_by_uuid($order->get_uuid());
+                    if(!$pUser || $pUser->User->email != $email_address){
+                        $title = "【Payke連携エラー】PaykeUserが見つからないデータを受信";
+                        $message = "受信したPaykeUserが見つからないか、メールアドレスが一致しません。[UUID:{$order->get_uuid()}]";
+                        $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
+                        return;
+                    }
+
+                    // キャンセル待ちテーブルに保存
+                    $logSer = new DeployLogService();
+                    $logSer->write_warm_log($pUser, "プラン変更データ受信", "「{$settingUnit->get_value('setting_title')}」へのプラン変更データを受信しました。", null, "", $order->to_array_for_log());
+                    $orderCancelWaiting = (new OrderCancelWaiting())->set_order($pUser, $order_id);
+                    $orderCancelWaiting->save();
+
+                    // 親Payke連携設定のnoに応じて、Payke環境の設定を変更
+                    $old_order_id = $pUser->payke_order_id;
+                    $pUser->deploy_setting_no = $no;
+                    $pUser->payke_order_id = $order_id;
+                    $pUser->enable_affiliate = $settingUnit->get_value("payke_enable_affiliate");
+                    $pSer->edit($pUser->id, $pUser, false);
+
+                    // 旧注文キャンセル
+                    $canceled = $ser->cancel_order($old_order_id);
+                    if($canceled){
+                        $logSer->write_warm_log($pUser, "旧注文キャンセル", "プラン変更により、注文データが切り替わりますので、旧注文データへキャンセル処理を行いました。");
+                    } else {
+                        $logSer->write_error_log($pUser, "旧注文キャンセル失敗", "プラン変更による旧注文データへキャンセル処理が失敗しました。");
+                    }
+
                     return;
                 }
+                
+                // ログインユーザーの作成
+                $new_password = SecurityHelper::create_ramdam_string(15);
                 $user = $uService->save_user($user_name, $email_address, $new_password);
     
                 // Paykeユーザーを仮作成。
@@ -126,11 +168,9 @@ class PaykeController extends Controller
                 if($has_error)
                 {
                     $service->save_has_error($pUser);
-
-                    $mService = new MailService($mailer);
                     $title = "PaykeECデプロイリソース不足";
                     $message = "デプロイに必要な空きデータベースがなく、PaykeEC環境を作成できませんでした。\n\nuserid: ".$pUser->id;
-                    $mService->send_to_admin($title, $message, $request->raw());
+                    $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
                 } else {
                     $service->save_init($pUser);
                 }
@@ -162,14 +202,27 @@ class PaykeController extends Controller
                     return;
                 }
 
+                // プラン変更で起こったキャンセル処理の場合は、処理終了
+                $orderCancelWaiting = $this->find_order_cancel_waiting($request->order_id());
+                if($orderCancelWaiting && $request->is_type_order_canceled())
+                {
+                    $orderCancelWaiting->has_canceled = true;
+                    $orderCancelWaiting->save();
+
+                    $logSer = new DeployLogService();
+                    $pSer = new PaykeUserService();
+                    $pUser = $pSer->find_by_id($orderCancelWaiting->payke_user_id);
+                    $logSer->write_success_log($pUser, "キャンセルデータ受信", "「{$settingUnit->get_value('setting_title')}」の注文キャンセルデータを受信しました。", null, "", [$request->raw()]);
+                    return;
+                }
+
                 $service = new PaykeUserService();
                 $user = $service->find_by_order_id($request->order_id());
                 if(!$user)
                 {
-                    $mService = new MailService($mailer);
                     $title = "未登録ユーザーの決済データを受信";
                     $message = "未登録ユーザーの決済データを受信しました。\nPaykeECからの決済データに紐づくユーザーがありません。";
-                    $mService->send_to_admin($title, $message, $request->raw());
+                    $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
                     return;
                 }
                 Log::info($user->user_name);
@@ -211,11 +264,26 @@ class PaykeController extends Controller
         }
         catch(Exception $e)
         {
-            Log::error($e->getMessage());
-            $mService = new MailService($mailer);
             $title = "想定外のエラー";
             $message = "PaykeECからのデータ連携で、想定外のエラーが発生しました。\n\n".$e->getMessage();
-            $mService->send_to_admin($title, $message, $request->raw());
+            $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
         }
+    }
+
+    public function find_order_cancel_waiting(int $order_id)
+    {
+        return OrderCancelWaiting::where([
+                ["order_id", "=", $order_id],
+                ["is_active", "=", true],
+                ["has_canceled", "=", false]
+            ])->first();
+    }
+
+    public function write_log_and_send_email(Mailer $mailer, string $title, string $message, $jsondata = [], array $log = [])
+    {
+        Log::error("▼ ".$title."\n".$message);
+        $mService = new MailService($mailer);
+        $mService->send_to_admin($title, $message, $jsondata, $log);
+
     }
 }

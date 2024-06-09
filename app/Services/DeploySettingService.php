@@ -62,7 +62,7 @@ class DeploySettingService
         return $unit;
     }
 
-    public function find_by_key(int $no, string $key)
+    public function find_by_key($no, string $key)
     {
         $setting = DeploySetting::where([['no', '=', $no], ['key', '=', $key]])->first();
         if($setting) return $setting;
@@ -72,6 +72,12 @@ class DeploySettingService
         $newSetting->key = $key;
         $newSetting->value = null;
         return $newSetting;
+    }
+
+    public function get_value($no, string $key)
+    {
+        $setting = $this->find_by_key($no, $key);
+        return $setting->value;
     }
 
     public function find_by_no(int $no)

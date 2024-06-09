@@ -50,6 +50,7 @@ class CreateRequest extends FormRequest
         $user->payke_host_id = $this->paykeHostId();
         $user->payke_db_id = $this->paykeDbId();
         $user->payke_resource_id = $this->input('payke_resource_id');
+        $user->deploy_setting_no = $this->input('deploy_setting_no');
         $user->user_app_name = $this->input('user_app_name');
         $user->set_user_folder_id($this->paykeHostId(), $this->paykeDbId());
         $user->set_app_url($user->PaykeHost->hostname, $user->user_app_name);
@@ -57,6 +58,7 @@ class CreateRequest extends FormRequest
         $user->user_name = $this->input('user_name');
         $user->email_address = $this->input('email_address');
         $user->memo = $this->input('memo') ?? "";
+        $user->payke_order_id = $this->input('payke_order_id');
 
         return $user;
     }

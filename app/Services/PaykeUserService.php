@@ -10,6 +10,7 @@ use App\Models\PaykeUserTag;
 use App\Services\UserService;
 use App\Services\DeployService;
 use App\Services\DeployLogService;
+use App\Services\DeploySettingService;
 use App\Jobs\DeployJob;
 use App\Jobs\DeployJobOrderd;
 use App\Helpers\SecurityHelper;
@@ -69,6 +70,24 @@ class PaykeUserService
         }
 
         $hand_label = $is_hand ? "（手動）" : "";
+        if($newUser->deploy_setting_no != $currentUser->deploy_setting_no)
+        {
+            // ログ：プランを〇〇から、〇〇へ変更しました。
+            $service = new DeploySettingService();
+            $currentPlanName = $service->get_value($currentUser->deploy_setting_no, "setting_title");
+            $newPlanName = $service->get_value($newUser->deploy_setting_no, "setting_title");
+            $message = $currentPlanName ? "プランを「{$currentPlanName}」から「{$newPlanName}」へ変更しました。" : "プランを「{$newPlanName}」に設定しました。";
+            $logService->write_other_log($currentUser, "プラン変更{$hand_label}", $message);
+        }
+
+        if($newUser->payke_order_id != $currentUser->payke_order_id)
+        {
+            // ログ：注文IDを〇〇から、〇〇へ変更しました。
+            $service = new DeploySettingService();
+            $message = "注文IDを「{$currentUser->payke_order_id}」から「{$newUser->payke_order_id}」へ変更しました。";
+            $logService->write_other_log($currentUser, "注文ID変更{$hand_label}", $message);
+        }
+
         if($newUser->payke_resource_id != $currentUser->payke_resource_id)
         {
             // ログ：Paykeバージョンを〇〇から、〇〇へ変更しました。
@@ -129,12 +148,14 @@ class PaykeUserService
             "status" => $newUser->status
             ,"tag_id" => $newUser->tag_id
             ,"payke_resource_id" => $newUser->payke_resource_id
+            ,"deploy_setting_no" => $newUser->deploy_setting_no
             ,"user_app_name" => $newUser->user_app_name
             ,"app_url" => $newUser->app_url
             ,"enable_affiliate" => $newUser->enable_affiliate
             ,"user_name" => $newUser->user_name
             ,"email_address" => $newUser->email_address
             ,"memo" => $newUser->memo
+            ,"payke_order_id" => $newUser->payke_order_id
         ]);
     }
 
@@ -296,6 +317,11 @@ class PaykeUserService
     public function find_by_order_id(string $order_id)
     {
         return PaykeUser::where('payke_order_id', $order_id)->first();
+    }
+
+    public function find_by_uuid(string $uuid)
+    {
+        return PaykeUser::where('uuid', $uuid)->first();
     }
 
     public function find_by_ids(array $ids)

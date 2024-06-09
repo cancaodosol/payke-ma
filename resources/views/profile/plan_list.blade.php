@@ -29,9 +29,15 @@
                               </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
+                              @if($pUser->deploy_setting_no == $unit->no)
+                                <span class="rounded-md px-2.5 py-1.5 text-xs font-semibold text-gray-900">
+                                    現在使用中
+                                </span>
+                              @else
                                 <a href="{{ $unit->get_value('payke_order_url') }}?arg1=puuid_{{ $pUser->uuid }}" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                     変更
                                 </a>
+                              @endif
                             </div>
                           </li>
                           @endforeach

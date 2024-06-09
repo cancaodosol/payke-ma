@@ -74,7 +74,6 @@ class ProfileController extends Controller
         $allunits = $service->find_units_all();
         $units = [];
         foreach ($allunits as $unit) {
-            if($unit->no == $pUser->deploy_setting_no) continue;
             if($unit->get_value("is_plan")){
                 $units[] = $unit;
             }
