@@ -17,7 +17,6 @@ class ReleaseNote
         $values["created_at"] = str_replace(["(", ")"], "", $matches[0]);
         $header_name = "";
         foreach ($rows as $row) {
-            if(trim($row) == "") continue;
             if(in_array(trim($row), $headers)){
                 $header_name = trim(str_replace("#", "", $row));
                 $values[$header_name] = "";

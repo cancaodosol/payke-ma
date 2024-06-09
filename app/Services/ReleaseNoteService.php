@@ -13,7 +13,7 @@ class ReleaseNoteService
 
         $results = [];
         foreach ($files as $file) {
-            $rows = file($file, FILE_SKIP_EMPTY_LINES);
+            $rows = file($file);
             $results[] = new ReleaseNote($rows);
         }
         
