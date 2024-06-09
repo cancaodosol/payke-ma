@@ -110,6 +110,10 @@ class IndexController extends Controller
             case ':eclogs_view' :
                 $logs = PaykeEcOrder::all();
                 dd($logs);
+            case ':get_order_api' :
+                if(count($searchWords) != 2) dd(":get_order_api <order_id>");
+                $aSer = new PaykeApiService();
+                dd($aSer->get_order($searchWords[1]));
             case ':send_email' :
                 $mailser = new MailService($mailer);
                 $mailser->send_to_admin("メール送信テスト", "管理ユーザー向けのメールをテスト的に送ってみました。");
