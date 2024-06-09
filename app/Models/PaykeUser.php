@@ -71,6 +71,7 @@ class PaykeUser extends Model
     public function is_disable_admin() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN; }
     public function is_disable_admin_and_sales() { return $this->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES; }
     public function is_delete() { return $this->status == PaykeUser::STATUS__DELETE; }
+    public function is_unused_or_delete() { return $this->is_unused() || $this->is_delete(); }
     public function has_error() { return $this->status == PaykeUser::STATUS__HAS_ERROR; }
     public function has_unpaid() { return $this->status == PaykeUser::STATUS__HAS_UNPAID; }
 
@@ -146,6 +147,17 @@ class PaykeUser extends Model
             'is_delete' => $this->is_delete(),
             'has_error' => $this->has_error(),
             'data' => $this
+        ];
+    }
+
+    public function to_array_for_log()
+    {
+        return [
+            "id : ".$this->id,
+            "user_name : ".$this->user_name,
+            "email_address : ".$this->email_address,
+            "payke_order_id : ".$this->payke_order_id,
+            "app_url : ".$this->app_url,
         ];
     }
 }

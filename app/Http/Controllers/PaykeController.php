@@ -136,6 +136,7 @@ class PaykeController extends Controller
 
                     // 親Payke連携設定のnoに応じて、Payke環境の設定を変更
                     $old_order_id = $pUser->payke_order_id;
+                    $pUser->status = PaykeUser::STATUS__ACTIVE;
                     $pUser->deploy_setting_no = $no;
                     $pUser->payke_order_id = $order_id;
                     $pUser->enable_affiliate = $settingUnit->get_value("payke_enable_affiliate");
@@ -250,6 +251,7 @@ class PaykeController extends Controller
                 if($request->is_type_order_canceled())
                 {
                     $user->status = PaykeUser::STATUS__UNUSED;
+                    $user->deploy_setting_no = -1;
                     $service->edit($user->id, $user, false);
                 }
 

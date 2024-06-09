@@ -63,9 +63,14 @@
                               </div>
                             </div>
                             <div class="flex flex-none items-center gap-x-4">
-                                <a href="#" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                              <form action="{{ route('profile.cancel_view') }}" method="post">
+                                @method('POST')
+                                @csrf
+                                <input type="hidden" name="payke_user_uuid" value="{{ $pUser->uuid }}"/>
+                                <button class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                   停止
-                                </a>
+                                </button>
+                              </form>
                             </div>
                           </li>
                         </ul>

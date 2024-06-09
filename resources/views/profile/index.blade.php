@@ -27,7 +27,7 @@
                               <form action="{{ route('profile.plan_view') }}" method="post">
                                 @method('POST')
                                 @csrf
-                                <input type="hidden" name="payke_user_id" value="{{ $pUser->id }}"/>
+                                <input type="hidden" name="payke_user_uuid" value="{{ $pUser->uuid }}"/>
                                 <button class="text-xs text-blue-500 ml-2">変更</button>
                               </form>
                             </dd>
