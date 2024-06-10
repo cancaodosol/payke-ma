@@ -16,17 +16,16 @@
             <table class="min-w-full divide-y divide-gray-300">
             <thead>
                 <tr>
-                    <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0 hidden md:table-cell">No.</th>
+                    <th scope="col" class="whitespace-nowrap py-3.5 text-center text-sm font-semibold text-gray-900">ID</th>
                     <th scope="col" class="whitespace-nowrap py-3.5 text-left text-sm font-semibold text-gray-900">名前</th>
                     <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900">メールアドレス</th>
                     <th scope="col" class="whitespace-nowrap pl-4 py-3.5 text-left text-sm font-semibold text-gray-900">パスワード</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-                <div hidden>{{ $no = 1; }}</div>
                 @foreach($users as $user)
                 <tr>
-                    <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $no++ }}</td>
+                    <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-center text-gray-500 sm:pl-0">{{ $user->id }}</td>
                     <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">{{ $user->name }}</td>
                     <td class="whitespace-nowrap pl-2 py-1.5 text-sm text-gray-900">{{ $user->email }}</td>
                     <td class="whitespace-nowrap pl-2 py-1.5 text-sm text-gray-900">
