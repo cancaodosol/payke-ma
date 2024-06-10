@@ -118,13 +118,12 @@ class IndexController extends Controller
                 $mailser = new MailService($mailer);
                 $mailser->send_to_admin("メール送信テスト", "管理ユーザー向けのメールをテスト的に送ってみました。");
             case ':set_user' :
-                $user = User::where('id', 2)->firstOrFail();
-                // $pUser = PaykeUser::where('id', 30)->firstOrFail();
-                // $pUser->user_id = $user->id;
-                // $pUser->save();
-                $user->role = 2;
-                $user->save();
-                dd($user);
+                if(count($searchWords) != 3) dd(":set_user <payke_user_id> <user_id>");
+                $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                $user = User::where('id', $searchWords[2])->firstOrFail();
+                $pUser->user_id = $user->id;
+                $pUser->save();
+                dd($pUser);
             case ':users_view' :
                 if(count($searchWords) > 1)
                 {
