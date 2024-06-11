@@ -21,6 +21,7 @@ class PaykeEcOrder extends Model
     protected $fillable = [
         'uuid'
         ,'order_id'
+        ,'payke_user_id'
         ,'type'
         ,'raw'
         ,'raw_created_at'

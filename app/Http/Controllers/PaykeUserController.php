@@ -23,7 +23,7 @@ class PaykeUserController extends Controller
     {
         $service = new PaykeUserService();
         $user = $service->find_by_id($userId);
-        $orders = PaykeEcOrder::where('order_id', $user->payke_order_id)->orderByRaw('created_at DESC, id DESC')->get();
+        $orders = PaykeEcOrder::where('payke_user_id', $user->id)->orderByRaw('created_at DESC, id DESC')->get();
         return view('payke_user.profile', ['user' => $user, 'payke_ec_orders' => $orders]);
     }
 

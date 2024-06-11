@@ -84,7 +84,8 @@ class PaykeController extends Controller
         try
         {
             Log::info($request->raw());
-            $request->to_payke_ec_order()->save();
+            $poSer = new PaykeEcOrderService();
+            $poSer->save($request->to_payke_ec_order());
 
             $dService = new DeploySettingService();
             $settingUnit = $dService->find_by_no($no);
@@ -141,6 +142,9 @@ class PaykeController extends Controller
                     $pUser->payke_order_id = $order_id;
                     $pUser->enable_affiliate = $settingUnit->get_value("payke_enable_affiliate");
                     $pSer->edit($pUser->id, $pUser, false);
+
+                    // PaykeEc連携データ更新
+                    $poSer->update_payke_user_id($request->to_payke_ec_order(), $pUser);
 
                     // 旧注文キャンセル
                     $canceled = $ser->cancel_order($old_order_id);
