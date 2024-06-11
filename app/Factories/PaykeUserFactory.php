@@ -41,6 +41,7 @@ class PaykeUserFactory
         $user->payke_host_id = $host_id;
         $user->payke_db_id = $db_id;
         $user->payke_resource_id = $settingUnit->get_value("payke_resource_id");
+        $user->deploy_setting_no = $settingUnit->no;
         $user->user_app_name = $app_name;
 
         if($host_id != null)
