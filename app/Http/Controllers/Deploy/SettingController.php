@@ -26,6 +26,7 @@ class SettingController extends Controller
         $settings = [
             "no" => $service->next_no(),
             "setting_title" => "",
+            "sort_no" => "0",
             "is_plan" => false,
             "payke_order_url" => "https://",
             "plan_explain" => "",

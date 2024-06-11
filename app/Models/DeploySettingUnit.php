@@ -10,6 +10,7 @@ class DeploySettingUnit
         $this->settings = [];
         foreach ($settings as $setting) {
             if($setting->key == "setting_title") $this->settings["setting_title"] = $setting;
+            if($setting->key == "sort_no") $this->settings["sort_no"] = $setting;
             if($setting->key == "is_plan") $this->settings["is_plan"] = $setting;
             if($setting->key == "payke_order_url") $this->settings["payke_order_url"] = $setting;
             if($setting->key == "plan_explain") $this->settings["plan_explain"] = $setting;
@@ -65,6 +66,7 @@ class DeploySettingUnit
         return [
             "no" => $this->no,
             "setting_title" => $this->get_value("setting_title"),
+            "sort_no" => $this->get_value("sort_no"),
             "is_plan" => $this->get_value("is_plan"),
             "payke_order_url" => $this->get_value("payke_order_url"),
             "plan_explain" => $this->get_value("plan_explain"),

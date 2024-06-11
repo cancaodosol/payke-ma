@@ -30,9 +30,14 @@ class DeploySettingService
         });
 
         $units = [];
+        $unit_sort_nos = [];
         foreach ($settingsByNo as $no => $settings) {
-            $units[] = $this->create_deploy_setting_unit($no, $settings);
+            $unit = $this->create_deploy_setting_unit($no, $settings);
+            $units[] = $unit;
+            $unit_sort_nos[] = $unit->get_value("sort_no");
         }
+
+        array_multisort($unit_sort_nos, SORT_ASC, $units);
 
         return $units;
     }
