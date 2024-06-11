@@ -108,6 +108,10 @@ class IndexController extends Controller
                     dd($logs);
                 }
             case ':eclogs_view' :
+                if(count($searchWords) == 2){
+                    $logs = PaykeEcOrder::where("order_id", $searchWords[1])->get();
+                    dd($logs);
+                }
                 $logs = PaykeEcOrder::all();
                 dd($logs);
             case ':get_order_api' :

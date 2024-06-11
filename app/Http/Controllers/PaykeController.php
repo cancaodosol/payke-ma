@@ -179,6 +179,9 @@ class PaykeController extends Controller
                 } else {
                     $service->save_init($pUser);
                 }
+
+                // PaykeEc連携データ更新
+                $poSer->update_payke_user_id($request->to_payke_ec_order(), $pUser);
         
                 // ログ保存。
                 $logService = new DeployLogService();
