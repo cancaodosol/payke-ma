@@ -17,8 +17,12 @@ class Order
         $this->product_name = $data->data->name;
     }
 
+    public function is_change_plan_request(){
+        return $this->arg1 == "mode_cplan";
+    }
+
     public function get_uuid(){
-        return str_replace("puuid_", "", $this->arg1);
+        return str_replace("puuid_", "", $this->arg2);
     }
 
     public function to_array_for_log()

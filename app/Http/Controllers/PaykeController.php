@@ -12,6 +12,7 @@ use App\Services\DeployLogService;
 use App\Services\PaykeResourceService;
 use App\Services\PaykeUserService;
 use App\Services\PaykeApiService;
+use App\Services\PaykeEcOrderService;
 use App\Services\MailService;
 use App\Jobs\DeployJob;
 use App\Jobs\DeployJobOrderd;
@@ -107,24 +108,16 @@ class PaykeController extends Controller
                 $user_name = $request->customer_full_name();
                 $email_address = $request->customer_email();
     
-                // ログインユーザー存在チェック
-                $uService = new UserService();
-                if($uService->exists_user($email_address)){
-
-                    // ログインユーザーが存在した場合は、プラン変更データとして正しいかどうかをチェックする
-                    $ser = new PaykeApiService();
-                    $order = $ser->get_order($order_id);
-                    if(!$order || $order->arg1 == "" ){
-                        $title = "【Payke連携エラー】指定の注文形式でない注文IDのデータを受信";
-                        $message = "受信した注文IDが見つからないか、指定の注文形式でありません。[ID:{$order_id}]";
-                        $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
-                        return;
-                    }
+                // プラン変更の注文かどうかをチェック
+                $ser = new PaykeApiService();
+                $order = $ser->get_order($order_id);
+                if($order->is_change_plan_request()){
+                    // プラン変更の処理を実施。
                     $pSer = new PaykeUserService();
                     $pUser = $pSer->find_by_uuid($order->get_uuid());
-                    if(!$pUser || $pUser->User->email != $email_address){
+                    if(!$pUser){
                         $title = "【Payke連携エラー】PaykeUserが見つからないデータを受信";
-                        $message = "受信したPaykeUserが見つからないか、メールアドレスが一致しません。[UUID:{$order->get_uuid()}]";
+                        $message = "受信した注文のPaykeUserが見つかりません。[UUID:{$order->get_uuid()}]";
                         $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
                         return;
                     }
@@ -153,7 +146,15 @@ class PaykeController extends Controller
                     } else {
                         $logSer->write_error_log($pUser, "旧注文キャンセル失敗", "プラン変更による旧注文データへキャンセル処理が失敗しました。");
                     }
+                    return;
+                }
 
+                // ログインユーザー存在チェック
+                $uService = new UserService();
+                if($uService->exists_user($email_address)){
+                    $title = "【Payke連携エラー】メールアドレスの重複。";
+                    $message = "すでに使用されているログインユーザーのメールアドレスのデータを受信しました(プラン変更ではありません)。\n\n[メールアドレス:{$email_address}、名前:{$user_name}]";
+                    $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
                     return;
                 }
                 
