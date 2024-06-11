@@ -14,11 +14,11 @@
                       </div>
                       <div class="mt-6 pt-6">
                         <div>Paykeの利用を停止しますが、よろしいでしょうか？</div>
-                        <ul class="mt-5 text-sm list-disc pl-6">
-                          <li>利用停止後、現在販売中の商品販売ページへはアクセスできなくなります。</li>
-                          <li>利用停止後、現在販売中の継続/分割払い商品への支払いは、ストップします。</li>
+                        <ul class="mt-5 text-sm list-disc pl-2 lg:pl-6">
+                          <li class="mt-2">利用停止をする前に、継続/分割支払いが全てキャンセル・停止されていることを確認してください。</li>
+                          <li class="mt-2">支払いが継続していても一切Paykeからの設定・データ通信ができなくなります。<br>エラーが生じても対応できませんのでご注意ください。</li>
                         </ul>
-                        <form action="{{ route('profile.cancel_confirm') }}" method="post" class="mt-2 text-right">
+                        <form action="{{ route('profile.cancel_confirm') }}" method="post" class="mt-6 lg:mt-2 text-right">
                           @method('POST')
                           @csrf
                           <input type="hidden" name="payke_user_uuid" value="{{ $pUser->uuid }}"/>
