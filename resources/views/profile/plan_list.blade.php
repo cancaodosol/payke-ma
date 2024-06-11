@@ -47,33 +47,22 @@
                     <div class="mt-14 divide-y divide-gray-200">
                       <div class="space-y-1">
                       </div>
-                      <div class="mt-6">
-                        <ul role="list" class="divide-y divide-gray-100">
-                          <li class="flex items-center justify-between gap-x-6 py-5 px-3 rounded-lg hover:bg-gray-50">
-                            <div class="min-w-0">
-                              <div class="flex items-start gap-x-3">
-                                <p class="text-sm font-semibold leading-6 text-gray-900">
-                                  利用停止
-                                </p>
-                              </div>
-                              <div class="flex flex-wrap items-center text-xs leading-5 text-gray-500">
-                                <div class="flex gap-x-2 mt-2">
-                                    <pre>Paykeの利用を終了します。</pre>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="flex flex-none items-center gap-x-4">
-                              <form action="{{ route('profile.cancel_view') }}" method="post">
-                                @method('POST')
-                                @csrf
-                                <input type="hidden" name="payke_user_uuid" value="{{ $pUser->uuid }}"/>
-                                <button class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                  停止
-                                </button>
-                              </form>
-                            </div>
-                          </li>
-                        </ul>
+                      <div class="mt-6 py-5">
+                        <div class="text-sm font-semibold leading-6 text-gray-900">
+                          利用停止
+                        </div>
+                        <div class="text-sm flex mt-2">
+                          <span>Paykeの利用停止は、</span>
+                          <form action="{{ route('profile.cancel_view') }}" method="post">
+                            @method('POST')
+                            @csrf
+                            <input type="hidden" name="payke_user_uuid" value="{{ $pUser->uuid }}"/>
+                            <button class="text-blue-500 underline">
+                              こちら
+                            </button>
+                          </form>
+                          <span>。</span>
+                        </div>
                       </div>
                     </div>
                   </div>
