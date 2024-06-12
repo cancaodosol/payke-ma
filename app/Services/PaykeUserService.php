@@ -170,7 +170,7 @@ class PaykeUserService
         $newStatusName = PaykeUser::STATUS_NAMES[$newUser->status];
         $message = "ステータスを「{$currentStatusName}」から「{$newStatusName}」へ変更しました。";
 
-        // ステータス「管理・販売停止」にしたときは、PaykeECにアクセスしたらすべてリダイレクト。
+        // ステータス「管理・販売停止」にしたときは、Paykeにアクセスしたらすべてリダイレクト。
         if($newUser->status == PaykeUser::STATUS__DISABLE_ADMIN_AND_SALES) {
             $log = [];
             $is_success = $deployService->stop_app($currentUser, $log);
@@ -193,7 +193,7 @@ class PaykeUserService
             }
         }
 
-        // ステータス「管理停止」にしたときは、PaykeECのユーザーをロック。
+        // ステータス「管理停止」にしたときは、Paykeのユーザーをロック。
         if($newUser->status == PaykeUser::STATUS__DISABLE_ADMIN) {
             $log = [];
             $is_success = $deployService->lock_users($currentUser, $log);
@@ -204,7 +204,7 @@ class PaykeUserService
             }
         }
 
-        // ステータス「管理停止」解除されたときは、PaykeECのユーザーのロック解除。
+        // ステータス「管理停止」解除されたときは、Paykeのユーザーのロック解除。
         if($currentUser->status == PaykeUser::STATUS__DISABLE_ADMIN && $newUser->status == PaykeUser::STATUS__ACTIVE) {
             $log = [];
             $is_success = $deployService->unlock_users($currentUser, $log);
@@ -215,7 +215,7 @@ class PaykeUserService
             }
         }
 
-        // ステータス「利用終了」にしたときは、PaykeECにアクセスしたらすべてリダイレクト。
+        // ステータス「利用終了」にしたときは、Paykeにアクセスしたらすべてリダイレクト。
         if($newUser->status == PaykeUser::STATUS__UNUSED) {
             $log = [];
             $is_success = $deployService->stop_app($currentUser, $log);

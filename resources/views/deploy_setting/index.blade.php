@@ -2,7 +2,7 @@
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h2 class="text-base font-semibold leading-7 text-gray-900">親Payke連携設定</h2>
-          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">親PaykeとのWebhookの設定、および、決済時に作成するPaykeECの環境設定を行います。</p>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">親PaykeとのWebhookの設定、および、決済時に作成するPaykeの環境設定を行います。</p>
         </div>
         <div class="mt-4 sm:ml-2 sm:mt-0 sm:flex-none">
           <a href="{{ route('deploy_setting.create') }}" type="button" class="block rounded-md bg-emerald-500 px-2 py-1 text-center text-xs font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500">

@@ -16,7 +16,7 @@ class PaykeUserFactory
 {
     public function create_new_user(string $user_name, string $email_address, DeploySettingUnit $settingUnit): PaykeUser
     {
-        // PaykeECで使用するデータベースをさがす。
+        // Paykeで使用するデータベースをさがす。
         $dbService = new PaykeDbService();
         $host_dbs = $dbService->find_ready_host_dbs($settingUnit->get_value("payke_host_id"));
 

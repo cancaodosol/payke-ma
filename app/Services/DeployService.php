@@ -410,10 +410,10 @@ class DeployService
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "PaykeECに管理ユーザー「{$username}」を作成しました。";
+            $message = "Paykeに管理ユーザー「{$username}」を作成しました。";
             $logService->write_other_log($user, "管理ユーザー作成", $message, null, $params_string, $outLog);
         }else{
-            $message = "PaykeECへの管理ユーザー「{$username}」作成に失敗しました。";
+            $message = "Paykeへの管理ユーザー「{$username}」作成に失敗しました。";
             $logService->write_error_log($user, '管理ユーザー作成失敗', $message, null, $params_string, $outLog);
         }
 
@@ -437,10 +437,10 @@ class DeployService
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "PaykeECのメンテナンス用ユーザーを作成しました。";
+            $message = "Paykeのメンテナンス用ユーザーを作成しました。";
             $logService->write_other_log($user, "メンテナンス用ユーザー作成", $message, null, $params_string, $outLog);
         }else{
-            $message = "PaykeECのメンテナンス用ユーザーの作成に失敗しました。";
+            $message = "Paykeのメンテナンス用ユーザーの作成に失敗しました。";
             $logService->write_error_log($user, 'メンテナンス用ユーザー作成失敗', $message, null, $params_string, $outLog);
         }
 
@@ -463,10 +463,10 @@ class DeployService
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "PaykeECにログイン制限をかけました。";
+            $message = "Paykeにログイン制限をかけました。";
             $logService->write_warm_log($user, "ログイン制限", $message, null, $params_string, $outLog);
         }else{
-            $message = "PaykeECにログイン制限をかけることに失敗しました。";
+            $message = "Paykeにログイン制限をかけることに失敗しました。";
             $logService->write_error_log($user, 'ログイン制限失敗', $message, null, $params_string, $outLog);
         }
 
@@ -488,10 +488,10 @@ class DeployService
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "PaykeECにログイン制限を解除しました。";
+            $message = "Paykeにログイン制限を解除しました。";
             $logService->write_success_log($user, "ログイン制限解除", $message, null, $params_string, $outLog);
         }else{
-            $message = "PaykeECにログイン制限の解除に失敗しました。";
+            $message = "Paykeにログイン制限の解除に失敗しました。";
             $logService->write_error_log($user, 'ログイン制限解除失敗', $message, null, $params_string, $outLog);
         }
 
@@ -517,10 +517,10 @@ class DeployService
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "PaykeECを停止しました。";
+            $message = "Paykeを停止しました。";
             $logService->write_warm_log($user, "アプリ停止", $message, null, $params_string, $outLog);
         }else{
-            $message = "PaykeECの停止に失敗しました。";
+            $message = "Paykeの停止に失敗しました。";
             $logService->write_error_log($user, 'アプリ停止失敗', $message, null, $params_string, $outLog);
         }
 
@@ -542,10 +542,10 @@ class DeployService
         $logService = new DeployLogService();
         $params_string = $this->create_params_string($params);
         if($is_success){
-            $message = "PaykeECを再開しました。キャッシュをクリアしてから、PaykeECにアクセスしてください。";
+            $message = "Paykeを再開しました。キャッシュをクリアしてから、Paykeにアクセスしてください。";
             $logService->write_success_log($user, "アプリ再開", $message, null, $params_string, $outLog);
         }else{
-            $message = "PaykeECの再開に失敗しました。";
+            $message = "Paykeの再開に失敗しました。";
             $logService->write_error_log($user, 'アプリ再開失敗', $message, null, $params_string, $outLog);
         }
 

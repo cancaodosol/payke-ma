@@ -186,7 +186,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's payke ec name.
+     * Update the user's payke name.
      */
     public function update_app_name(Request $request)
     {

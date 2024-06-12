@@ -86,7 +86,7 @@ class DeployJobOrderd implements ShouldQueue
                 }
 
                 // 購入者用のユーザーの作成。
-                // MEMO: 初回のPaykeMAのログイン情報と、PaykeECのログイン情報は同じにする。
+                // MEMO: 初回のPaykeMAのログイン情報と、Paykeのログイン情報は同じにする。
                 $admin_username = $this->login_username;
                 $admin_password = $this->login_password;
                 $outLog = [];

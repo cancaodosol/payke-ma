@@ -6,7 +6,7 @@
     <div class="space-y-12 sm:space-y-16">
         <div>
         <h2 class="text-base font-semibold leading-7 text-gray-900">Paykeバージョン 編集</h2>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Payke ECのバージョン情報を編集します。</p>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Paykeのバージョン情報を編集します。</p>
 
         @if(session('feedback.success'))
             <p style="color: green">{{ session('feedback.success') }}</p>
@@ -15,7 +15,7 @@
         <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <input type="hidden" name="id" value="{{ $resource->id }}"/>
             <x-forms.input name="version" value="{{ $resource->version }}" label="バージョン表記"/>
-            <x-forms.input name="payke_name" value="{{ $resource->payke_name }}" label="PaykeEC表記名"/>
+            <x-forms.input name="payke_name" value="{{ $resource->payke_name }}" label="Payke表記名"/>
             <x-forms.textarea name="memo" value="{{ $resource->memo }}" label="バージョン説明（任意）"/>
         </div>
         </div>

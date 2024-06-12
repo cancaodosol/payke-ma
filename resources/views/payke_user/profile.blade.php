@@ -28,7 +28,7 @@
                                     </td>
                                 </tr>
                                 <tr><th class="text-right">稼働状況：</th><td>{{ $user->status_name() }}</td></tr>
-                                <tr><th class="text-right">バージョン：</th><td>Payke EC {{ $user->PaykeResource->version }} 
+                                <tr><th class="text-right">バージョン：</th><td>Payke {{ $user->PaykeResource->version }} 
                                 <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
                                     📝</a>
                                 </td></tr>
@@ -115,7 +115,7 @@
     </div>
 
     <div class="mt-5 ml-1">
-        <h2>PaykeEC 連携データ履歴</h2>
+        <h2>Payke連携データ履歴</h2>
         @if(count($payke_ec_orders) == 0)
         <div class="mt-4 ml-2 text-sm">・連携データはありません。</div>
         @endif

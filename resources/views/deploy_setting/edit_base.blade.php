@@ -6,7 +6,7 @@
     <div class="space-y-12 sm:space-y-16">
         <div>
         <h2 class="text-base font-semibold leading-7 text-gray-900">親Payke連携設定</h2>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">親PaykeとのWebhookの設定、および、決済時に作成するPaykeECの環境設定を行います。</p>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">親PaykeとのWebhookの設定、および、決済時に作成するPaykeの環境設定を行います。</p>
 
         @if(session('feedback.success'))
             <p style="color: green">{{ session('feedback.success') }}</p>

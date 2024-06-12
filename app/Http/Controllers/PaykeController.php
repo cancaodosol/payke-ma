@@ -101,7 +101,7 @@ class PaykeController extends Controller
                 return;
             }
 
-            // [1]PaykeECの新規購入時
+            // [1]Paykeの新規購入時
             if($request->is_type_paid_or_registered())
             {
                 $order_id = $request->order_id();
@@ -136,7 +136,7 @@ class PaykeController extends Controller
                     $pUser->enable_affiliate = $settingUnit->get_value("payke_enable_affiliate");
                     $pSer->edit($pUser->id, $pUser, false);
 
-                    // PaykeEc連携データ更新
+                    // Payke連携データ更新
                     $poSer->update_payke_user_id($request->to_payke_ec_order(), $pUser);
 
                     // 旧注文キャンセル
@@ -174,14 +174,14 @@ class PaykeController extends Controller
                 if($has_error)
                 {
                     $service->save_has_error($pUser);
-                    $title = "PaykeECデプロイリソース不足";
-                    $message = "デプロイに必要な空きデータベースがなく、PaykeEC環境を作成できませんでした。\n\nuserid: ".$pUser->id;
+                    $title = "Paykeデプロイリソース不足";
+                    $message = "デプロイに必要な空きデータベースがなく、Payke環境を作成できませんでした。\n\nuserid: ".$pUser->id;
                     $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
                 } else {
                     $service->save_init($pUser);
                 }
 
-                // PaykeEc連携データ更新
+                // Payke連携データ更新
                 $poSer->update_payke_user_id($request->to_payke_ec_order(), $pUser);
         
                 // ログ保存。
@@ -191,7 +191,7 @@ class PaykeController extends Controller
 
                 if($has_error)
                 {
-                    $err_message = "デプロイに必要な空きデータベースがなく、PaykeEC環境を作成できませんでした。";
+                    $err_message = "デプロイに必要な空きデータベースがなく、Payke環境を作成できませんでした。";
                     $logService->write_error_log($pUser, "リソース不足", $err_message);
                     return;
                 }
@@ -230,7 +230,7 @@ class PaykeController extends Controller
                 if(!$user)
                 {
                     $title = "未登録ユーザーの決済データを受信";
-                    $message = "未登録ユーザーの決済データを受信しました。\nPaykeECからの決済データに紐づくユーザーがありません。";
+                    $message = "未登録ユーザーの決済データを受信しました。\nPaykeからの決済データに紐づくユーザーがありません。";
                     $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
                     return;
                 }
@@ -275,7 +275,7 @@ class PaykeController extends Controller
         catch(Exception $e)
         {
             $title = "想定外のエラー";
-            $message = "PaykeECからのデータ連携で、想定外のエラーが発生しました。\n\n".$e->getMessage();
+            $message = "Paykeからのデータ連携で、想定外のエラーが発生しました。\n\n".$e->getMessage();
             $this->write_log_and_send_email($mailer, $title, $message, $request->raw());
         }
     }

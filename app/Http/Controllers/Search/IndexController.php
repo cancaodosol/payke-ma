@@ -121,6 +121,13 @@ class IndexController extends Controller
             case ':send_email' :
                 $mailser = new MailService($mailer);
                 $mailser->send_to_admin("メール送信テスト", "管理ユーザー向けのメールをテスト的に送ってみました。");
+                return;
+            case ':send_login_email' :
+                if(count($searchWords) != 2) dd(":send_login_email <payke_user_id>");
+                $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                $mailer->to("test@test.com")
+                    ->send(new PaykeEcOrderdMail($pUser, $pUser->user_name, "XXXXXpasswordXXXXX", route("login")));
+                return;
             case ':set_user' :
                 if(count($searchWords) != 3) dd(":set_user <payke_user_id> <user_id>");
                 $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();

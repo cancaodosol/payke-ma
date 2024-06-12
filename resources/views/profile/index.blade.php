@@ -10,11 +10,11 @@
                     <!-- Description list with inline editing -->
                     <div class="mt-6 divide-y divide-gray-200">
                       <div class="space-y-1">
-                        <h3 class="text-2xl font-bold tracking-tight leading-6 text-gray-900">Payke EC</h3>
+                        <h3 class="text-2xl font-bold tracking-tight leading-6 text-gray-900">Payke</h3>
                         @if(count($user->PaykeUsers) > 0)
-                          <p class="max-w-2xl text-sm text-gray-500">こちらのログインURLから、PaykeECをご利用ください。</p>
+                          <p class="max-w-2xl text-sm text-gray-500">こちらのログインURLから、Paykeをご利用ください。</p>
                         @else
-                          <p class="max-w-2xl text-sm text-gray-500 pb-8">現在、利用できるPaykeECはありません。</p>
+                          <p class="max-w-2xl text-sm text-gray-500 pb-8">現在、利用できるPaykeはありません。</p>
                         @endif
                       </div>
                       @foreach($user->PaykeUsers as $pUser)

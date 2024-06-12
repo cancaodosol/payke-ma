@@ -43,7 +43,7 @@ class OrderRequest extends FormRequest
         return $this->get("type");
     }
 
-    // [1]PaykeECの新規購入時
+    // [1]Paykeの新規購入時
     public function is_type_paid_or_registered(): bool
     {
         return $this->type() == "order.paid_or_registered";

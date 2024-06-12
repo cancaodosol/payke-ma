@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            PaykeEC | 初回設定
+            Payke | 初回設定
         </h2>
     </x-slot>
 
@@ -15,8 +15,8 @@
                 @csrf
                 <div class="space-y-12 sm:space-y-16">
                     <div>
-                    <h2 class="text-base font-semibold leading-7 text-gray-900">PaykeECのご利用開始ありがとうございます。</h2>
-                    <p class="mt-2 mb-2 max-w-2xl text-sm leading-6 text-gray-600">まず初めに、ご利用になるPaykeECの公開アプリ名を設定してください。</p>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900">Paykeのご利用開始ありがとうございます。</h2>
+                    <p class="mt-2 mb-2 max-w-2xl text-sm leading-6 text-gray-600">まず初めに、ご利用になるPaykeの公開アプリ名を設定してください。</p>
 
                     <div class="mt-8">
                         @if(session('feedback.success'))
@@ -41,7 +41,7 @@
 
                     <div class="mt-5 space-y-8 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10">
                         <input type="hidden" name="id" value="{{ $payke_user->id }}"/>
-                        <x-forms.appname name="user_app_name" value="{{ $payke_user->user_app_name }}" label="https://{{ $payke_user->PaykeHost->hostname }}/" example="例) tarotaro7" pattern="^[0-9a-zA-Z]+$" explain="この名前がPaykeECのURLとなります。英数字のみ使用可能です。" addSubmit="この公開アプリ名に設定する"/>
+                        <x-forms.appname name="user_app_name" value="{{ $payke_user->user_app_name }}" label="https://{{ $payke_user->PaykeHost->hostname }}/" example="例) tarotaro7" pattern="^[0-9a-zA-Z]+$" explain="この名前がPaykeのURLとなります。英数字のみ使用可能です。" addSubmit="この公開アプリ名に設定する"/>
                     </div>
                     </div>
                 </div>
