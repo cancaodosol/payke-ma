@@ -35,7 +35,7 @@
                           <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
                             <dt class="text-sm font-medium text-gray-500">ログインURL</dt>
                             <dd class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              <a href="{{ $user->PaykeUsers[0]->app_url }}">
+                              <a href="{{ $user->PaykeUsers[0]->app_url }}" target="_blank">
                                 <div class="flex">
                                     <span class="flex-grow text-blue-500 underline">{{ $pUser->app_url }}</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-2 text-gray-500">
