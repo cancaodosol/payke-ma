@@ -9,9 +9,9 @@ Payke がご利用いただけるようになります。<br>
 <br>
 ーーーーーーーーーーーーーーー<br>
 Paykeマネージメントシステムにログイン<br>
-URL: <a href="{{ route('login') }}">{{ route("login") }}</a><br>
-メールアドレス: {{ $login_id }}<br>
-パスワード： {{ $login_password }}<br>
+URL　：　<a href="{{ route('login') }}">{{ route("login") }}</a><br>
+メールアドレス　：　{{ $login_id }}<br>
+パスワード　：　{{ $login_password }}<br>
 ーーーーーーーーーーーーーーー<br>
 <br>
 初期設定が完了しましたのち、<br>
