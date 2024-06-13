@@ -46,29 +46,28 @@
                               </a>
                             </dd>
                           </div>
-                          <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                            <dt class="text-sm font-medium text-gray-500">初期ユーザー名</dt>
-                            <dd class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              <span class="flex-grow">このサイトのログインに使用したメールアドレスです。</span>
-                            </dd>
-                          </div>
-                          <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                            <dt class="text-sm font-medium text-gray-500">初期パスワード</dt>
-                            <dd class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              <span class="flex-grow">このサイトのログインに使用したパスワードです。</span>
-                            </dd>
-                          </div>
                           <div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
+                            <dt class="text-sm font-medium text-gray-500">初期ログイン情報</dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                              <div class="">
+                                このサイトへの初めてのログイン時に使用したメールアドレスとパスワードです。<span class="text-xs align-top">※</span>
+                              </div>
+                            </dd>
+                          </div>
+                          <div class="sm:grid sm:grid-cols-3">
                             <dt class="text-sm font-medium text-gray-500"></dt>
                             <dd class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              <span class="flex-grow"></span>
                             </dd>
                           </div>
                         </dl>
                       </div>
                       @endforeach
                     </div>
-                    <div class="mt-6 divide-y divide-gray-200">
+                    <div class="mt-4 text-sm">
+                      <p>※ Paykeにログインし、Paykeの管理者情報を変更後から初期ログイン情報は使えなくなります。</p>
+                      <p class="pl-2 mt-1">このサイトへのログイン情報とPaykeへのログイン情報は独立していますので、それぞれ忘れないように注意してください。</p>
+                    </p>
+                    <div class="mt-10 divide-y divide-gray-200">
                       <div class="space-y-1">
                         <h3 class="text-2xl font-bold tracking-tight leading-6 text-gray-900">利用情報</h3>
                         <p class="max-w-2xl text-sm text-gray-500"></p>
