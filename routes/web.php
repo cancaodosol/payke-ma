@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/plan_view', [ProfileController::class, 'plan_view'])->name('profile.plan_view');
+    Route::post('/plan_explain_view', [ProfileController::class, 'plan_explain_view'])->name('profile.plan_explain_view');
     Route::post('/edit_plan', [ProfileController::class, 'edit_plan'])->name('profile.edit_plan');
     Route::post('/plan/cancel', [ProfileController::class, 'cancel_view'])->name('profile.cancel_view');
     Route::post('/plan/cancel_confirm', [ProfileController::class, 'cancel_confirm'])->name('profile.cancel_confirm');

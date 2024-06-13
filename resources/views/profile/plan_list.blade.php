@@ -34,9 +34,15 @@
                                     現在のプラン
                                 </span>
                               @else
-                                <a href="{{ $unit->get_value('payke_order_url') }}?arg1=mode_cplan&arg2=puuid_{{ $pUser->uuid }}" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                    変更
-                                </a>
+                                <form action="{{ route('profile.plan_explain_view') }}" method="post">
+                                  @method('POST')
+                                  @csrf
+                                  <input type="hidden" name="payke_user_uuid" value="{{ $pUser->uuid }}"/>
+                                  <input type="hidden" name="plan_no" value="{{ $unit->no }}"/>
+                                  <button class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                    変更手続きへ
+                                  </button>
+                                </form>
                               @endif
                             </div>
                           </li>

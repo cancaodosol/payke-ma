@@ -91,6 +91,33 @@ class ProfileController extends Controller
     }
 
     /**
+     * Show Payke Plan Explain.
+     */
+    public function plan_explain_view(Request $request): View
+    {
+        $pUser = null;
+        foreach ($request->user()->PaykeUsers as $paykeUser) {
+            if($paykeUser->uuid == $request->payke_user_uuid){
+                $pUser = $paykeUser;
+                break;
+            }
+        }
+
+        if($pUser == null){
+            return redirect()->route("profile.index");
+        }
+
+        $service = new DeploySettingService();
+        $unit = $service->find_by_no($request->plan_no);
+
+        return view('profile.plan_explain', [
+            'user' => $request->user(),
+            'pUser' => $pUser,
+            'unit' => $unit
+        ]);
+    }
+
+    /**
      * Change Payke Plan.
      */
     public function edit_plan(Request $request): View
