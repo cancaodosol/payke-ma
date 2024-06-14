@@ -217,18 +217,33 @@ class ProfileController extends Controller
      */
     public function update_app_name(Request $request)
     {
-        $pUser = $request->user()->PaykeUsers[0];
-        $service = new PaykeUserService();
-
         $id = $request->input("id");
         $new_app_name = $request->input("user_app_name");
+
+        $service = new PaykeUserService();
+        $pUser = $service->find_by_id($id);
 
         if($service->exists_same_name($pUser->payke_host_id, $new_app_name))
         {
             session()->flash('errorTitle', '入力内容に問題があります。');
             session()->flash('errorMessage', "公開アプリ名「{$new_app_name}」は使用できません。別の名前でご登録ください。");
-            return view('profile.init', ["user" => $request->user()]);
+            return redirect()->route("profile.index");
         }
+
+        if($pUser->is_updating_now())
+        {
+            session()->flash('errorTitle', '現在アップデート中です。');
+            session()->flash('errorMessage', "すでにアップデートが始まっております。しばらくお待ちください。");
+            return redirect()->route("profile.index");
+        }
+
+        if($pUser->is_active())
+        {
+            return redirect()->route("profile.index");
+        }
+
+        $pUser->status = PaykeUser::STATUS__UPDATING_NOW;
+        $service->edit($id, $pUser, false);
 
         $pUser->status = PaykeUser::STATUS__ACTIVE;
         $pUser->user_app_name = $new_app_name;
