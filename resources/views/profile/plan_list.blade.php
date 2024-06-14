@@ -50,6 +50,7 @@
                         </ul>
                       </div>
                     </div>
+                    @if(!$pUser->is_unused_or_delete())
                     <div class="mt-14 divide-y divide-gray-200">
                       <div class="space-y-1">
                       </div>
@@ -71,6 +72,7 @@
                         </div>
                       </div>
                     </div>
+                    @endif
                   </div>
                 </div>
               </div>
