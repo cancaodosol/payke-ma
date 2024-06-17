@@ -128,6 +128,17 @@ class IndexController extends Controller
                 $mailer->to("test@test.com")
                     ->send(new PaykeEcOrderdMail($pUser, $pUser->user_name, "XXXXXpasswordXXXXX", route("login")));
                 return;
+            case ':create_admin_user' :
+                if(count($searchWords) != 2) dd(":create_admin_user <payke_user_id>");
+                $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
+                $superadmin_username = SecurityHelper::create_ramdam_string(25);
+                $superadmin_password = SecurityHelper::create_ramdam_string(25);
+                $service = new DeployService();
+                $log = [];
+                $service->create_admin_user($pUser, $superadmin_username, $superadmin_password, $log);
+                $pUser->memo = "管理ユーザー：{$superadmin_username}:{$superadmin_password}を作成しました。";
+                $pUser->save();
+                dd($log);
             case ':set_user' :
                 if(count($searchWords) != 3) dd(":set_user <payke_user_id> <user_id>");
                 $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
