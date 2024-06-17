@@ -201,17 +201,19 @@ class DeployService
      */
     public function create_ma_file(PaykeUser $user): string
     {
-        $base_path = "{$this->root_dir}{$this->resource_dir}templates/.ma.php";
-        $to_path = "{$this->root_dir}{$this->resource_dir}tmp/.ma_{$user->user_folder_id}.php";
+        $base_path = "{$this->root_dir}{$this->resource_dir}templates/ma.ini";
+        $to_path = "{$this->root_dir}{$this->resource_dir}tmp/ma_{$user->user_folder_id}.ini";
 
         $contents = file_get_contents($base_path);
+        $email = $user->User ? route("login")."?email={$user->User->email}" : "";
+        $contents = str_replace('PAYKE_MA_LOGIN_URL_VALUE', $email, $contents);
         $contents = str_replace('NOTICE_FOR_ALL_URL_VALUE', route("home")."/notice/all.php", $contents);
         $contents = str_replace('NOTICE_FOR_PERSONAL_ADMIN_URL_VALUE', route("home")."/notice/personal/{$user->user_folder_id}_admin.php", $contents);
         $contents = str_replace('NOTICE_FOR_PERSONAL_LOGIN_URL_VALUE', route("home")."/notice/personal/{$user->user_folder_id}_login.php", $contents);
 
         $success = file_put_contents($to_path, $contents);
 
-        return $success ? "{$this->resource_dir}tmp/.ma_{$user->user_folder_id}.php" : "";
+        return $success ? "{$this->resource_dir}tmp/ma_{$user->user_folder_id}.ini" : "";
     }
 
     /**
@@ -247,7 +249,7 @@ class DeployService
         $params['payke_install_file_path___installed_false'] = $this->payke_install_file_path___installed_false;
 
         $params['payke_env_file_path'] = $is_first ? $this->create_env_file($user, $db) : '';
-        $params['payke_ma_file_path'] = $is_first ? $this->create_ma_file($user) : '';
+        $params['payke_ma_file_path'] = $this->create_ma_file($user);
 
         $params['payke_ini_file_path'] = $user->enable_affiliate == 1 ? 
             $this->payke_ini_file_path___affiliate_on : $this->payke_ini_file_path___affiliate_off;

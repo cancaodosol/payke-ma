@@ -35,7 +35,7 @@ set('public_app_path_old' ,'{{public_html_dir}}/{{user_app_name_old}}');
 set('release_name', '{{payke_name}}_{{deploy_datetime}}');
 set('deploy_path', '{{resource_dir}}/{{user_folder_id}}');
 set('shared_dirs', ['app/tmp/logs']);
-set('shared_files', ['app/Config/.ma.php', 'app/Config/.env.php', 'app/Config/paykeec.ini']);
+set('shared_files', ['app/Config/ma.ini', 'app/Config/.env.php', 'app/Config/paykeec.ini']);
 set('keep_releases', 7);
 
 // Return release path.
@@ -124,11 +124,13 @@ task('deploy:update_code', function() {
         writeln(run('mkdir -p {{deploy_path}}/shared/app/Config/'));
         writeln('▼ {{deploy_path}}/shared/app/Config/.env.php');
         upload('{{root_dir}}{{payke_env_file_path}}', '{{deploy_path}}/shared/app/Config/.env.php');
-        writeln('▼ {{deploy_path}}/shared/app/Config/.ma.php');
-        upload('{{root_dir}}{{payke_ma_file_path}}', '{{deploy_path}}/shared/app/Config/.ma.php');
         writeln('▼ {{deploy_path}}/shared/app/Config/paykeec.ini');
         upload('{{root_dir}}{{payke_ini_file_path}}', '{{deploy_path}}/shared/app/Config/paykeec.ini');
     }
+
+    // PaykeMAとの連携情報を渡す。
+    writeln('▼ {{deploy_path}}/shared/app/Config/ma.ini');
+    upload('{{root_dir}}{{payke_ma_file_path}}', '{{deploy_path}}/shared/app/Config/ma.ini');
 
     // Save revision in REVISION file.
     $rev = '{{ payke_zip_name }}';
