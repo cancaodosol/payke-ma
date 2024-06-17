@@ -272,7 +272,7 @@ class PaykeController extends Controller
                 }
             }
         }
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             $title = "想定外のエラー";
             $message = "Paykeからのデータ連携で、想定外のエラーが発生しました。\n\n".$e->getMessage();
