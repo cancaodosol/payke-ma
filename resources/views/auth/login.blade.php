@@ -44,4 +44,13 @@
             </x-primary-button>
         </div>
     </form>
+    <script>
+        function load(){
+            // URLからメールアドレスをセット。
+            const url = new URL(window.location.href);
+            const params = url.searchParams;
+            if(params.has("email")) email.value = params.get("email");
+        }
+        load();
+    </script>
 </x-guest-layout>
