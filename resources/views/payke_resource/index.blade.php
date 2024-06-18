@@ -23,8 +23,12 @@
         .payke_memo ol, .payke_memo ul {
             list-style: inside;
         }
-        .payke_memo ol ol, .payke_memo ul ul {
-            padding: 0 0 0 15px;
+        .payke_memo ol li, .payke_memo ul li {
+            text-indent: -1.4em;
+            padding-left: 1em;
+        }
+        .payke_memo p {
+            margin-top: 15px;
         }
     </style>
     <div class="mt-5 ml-1">
