@@ -66,5 +66,4 @@ class PaykeApiService
             throw $e;
         }
     }
-    }
 }
