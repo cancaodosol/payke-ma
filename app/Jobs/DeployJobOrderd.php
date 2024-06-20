@@ -101,7 +101,7 @@ class DeployJobOrderd implements ShouldQueue
 
                 }
             } else {
-                $this->paykeUserService->save_has_error($this->user,  implode("\n", $outLog));
+                $this->paykeUserService->save_has_error($this->user, implode("\n", $outLog));
 
                 // TODO: 管理者にメールを送信。
             }

@@ -38,7 +38,7 @@ class PaykeEcOrderdMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Paykeのご購入ありがとうございます。',
+            subject: 'PaykeMAシステムのログイン情報をお知らせします',
         );
     }
 
