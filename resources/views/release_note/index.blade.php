@@ -36,10 +36,10 @@
                         <div class="flex justify-between gap-x-4">
                             <div class="py-0.5 text-xs leading-5 text-gray-500">
                                 <div class="flex items-center">
-                                    <span class="text-sm font-medium text-gray-900">{{ $note->version }}</span>
+                                    <span class="text-sm font-semibold text-gray-900">{{ $note->version }}</span>
                                     <span class="text-xs ml-2 text-gray-500">{{ $note->created_at }} リリース</span>
                                 </div>
-                                <div class="text-gray-900">
+                                <div class="text-gray-900 font-semibold">
                                     <div>{{ $note->title }}</div>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
                             </time>
                         </div>
                         @if( $note->background || $note->content)
-                        <details class="mt-1">
+                        <details class="mt-1" open>
                             <summary class="text-xs text-gray-500">詳細</summary>
                             @if($note->background)
                             <div class="mt-4">
