@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Contracts\Mail\Mailer;
 
+use App\Services\UserService;
 use App\Services\PaykeUserService;
 use App\Services\PaykeApiService;
 use App\Services\DeployLogService;
@@ -25,11 +26,12 @@ class ProfileController extends Controller
     public function index(Request $request): View
     {
         $pUser = count($request->user()->PaykeUsers) > 0 ? $request->user()->PaykeUsers[0] : null;
+        $user = (new UserService())->find_by_id($request->user()->id);
 
         // 稼働中のPayke環境がない場合
         if($pUser == null) {
             return view('profile.index', [
-                'user' => $request->user(),
+                'user' => $user,
             ]);
         }
 
@@ -37,13 +39,13 @@ class ProfileController extends Controller
         if($pUser->is_before_setting())
         {
             return view('profile.init', [
-                'user' => $request->user(),
+                'user' => $user,
             ]);
         }
 
         $service = new DeploySettingService();
         $units = $service->find_units_all();
-        foreach ($request->user()->PaykeUsers as $paykeUser) {
+        foreach ($user->PaykeUsers as $paykeUser) {
             $paykeUser->set_deploy_setting_name(($paykeUser->is_unused_or_delete() ? "停止" : "なし"));
             foreach ($units as $unit) {
                 if($unit->get_value("is_plan") && $unit->no == $paykeUser->deploy_setting_no){
@@ -53,7 +55,7 @@ class ProfileController extends Controller
         }
 
         return view('profile.index', [
-            'user' => $request->user()
+            'user' => $user
         ]);
     }
 
@@ -63,7 +65,8 @@ class ProfileController extends Controller
     public function plan_view(Request $request): View
     {
         $pUser = null;
-        foreach ($request->user()->PaykeUsers as $paykeUser) {
+        $user = (new UserService())->find_by_id($request->user()->id);
+        foreach ($user->PaykeUsers as $paykeUser) {
             if($paykeUser->uuid == $request->payke_user_uuid){
                 $pUser = $paykeUser;
                 break;
@@ -84,7 +87,7 @@ class ProfileController extends Controller
         }
 
         return view('profile.plan_list', [
-            'user' => $request->user(),
+            'user' => $user,
             'pUser' => $pUser,
             'units' => $units
         ]);
@@ -96,7 +99,8 @@ class ProfileController extends Controller
     public function plan_explain_view(Request $request): View
     {
         $pUser = null;
-        foreach ($request->user()->PaykeUsers as $paykeUser) {
+        $user = (new UserService())->find_by_id($request->user()->id);
+        foreach ($user->PaykeUsers as $paykeUser) {
             if($paykeUser->uuid == $request->payke_user_uuid){
                 $pUser = $paykeUser;
                 break;
@@ -111,7 +115,7 @@ class ProfileController extends Controller
         $unit = $service->find_by_no($request->plan_no);
 
         return view('profile.plan_explain', [
-            'user' => $request->user(),
+            'user' => $user,
             'pUser' => $pUser,
             'unit' => $unit
         ]);
@@ -122,8 +126,9 @@ class ProfileController extends Controller
      */
     public function edit_plan(Request $request): View
     {
+        $user = (new UserService())->find_by_id($request->user()->id);
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 
@@ -132,8 +137,9 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = (new UserService())->find_by_id($request->user()->id);
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 
@@ -143,7 +149,8 @@ class ProfileController extends Controller
     public function cancel_view(Request $request): View
     {
         $pUser = null;
-        foreach ($request->user()->PaykeUsers as $paykeUser) {
+        $user = (new UserService())->find_by_id($request->user()->id);
+        foreach ($user->PaykeUsers as $paykeUser) {
             if($paykeUser->uuid == $request->payke_user_uuid){
                 $pUser = $paykeUser;
                 break;
@@ -165,7 +172,8 @@ class ProfileController extends Controller
     public function cancel_confirm(Request $request, Mailer $mailer): View
     {
         $pUser = null;
-        foreach ($request->user()->PaykeUsers as $paykeUser) {
+        $user = (new UserService())->find_by_id($request->user()->id);
+        foreach ($user->PaykeUsers as $paykeUser) {
             if($paykeUser->uuid == $request->payke_user_uuid){
                 $pUser = $paykeUser;
                 break;
