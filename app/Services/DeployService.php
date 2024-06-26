@@ -205,8 +205,9 @@ class DeployService
         $to_path = "{$this->root_dir}{$this->resource_dir}tmp/ma_{$user->user_folder_id}.ini";
 
         $contents = file_get_contents($base_path);
-        $email = $user->User ? route("login")."?email={$user->User->email}" : "";
-        $contents = str_replace('PAYKE_MA_LOGIN_URL_VALUE', $email, $contents);
+        $email = $user->User ? urlencode($user->User->email) : "";
+        $loginUrl = $user->User ? route("login")."?email={$email}" : route("login");
+        $contents = str_replace('PAYKE_MA_LOGIN_URL_VALUE', $loginUrl, $contents);
         $contents = str_replace('NOTICE_FOR_ALL_URL_VALUE', route("home")."/notice/all.php", $contents);
         $contents = str_replace('NOTICE_FOR_PERSONAL_ADMIN_URL_VALUE', route("home")."/notice/personal/{$user->user_folder_id}_admin.php", $contents);
         $contents = str_replace('NOTICE_FOR_PERSONAL_LOGIN_URL_VALUE', route("home")."/notice/personal/{$user->user_folder_id}_login.php", $contents);

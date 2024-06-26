@@ -53,6 +53,10 @@ class IndexController extends Controller
         switch($searchWords[0])
         {
             case ':test' :
+                $user = PaykeUser::where('id', 53)->firstOrFail();
+                $email = $user->User ? urlencode($user->User->email) : "";
+                $loginUrl = $user->User ? route("login")."?email={$email}" : route("login");
+                dd($loginUrl);
                 $aSer = new PaykeApiService();
                 dd($aSer->cancel_order(10054));
                 $ser = new DeploySettingService();
