@@ -111,6 +111,26 @@ class IndexController extends Controller
                     }
                     dd($logs);
                 }
+            case ':create_user' :
+                if(count($searchWords) != 4) dd(":create_user <name> <email> <role: 1.User, 2.Admin>");
+                if($searchWords[3] != "1" && $searchWords[3] != "2") dd(":create_user <name> <email> <role: 1.User, 2.Admin>");
+                $name = $searchWords[1];
+                $email = $searchWords[2];
+                $role = $searchWords[3] == "1" ? User::ROLE__USER : User::ROLE__ADMIN;
+                $password = SecurityHelper::create_ramdam_string(25);
+
+                $user = new User();
+                $user->name = $name;
+                $user->email = $email;
+                $user->role = $role;
+                $user->password = $password;
+
+                $mailer->to($email)
+                    ->send(new NewUserIntroduction($user, $password));
+
+                $user->save();
+
+                dd($user);
             case ':eclogs_view' :
                 if(count($searchWords) == 2){
                     $logs = PaykeEcOrder::where("order_id", $searchWords[1])->get();
