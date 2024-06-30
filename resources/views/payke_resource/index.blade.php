@@ -68,7 +68,8 @@
                         </div>
                         <div class="flex-auto text-xs text-gray-500">
                             <span>{{ $payke->payke_zip_name }}</span> 
-                            <span class="ml-2" title="{{ $payke->created_at }}">{{ $payke->diff_time_from_now() }}UP</span>
+                            <span class="ml-2" title="アップデート日">{{ $payke->diff_time_from_now() }}UP</span>
+                            <span class="ml-2" title="アップデート日">( {{ $payke->created_at }} )</span>
                         </div>
                         @if($payke->memo)
                         <div class="text-xs text-slate-900 mt-2 payke_memo">{!! $payke->memo_by_md() !!}</div>
