@@ -74,13 +74,13 @@
                         @if($payke->memo)
                         <div class="text-xs text-slate-900 mt-2 payke_memo">{!! $payke->memo_by_md() !!}</div>
                         @endif
-                        @if($payke->PaykeUsers()->count() > 0)
+                        @if($payke->PaykeUsersUsing()->count() > 0)
                         <div class="mt-1">
                             <a href="{{ route('payke_user.index.paykeId', ['paykeId' => $payke->id]) }}" class="text-xs text-indigo-600 hover:text-indigo-900">
-                                利用者 {{ $payke->PaykeUsers()->count() }}人
+                                利用者 {{ $payke->PaykeUsersUsing()->count() }}人
                             </a>
                             (
-                            @foreach($payke->PaykeUsers as $user)
+                            @foreach($payke->PaykeUsersUsing as $user)
                             <a href="{{ route('payke_user.profile', ['userId' => $user->id]) }}" class="text-indigo-600 hover:text-indigo-900">
                                 @if($loop->last)
                                 {{ $user->user_name }}

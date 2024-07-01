@@ -68,7 +68,11 @@ class PaykeUserController extends Controller
         $users = PaykeUser::Where('payke_resource_id', $paykeId)->get();
         $rService = new PaykeResourceService();
         $resources = $rService->find_all_to_array();
-        return view('payke_user.index', ['users' => $users, 'resources' => $resources]);
+
+        $uService = new PaykeUserService();
+        $tags = $uService->get_tags();
+
+        return view('payke_user.index', ['users' => $users, 'resources' => $resources, 'tags' => $tags]);
     }
 
     public function view_add(Request $request)
