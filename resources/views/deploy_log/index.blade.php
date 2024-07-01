@@ -120,9 +120,9 @@
                                     @endif
                                 </div>
                             </div>
-                            <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500">
+                            <time title="{{ $log->created_at }}" class="flex-none py-0.5 text-xs leading-5 text-gray-500 text-right">
                                 {{ $log->created_at }}<br>
-                                ( {{ $log->getDiffTime() }} )
+                                {{ $log->getDiffTime() }}
                             </time>
                         </div>
                         @if(count($log->getLogArray()) > 0)
