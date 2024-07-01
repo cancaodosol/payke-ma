@@ -12,8 +12,9 @@
                         <h3 class="text-2xl font-bold tracking-tight leading-6 text-gray-900">Payke 利用停止の手続き</h3>
                         <p class="max-w-2xl text-sm text-gray-500 pb-4"></p>
                       </div>
-                      <div class="mt-6 pt-6">
-                        {{ $message }}
+                      <div class="mt-6">
+                        <p class="py-6">{{ $message }}<p>
+                        <a href="{{route('profile.index')}}" class="text-blue-500 underline">ホームへ</a>
                       </div>
                     </div>
                   </div>

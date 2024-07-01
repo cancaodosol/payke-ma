@@ -39,7 +39,7 @@
                             @method('POST')
                             @csrf
                             <input type="hidden" name="payke_user_uuid" value="{{ $pUser->uuid }}"/>
-                            <button class="rounded-md bg-white px-2.5 py-1.5 text-sm font-bold text-red-500 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-red-50">
+                            <button class="need_loading_btn rounded-md bg-white px-2.5 py-1.5 text-sm font-bold text-red-500 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-red-50">
                               同意して、停止する
                             </button>
                           </form>
