@@ -33,15 +33,16 @@ class DeployJobOrderd implements ShouldQueue
     public PaykeDb $db;
     public PaykeResource $payke;
 
-    public string $login_username;
-    public string $login_password;
+    public string $admin_username;
+    public string $admin_email;
+    public string $admin_password;
 
     public $timeout = 180;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, string $login_username, string $login_password)
+    public function __construct(PaykeHost $host, PaykeUser $user, PaykeDb $db, PaykeResource $payke, string $admin_username, string $admin_email, string $admin_password)
     {
         $this->deployService = new DeployService();
         $this->paykeUserService = new PaykeUserService();
@@ -49,8 +50,9 @@ class DeployJobOrderd implements ShouldQueue
         $this->user = $user;
         $this->db = $db;
         $this->payke = $payke;
-        $this->login_username = $login_username;
-        $this->login_password = $login_password;
+        $this->admin_username = $admin_username;
+        $this->admin_email = $admin_email;
+        $this->admin_password = $admin_password;
     }
 
     /**
@@ -87,16 +89,14 @@ class DeployJobOrderd implements ShouldQueue
 
                 // 購入者用のユーザーの作成。
                 // MEMO: 初回のPaykeMAのログイン情報と、Paykeのログイン情報は同じにする。
-                $admin_username = $this->login_username;
-                $admin_password = $this->login_password;
                 $outLog = [];
-                $is_success = $this->deployService->create_admin_user($this->user, $admin_username, $admin_password, $outLog);
+                $is_success = $this->deployService->create_admin_user($this->user, $this->admin_username, $this->admin_email, $this->admin_password, $outLog);
 
                 // ログイン情報をユーザーへ通知。
                 if($is_success)
                 {
                     $mailer->to($this->user->email_address)
-                        ->send(new PaykeEcOrderdMail($this->user, $this->login_username, $this->login_password, route("login")));
+                        ->send(new PaykeEcOrderdMail($this->user, $this->admin_username, $this->admin_password, route("login")));
                 } else {
 
                 }

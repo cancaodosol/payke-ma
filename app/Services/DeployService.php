@@ -398,12 +398,13 @@ class DeployService
     /**
      * 管理ユーザーを作成する
      */
-    public function create_admin_user(PaykeUser $user, string $username, string $passpard, array &$outLog)
+    public function create_admin_user(PaykeUser $user, string $username, string $email, string $passpard, array &$outLog)
     {
         // Modelでもらった情報を、配列に詰め直す。
         $params = $this->model_to_params($user->PaykeHost, $user, $user->PaykeDb, $user->PaykeResource);
         $params['admin_uuid'] = SecurityHelper::create_uuid();
         $params['admin_username'] = SecurityHelper::transfer_safety_bash_text($username);
+        $params['admin_email'] = SecurityHelper::transfer_safety_bash_text($email);
         $params['admin_password'] = SecurityHelper::transfer_safety_bash_text(SecurityHelper::create_hashed_password($passpard));
 
         // デプロイを実行す。

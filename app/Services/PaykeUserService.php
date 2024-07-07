@@ -60,11 +60,12 @@ class PaykeUserService
             // Paykeのデプロイ開始。
             // MEMO：初回作成時に、リソース不足でデプロイできなかったものは、ここで行う想定。
             $username = $newUser->email_address;
+            $useremail = $newUser->email_address;
             $new_password = SecurityHelper::create_ramdam_string(15);
             $uService = new UserService();
             $uService->edit_password($currentUser->User->id, $new_password);
 
-            $deployJob = (new DeployJobOrderd($newUser->PaykeHost, $newUser, $newUser->PaykeDb, $newUser->PaykeResource, $username, $new_password))->delay(Carbon::now());
+            $deployJob = (new DeployJobOrderd($newUser->PaykeHost, $newUser, $newUser->PaykeDb, $newUser->PaykeResource, $username, $useremail, $new_password))->delay(Carbon::now());
             dispatch($deployJob);
             return;
         }

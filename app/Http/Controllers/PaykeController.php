@@ -197,7 +197,9 @@ class PaykeController extends Controller
                 }
         
                 // Paykeのデプロイ開始。
-                $deployJob = (new DeployJobOrderd($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, $email_address, $new_password))->delay(Carbon::now());
+                $admin_username = $email_address;
+                $admin_email = $email_address;
+                $deployJob = (new DeployJobOrderd($pUser->PaykeHost, $pUser, $pUser->PaykeDb, $pUser->PaykeResource, $admin_username, $admin_email, $new_password))->delay(Carbon::now());
                 dispatch($deployJob);
             } else {
                 Log::info($request->data());

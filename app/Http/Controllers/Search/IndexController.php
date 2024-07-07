@@ -31,7 +31,6 @@ use App\Services\ReleaseNoteService;
 use App\Factories\PaykeUserFactory;
 use App\Helpers\SecurityHelper;
 use App\Jobs\DeployJob;
-use App\Jobs\DeployJobOrderd;
 use App\Jobs\DeployManyJob;
 use App\Jobs\TestEmailJob;
 use Illuminate\Contracts\Mail\Mailer;
@@ -156,11 +155,12 @@ class IndexController extends Controller
                 if(count($searchWords) != 2) dd(":create_admin_user <payke_user_id>");
                 $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $superadmin_username = SecurityHelper::create_ramdam_string(25);
+                $superadmin_email = $superadmin_username."@test.test";
                 $superadmin_password = SecurityHelper::create_ramdam_string(25);
                 $service = new DeployService();
                 $log = [];
-                $service->create_admin_user($pUser, $superadmin_username, $superadmin_password, $log);
-                $pUser->memo = "管理ユーザー：{$superadmin_username}:{$superadmin_password}を作成しました。";
+                $service->create_admin_user($pUser, $superadmin_username, $superadmin_email, $superadmin_password, $log);
+                $pUser->memo = $pUser->memo."\n\n管理ユーザー：{$superadmin_username}:{$superadmin_password}を作成しました。";
                 $pUser->save();
                 dd($log);
             case ':set_user' :
@@ -313,7 +313,7 @@ class IndexController extends Controller
                 $user = $uService->find_by_id(15);
                 $deployService = new DeployService();
                 $outLog = [];
-                $is_success = $deployService->create_admin_user($user, "atagohan@yahoo.co.jp", "matsui^^^3", $outLog);
+                $is_success = $deployService->create_admin_user($user, "atagohan", "atagohan@yahoo.co.jp", "matsui^^^3", $outLog);
                 dd($outLog);
                 return;
             case ':d' :
