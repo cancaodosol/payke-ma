@@ -258,7 +258,7 @@ task('create_admin_user', function () {
  */
 task('replace_admin_to_superadmin', function () {
     $update_superadmin_sql = <<<EOT
-    'UPDATE users SET username = "{{superadmin_username}}", password = "{{superadmin_password}}", locked = NULL, modified = NOW() WHERE username = "admin"'
+    'UPDATE users SET username = "{{superadmin_username}}", password = "{{superadmin_password}}", modified = NOW() WHERE username = "admin"'
     EOT;
     writeln($update_superadmin_sql);
     writeln(run("mysql -h {{db_host}} -u {{db_username}} -p{{db_password}} {{db_database}} -e{$update_superadmin_sql}"));
