@@ -125,7 +125,7 @@ class PaykeUser extends Model
 
     public function set_app_url(string $hostname, string $user_app_name): void
     {
-        $this->app_url = "https://{$hostname}/{$user_app_name}/admin/users";
+        $this->app_url = "https://{$hostname}/{$user_app_name}/admin/users/login";
     }
 
     public function set_deploy_setting_name(string $name): void
