@@ -99,6 +99,13 @@ class PaykeUserService
             $logService->write_other_log($currentUser, "バージョン変更{$hand_label}", $message);
         }
 
+        if($newUser->superadmin_username != $currentUser->superadmin_username)
+        {
+            // ログ：メンテナンス用ユーザー情報を変更しました。
+            $message = "メンテナンス用ユーザー情報を変更しました。";
+            $logService->write_other_log($currentUser, "メンテナンス用ユーザー情報変更{$hand_label}", $message);
+        }
+
         if($newUser->user_app_name != $currentUser->user_app_name)
         {
             // 処理：Payke環境への適用
@@ -157,6 +164,8 @@ class PaykeUserService
             ,"email_address" => $newUser->email_address
             ,"memo" => $newUser->memo
             ,"payke_order_id" => $newUser->payke_order_id
+            ,"superadmin_username" => $newUser->superadmin_username
+            ,"superadmin_password" => $newUser->superadmin_password
         ]);
     }
 

@@ -59,6 +59,8 @@ class CreateRequest extends FormRequest
         $user->email_address = $this->input('email_address');
         $user->memo = $this->input('memo') ?? "";
         $user->payke_order_id = $this->input('payke_order_id');
+        if($this->input("superadmin_username")) $user->superadmin_username = $this->input("superadmin_username");
+        if($this->input("superadmin_password")) $user->superadmin_password = $this->input("superadmin_password");
 
         return $user;
     }

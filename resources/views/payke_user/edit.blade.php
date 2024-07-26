@@ -29,6 +29,8 @@
             <x-forms.input name="email_address" value="{{ $user->email_address }}" label="メールアドレス" example="xxxxx@xxxxx.com"/>
             <x-forms.textarea name="memo" value="{{ $user->memo }}" label="メモ"/>
             <x-forms.input name="payke_order_id" value="{{ $user->payke_order_id }}" label="Payke 注文ID"/>
+            <x-forms.input name="superadmin_username" value="{{ $user->superadmin_username }}" label="メンテナンスユーザーID"/>
+            <x-forms.input name="superadmin_password" value="{{ $user->superadmin_password }}" label="メンテナンスパスワード"/>
         </div>
         </div>
     </div>
