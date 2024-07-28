@@ -25,15 +25,18 @@
                 <tr>
                     <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $log->id }}</td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">
+                        <a class="deploy_status_box" href="{{ route('deploy_log.index', ['userId' => $log->user_id]) }}">
                         @if($log->user_name != $old_user_name)
                             {{ $log->user_name }}
                         @else
                         <div class="pl-5">〃</div>
                         @endif
                         <div hidden>{{ $old_user_name = $log->user_name; }}</div>
+                        </a>
                     </td>
                     <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 sm:pl-0">{{ $log->created_at }}</td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-right text-xs">
+                        <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">
                         @if($log->is_version_info())
                             <div class="text-green-600 font-semibold">成功</div>
                         @elseif($log->is_success())
@@ -45,8 +48,10 @@
                         @elseif($log->is_other_info())
                            <div class="text-gray-600">変更</div>
                         @endif
+                        </a>
                     </td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">
+                        <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">
                         @if($log->is_warm())
                             <div class="text-yellow-400 font-semibold">{{ $log->title }}</div>
                         @elseif($log->is_error())
@@ -54,8 +59,10 @@
                         @else
                             {{ $log->title }}
                         @endif
+                        </a>
                     </td>
-                    <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">                    
+                    <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">     
+                        <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">               
                         @if($log->is_warm())
                             <div class="text-yellow-400 font-semibold">{{ $log->message }}</div>
                         @elseif($log->is_error())
@@ -63,6 +70,7 @@
                         @else
                             {{ $log->message }}
                         @endif
+                        </a>
                     </td>
                 </tr>
                 @endforeach
