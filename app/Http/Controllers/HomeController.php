@@ -16,5 +16,4 @@ class HomeController extends Controller
         $deployLogs = DeployLog::orderBy('created_at', 'desc')->paginate(20);
         return view('home',['logs' => $deployLogs]);
     }
-
 }

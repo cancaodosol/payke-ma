@@ -46,7 +46,7 @@
                         @elseif($log->is_error())
                             <div class="text-rose-500 font-semibold">エラー</div>
                         @elseif($log->is_other_info())
-                           <div class="text-gray-600">変更</div>
+                           <div class="text-gray-600">通常</div>
                         @endif
                         </a>
                     </td>
