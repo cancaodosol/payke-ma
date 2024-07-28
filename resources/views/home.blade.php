@@ -45,6 +45,8 @@
                             <div class="text-yellow-400 font-semibold">注目</div>
                         @elseif($log->is_error())
                             <div class="text-rose-500 font-semibold">エラー</div>
+                        @elseif($log->title == "新規作成")
+                            <div class="text-yellow-400 font-semibold">！新規！</div>
                         @elseif($log->is_other_info())
                            <div class="text-gray-600">通常</div>
                         @endif
@@ -52,7 +54,7 @@
                     </td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">
                         <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">
-                        @if($log->is_warm())
+                        @if($log->is_warm() || $log->title == "新規作成")
                             <div class="text-yellow-400 font-semibold">{{ $log->title }}</div>
                         @elseif($log->is_error())
                             <div class="text-rose-500 font-semibold">{{ $log->title }}</div>
@@ -63,8 +65,8 @@
                     </td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">     
                         <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">               
-                        @if($log->is_warm())
-                            <div class="text-yellow-400 font-semibold">{{ $log->message }}</div>
+                        @if($log->is_warm() || $log->title == "新規作成")
+                            <div class="text-yellow-400">{{ $log->message }}</div>
                         @elseif($log->is_error())
                             <div class="text-rose-500 font-semibold">{{ $log->message }}</div>
                         @else
