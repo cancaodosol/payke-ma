@@ -20,18 +20,18 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-                <div hidden>{{ $old_user_name = ''; }}</div>
+                <div hidden>{{ $old_user_id = ''; }}</div>
                 @foreach($logs as $log)
                 <tr>
                     <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $log->id }}</td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">
                         <a class="deploy_status_box" href="{{ route('deploy_log.index', ['userId' => $log->user_id]) }}">
-                        @if($log->user_name != $old_user_name)
+                        @if($log->user_id != $old_user_id)
                             {{ $log->user_name }}
                         @else
                         <div class="pl-5">〃</div>
                         @endif
-                        <div hidden>{{ $old_user_name = $log->user_name; }}</div>
+                        <div hidden>{{ $old_user_id = $log->user_id; }}</div>
                         </a>
                     </td>
                     <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 sm:pl-0">{{ $log->created_at }}</td>
