@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('payke_user.index');
-})->name('home');
-
 Route::get('/stopped', function () { return view('messages.app_is_stopped'); })
     ->name('app.stopped');
 
@@ -42,6 +38,8 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'admin'])->group(
     function()
     {
+        Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
         Route::get('/welcome', function () { return view('welcome'); });
 
         Route::get('/payke_host', [App\Http\Controllers\PaykeHostController::class ,'view_all'])
