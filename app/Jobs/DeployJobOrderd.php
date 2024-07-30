@@ -73,8 +73,8 @@ class DeployJobOrderd implements ShouldQueue
                 $this->paykeUserService->save_wait_setting($this->user);
 
                 // メンテナンス用ユーザーの作成。
-                $superadmin_username = SecurityHelper::create_ramdam_string(25);
-                $superadmin_password = SecurityHelper::create_ramdam_string(25);
+                $superadmin_username = "U".SecurityHelper::create_ramdam_string(25);
+                $superadmin_password = "P".SecurityHelper::create_ramdam_string(25);
 
                 $outLog = [];
                 $is_success = $this->deployService->replace_admin_to_superadmin($this->user, $superadmin_username, $superadmin_password, $outLog);

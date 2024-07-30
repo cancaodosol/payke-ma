@@ -154,9 +154,9 @@ class IndexController extends Controller
             case ':create_admin_user' :
                 if(count($searchWords) != 2) dd(":create_admin_user <payke_user_id>");
                 $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
-                $superadmin_username = SecurityHelper::create_ramdam_string(25);
+                $superadmin_username = "U".SecurityHelper::create_ramdam_string(25);
                 $superadmin_email = $superadmin_username."@test.test";
-                $superadmin_password = SecurityHelper::create_ramdam_string(25);
+                $superadmin_password = "P".SecurityHelper::create_ramdam_string(25);
                 $service = new DeployService();
                 $log = [];
                 $service->create_admin_user($pUser, $superadmin_username, $superadmin_email, $superadmin_password, $log);
