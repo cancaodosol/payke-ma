@@ -7,6 +7,7 @@ use App\Http\Requests\PaykeResource\CreateRequest;
 use App\Services\PaykeResourceService;
 use App\Services\DeploySettingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PaykeResourceController extends Controller
 {
@@ -60,5 +61,15 @@ class PaykeResourceController extends Controller
         session()->flash('successTitle', '成功！');
         session()->flash('successMessage', "Paykeバージョン情報を更新しました。");
         return redirect()->route('payke_resource.index');
+    }
+
+    public function download(int $id)
+    {
+        $service = new PaykeResourceService();
+        $resource = $service->find_by_id($id);
+        $filePath = str_replace("storage/app/", "", $resource->payke_zip_file_path);
+        $fileName = $resource->payke_zip_name.".zip";
+        $headers = ['Content-Type' => Storage::mimeType($filePath)];
+        return Storage::download($filePath, $fileName, $headers);
     }
 }

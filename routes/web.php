@@ -86,6 +86,9 @@ Route::middleware(['auth', 'admin'])->group(
         
         Route::post('/payke_resource/e', [\App\Http\Controllers\PaykeResourceController::class, 'post_edit'])
             ->name('payke_resource.edit.post');
+
+        Route::get('/payke_resource/download/{id}', [\App\Http\Controllers\PaykeResourceController::class, 'download'])
+            ->name('payke_resource.download');
         
         Route::get('/payke_user', [\App\Http\Controllers\PaykeUserController::class, 'view_all'])
             ->name('payke_user.index');
