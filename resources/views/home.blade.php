@@ -9,25 +9,27 @@
             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                 <div class="flex flex-wrap mb-5">      
                 @foreach($users_summary as $tag_users)
-                <div class="p-3 mr-2 w-44 border rounded-md border-slate-200">
-                    <div class="text-{{ $tag_users['tag_color'] ?? 'grey' }}-400 text-sm">{{ $tag_users['tag_name'] ?? "" }}</div>
-                    <ul class="py-3 text-xs">
-                        @if(count($tag_users['user_statuses']) > 0)
-                            @foreach($tag_users['user_statuses'] as $user_status)
-                            <li>
-                                <div class="flex items-center justify-end gap-x-2 sm:justify-start">
-                                    <div class="flex-none rounded-full p-1 text-{{ $user_status['status_color'] ?? 'grey'}}-300 bg-{{ $user_status['status_color'] ?? 'grey'}}-300/10">
-                                        <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                <a href="{{ route('payke_user.index.tagId', ['tagId' => $tag_users['tag_id']]) }}">
+                    <div class="p-3 mr-2 w-44 border rounded-md border-slate-200">
+                        <div class="text-{{ $tag_users['tag_color'] ?? 'grey' }}-400 text-sm">{{ $tag_users['tag_name'] ?? "" }}</div>
+                        <ul class="py-3 text-xs">
+                            @if(count($tag_users['user_statuses']) > 0)
+                                @foreach($tag_users['user_statuses'] as $user_status)
+                                <li>
+                                    <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+                                        <div class="flex-none rounded-full p-1 text-{{ $user_status['status_color'] ?? 'grey'}}-300 bg-{{ $user_status['status_color'] ?? 'grey'}}-300/10">
+                                            <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                                        </div>
+                                        <div class="text-xs">{{ $user_status['status_name'] }} ： {{ count($user_status['users']) }}人</div>
                                     </div>
-                                    <div class="text-xs">{{ $user_status['status_name'] }} ： {{ count($user_status['users']) }}人</div>
-                                </div>
-                            </li>
-                            @endforeach
-                        @else
-                            <li class="text-xs">なし</li>
-                        @endif
-                    </ul>
-                </div>
+                                </li>
+                                @endforeach
+                            @else
+                                <li class="text-xs">なし</li>
+                            @endif
+                        </ul>
+                    </div>
+                </a>
                 @endforeach
                 </div>
             </div>

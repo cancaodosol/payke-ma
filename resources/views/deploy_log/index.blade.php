@@ -25,7 +25,7 @@
                 <tr>
                     <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 text-center sm:pl-0">{{ $log->id }}</td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">
-                        <a class="deploy_status_box" href="{{ route('deploy_log.show', ['userId' => $log->user_id]) }}">
+                        <a class="deploy_status_box" href="{{ route('payke_user.profile', ['userId' => $log->user_id]) }}">
                         @if($log->user_id != $old_user_id)
                             {{ $log->user_name }}
                         @else
@@ -34,7 +34,9 @@
                         <div hidden>{{ $old_user_id = $log->user_id; }}</div>
                         </a>
                     </td>
-                    <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 sm:pl-0">{{ $log->created_at }}</td>
+                    <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 sm:pl-0">
+                        <a class="deploy_status_box" href="{{ route('deploy_log.show', ['userId' => $log->user_id]) }}">{{ $log->created_at }}</a>    
+                    </td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-right text-xs">
                         <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">
                         @if($log->is_version_info())

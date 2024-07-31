@@ -29,7 +29,7 @@ class HomeController extends Controller
             ];
         }
         $users_summary[1000] = [
-            "tag_id" => null,
+            "tag_id" => 1000,
             "tag_name" => "未設定",
             "tag_color" => "grey",
             "is_hidden_tag" => false,
