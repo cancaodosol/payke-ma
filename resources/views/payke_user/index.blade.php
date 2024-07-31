@@ -55,7 +55,7 @@
                 <tr>
                     <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $no++ }}</td>
                     <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                        <a class="deploy_status_box" href="{{ route('deploy_log.index', ['userId' => $user->id]) }}" is_update="{{ $user->is_update_waiting() || $user->is_updating_now() }}" user_id="{{ $user->id }}">
+                        <a class="deploy_status_box" href="{{ route('deploy_log.show', ['userId' => $user->id]) }}" is_update="{{ $user->is_update_waiting() || $user->is_updating_now() }}" user_id="{{ $user->id }}">
                         @if($user->is_active())
                         <div class="flex items-center justify-end gap-x-2 sm:justify-start">
                             <div class="flex-none rounded-full p-1 text-green-400 bg-green-400/10">

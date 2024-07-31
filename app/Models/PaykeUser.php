@@ -37,6 +37,20 @@ class PaykeUser extends Model
         ,10 => "未払いあり"
     ];
 
+    const STATUS_COLORS = [
+        1 => "green"
+        ,-1 => "slate"
+        ,-2 => "slate"
+        ,-3 => "slate"
+        ,-4 => "slate"
+        ,-5 => "slate"
+        ,2 => "rose"
+        ,3 => "rose"
+        ,4 => "slate"
+        ,9 => "rose"
+        ,10 => "yellow"
+    ];
+
     public function PaykeHost()
     {
         return $this->belongsTo('App\Models\PaykeHost');
@@ -106,6 +120,11 @@ class PaykeUser extends Model
     public function status_name(): string
     {
         return $this->status ? $this::STATUS_NAMES[$this->status] : '';
+    }
+
+    public function status_color(): string
+    {
+        return $this->status ? $this::STATUS_COLORS[$this->status] : 'slate';
     }
 
     public function host_db_id(): string

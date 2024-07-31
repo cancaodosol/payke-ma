@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Deploy;
 
+use DateTime;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePaykeDbRequest;
 use App\Http\Requests\UpdatePaykeDbRequest;
@@ -17,7 +18,13 @@ class LogController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function view_all(int $userId)
+    public function view_all()
+    {
+        $deployLogs = DeployLog::orderBy('created_at', 'desc')->paginate(20);
+        return view('deploy_log.index',['logs' => $deployLogs]);
+    }
+
+    public function show(int $userId)
     {
         $service = new DeployLogService();
         $logs = $service->find_by_user_id($userId);
@@ -28,7 +35,7 @@ class LogController extends Controller
         $rService = new PaykeResourceService();
         $resources = $rService->find_upper_version_to_array($user->PaykeResource);
 
-        return view('deploy_log.index', ['user_id' => $userId, 'logs' => $logs, 'resources' => $resources]);
+        return view('deploy_log.show', ['user_id' => $userId, 'logs' => $logs, 'resources' => $resources]);
     }
 
     public function view_edit(int $id)

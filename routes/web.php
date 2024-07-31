@@ -129,10 +129,13 @@ Route::middleware(['auth', 'admin'])->group(
         Route::post('/payke_user_tags/edit', [\App\Http\Controllers\PaykeUserTagController::class, 'post_edit'])
             ->name('payke_user_tags.edit.post');
         
-        Route::get('/deploy_log/{userId}', [\App\Http\Controllers\Deploy\LogController::class, 'view_all'])
+        Route::get('/deploy_log/all', [\App\Http\Controllers\Deploy\LogController::class, 'view_all'])
             ->name('deploy_log.index');
 
-            Route::get('/deploy_log/edit/{id}', [\App\Http\Controllers\Deploy\LogController::class, 'view_edit'])
+        Route::get('/deploy_log/show/{userId}', [\App\Http\Controllers\Deploy\LogController::class, 'show'])
+            ->name('deploy_log.show');
+
+        Route::get('/deploy_log/edit/{id}', [\App\Http\Controllers\Deploy\LogController::class, 'view_edit'])
             ->name('deploy_log.edit');
         
         Route::post('/deploy_log/edit/post', [\App\Http\Controllers\Deploy\LogController::class, 'post_edit'])

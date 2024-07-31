@@ -22,6 +22,12 @@ class PaykeUserTag extends Model
         'tag_name' => 'required'
     ];
 
+    public function color()
+    {
+        if(!$this->color || $this->color == "none") return "grey";
+        return $this->color;
+    }
+
     public function to_array()
     {
         return ["name" => $this->name, "order_no" => $this->order_no, "is_hidden" => $this->is_hidden, "color" => $this->color];

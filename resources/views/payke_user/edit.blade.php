@@ -9,7 +9,7 @@
         <p class="mt-1 mb-2 max-w-2xl text-sm leading-6 text-gray-600">Payke環境情報の編集を行います。</p>
         <span class="max-w-2xl text-xs leading-6 text-red-500">
             ※この画面でのPaykeバージョン変更は、データのみの変更となります。<br>
-            Payke環境本体のバージョンを変更したい場合は、<a class="text-blue-500" href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">>> Paykeアップデート画面</a> より行なってください。
+            Payke環境本体のバージョンを変更したい場合は、<a class="text-blue-500" href="{{ route('deploy_log.show', ['userId' => $user->id]) }}">>> Paykeアップデート画面</a> より行なってください。
         </span>
 
         @if(session('feedback.success'))

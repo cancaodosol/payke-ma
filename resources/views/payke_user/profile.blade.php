@@ -29,7 +29,7 @@
                                 </tr>
                                 <tr><th class="text-right">稼働状況：</th><td>{{ $user->status_name() }}</td></tr>
                                 <tr><th class="text-right">バージョン：</th><td>Payke {{ $user->PaykeResource->version }} 
-                                <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}">
+                                <a href="{{ route('deploy_log.show', ['userId' => $user->id]) }}">
                                     📝</a>
                                 </td></tr>
                                 <tr><th class="text-right">アフィリ：</th><td>{{ $user->enable_affiliate ? '使用可能' : '使用不可' }}</td></tr>
@@ -39,7 +39,7 @@
                             </table>
                         </div>
                         <div class="mt-5 text-right">
-                            <a href="{{ route('deploy_log.index', ['userId' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            <a href="{{ route('deploy_log.show', ['userId' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                 アップデート履歴</a>
                             <a href="{{ route('payke_user.edit', ['id' => $user->id]) }}" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                 編集画面</a>

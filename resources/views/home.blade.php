@@ -1,7 +1,41 @@
 <x-layouts.basepage title="ホーム" current="ホーム">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">バージョンアップログ一覧</h1>
+            <h1 class="text-base font-semibold leading-6 text-gray-900">Payke 環境状況</h1>
+        </div>
+    </div>
+    <div class="flow-root mt-4 ">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div class="flex flex-wrap mb-5">      
+                @foreach($users_summary as $tag_users)
+                <div class="p-3 mr-2 w-44 border rounded-md border-slate-200">
+                    <div class="text-{{ $tag_users['tag_color'] ?? 'grey' }}-400 text-sm">{{ $tag_users['tag_name'] ?? "" }}</div>
+                    <ul class="py-3 text-xs">
+                        @if(count($tag_users['user_statuses']) > 0)
+                            @foreach($tag_users['user_statuses'] as $user_status)
+                            <li>
+                                <div class="flex items-center justify-end gap-x-2 sm:justify-start">
+                                    <div class="flex-none rounded-full p-1 text-{{ $user_status['status_color'] ?? 'grey'}}-300 bg-{{ $user_status['status_color'] ?? 'grey'}}-300/10">
+                                        <div class="h-1.5 w-1.5 rounded-full bg-current"></div>
+                                    </div>
+                                    <div class="text-xs">{{ $user_status['status_name'] }} ： {{ count($user_status['users']) }}人</div>
+                                </div>
+                            </li>
+                            @endforeach
+                        @else
+                            <li class="text-xs">なし</li>
+                        @endif
+                    </ul>
+                </div>
+                @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sm:flex sm:items-center mt-5">
+        <div class="sm:flex-auto">
+            <h1 class="text-base font-semibold leading-6 text-gray-900">デプロイログ</h1>
         </div>
     </div>
     <ul id="job_message_box" class="mt-2 text-xs"></ul>
@@ -25,7 +59,7 @@
                 <tr>
                     <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 text-center sm:pl-0">{{ $log->id }}</td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">
-                        <a class="deploy_status_box" href="{{ route('deploy_log.index', ['userId' => $log->user_id]) }}">
+                        <a class="deploy_status_box" href="{{ route('payke_user.profile', ['userId' => $log->user_id]) }}">
                         @if($log->user_id != $old_user_id)
                             {{ $log->user_name }}
                         @else
@@ -34,7 +68,9 @@
                         <div hidden>{{ $old_user_id = $log->user_id; }}</div>
                         </a>
                     </td>
-                    <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 sm:pl-0">{{ $log->created_at }}</td>
+                    <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 sm:pl-0">
+                        <a class="deploy_status_box" href="{{ route('deploy_log.show', ['userId' => $log->user_id]) }}">{{ $log->created_at }}</a>    
+                    </td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-right text-xs">
                         <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">
                         @if($log->is_version_info())
@@ -80,6 +116,9 @@
             </table>
             <div class="mt-5 pt-3">
                 {!! $logs->render() !!}
+            </div>
+            <div class="text-xs text-blue-500">
+                <a href="{{ route('deploy_log.index') }}">全件を見る</a>
             </div>
         </div>
         </div>
