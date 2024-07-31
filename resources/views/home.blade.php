@@ -11,7 +11,7 @@
             <table class="min-w-full divide-y divide-gray-300">
             <thead>
                 <tr>
-                    <th scope="col" class="whitespace-nowrap pt-3.5 pb-1 pl-4 pr-3 text-center text-xs font-semibold text-gray-900 sm:pl-0 hidden md:table-cell">ID</th>
+                    <th scope="col" class="whitespace-nowrap pt-3.5 pb-1 pl-4 pr-3 text-center text-xs font-semibold text-gray-900 sm:pl-0">ID</th>
                     <th scope="col" class="whitespace-nowrap px-2 pt-3.5 pb-1 text-left text-xs font-semibold text-gray-900">ユーザー名</th>
                     <th scope="col" class="whitespace-nowrap pt-3.5 pb-1 text-left text-xs font-semibold text-gray-900">実行日時</th>
                     <th scope="col" class="whitespace-nowrap pt-3.5 pb-1 text-center text-xs font-semibold text-gray-900">タイプ</th>
@@ -23,7 +23,7 @@
                 <div hidden>{{ $old_user_id = ''; }}</div>
                 @foreach($logs as $log)
                 <tr>
-                    <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $log->id }}</td>
+                    <td class="whitespace-nowrap pt-1.5 pb-1 pl-4 pr-3 text-xs text-gray-500 text-center sm:pl-0">{{ $log->id }}</td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">
                         <a class="deploy_status_box" href="{{ route('deploy_log.index', ['userId' => $log->user_id]) }}">
                         @if($log->user_id != $old_user_id)
