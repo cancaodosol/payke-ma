@@ -66,7 +66,7 @@ class PaykeController extends Controller
 
         session()->flash('successTitle', 'アップデート開始');
         session()->flash('successMessage', "「 $user->user_name 」のPaykeを「 $payke->version 」にアップデートしております。1 ~ 2 分お待ちください。");
-        return redirect()->route('payke_user.index');
+        return back();
     }
 
     public function api_get_jobqueue()
