@@ -102,13 +102,20 @@
                         </a>
                     </td>
                     <td class="whitespace-nowrap px-2 pt-1.5 pb-1 text-xs">     
-                        <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}">               
+                        <a href="{{ route('deploy_log.edit', ['id' => $log->id]) }}" class="flex flex-wrap">               
                         @if($log->is_warm() || $log->title == "新規作成")
                             <div class="text-yellow-400">{{ $log->message }}</div>
                         @elseif($log->is_error())
                             <div class="text-rose-500 font-semibold">{{ $log->message }}</div>
                         @else
-                            {{ $log->message }}
+                            <div>{{ $log->message }}</div>
+                        @endif
+                        @if($log->memo)
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 ml-1">
+                                <path fill-rule="evenodd" d="M8 2C4.262 2 1 4.57 1 8c0 1.86.98 3.486 2.455 4.566a3.472 3.472 0 0 1-.469 1.26.75.75 0 0 0 .713 1.14 6.961 6.961 0 0 0 3.06-1.06c.403.062.818.094 1.241.094 3.738 0 7-2.57 7-6s-3.262-6-7-6ZM5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm7-1a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM8 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+                            </svg>
+                            <div class="ml-1"><</div>
+                            <div class="text-rose-500 ml-1 w-32 overflow-hidden" title="{{ $log->memo }}">{{ $log->memo }}</div>
                         @endif
                         </a>
                     </td>
