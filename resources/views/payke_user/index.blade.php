@@ -52,7 +52,7 @@
             <tbody class="divide-y divide-gray-200 bg-white">
                 <div hidden>{{ $no = 1; }}</div>
                 @foreach($users as $user)
-                <tr>
+                <tr @if($user->is_unused()) class="bg-stone-100" @endif>
                     <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 text-center sm:pl-0 hidden md:table-cell">{{ $no++ }}</td>
                     <td class="whitespace-nowrap py-1.5 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
                         <a class="deploy_status_box" href="{{ route('deploy_log.show', ['userId' => $user->id]) }}" is_update="{{ $user->is_update_waiting() || $user->is_updating_now() }}" user_id="{{ $user->id }}">
