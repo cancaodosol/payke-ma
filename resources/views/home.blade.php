@@ -37,13 +37,14 @@
     </div>
     <div class="sm:flex sm:items-center mt-5">
         <div class="sm:flex-auto">
-            <h1 class="text-base font-semibold leading-6 text-gray-900">デプロイログ</h1>
+            <h1 class="text-base font-semibold leading-6 text-gray-900">過去3日間のデプロイログ</h1>
         </div>
     </div>
     <ul id="job_message_box" class="mt-2 text-xs"></ul>
     <div class="flow-root mt-4 ">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            @if(count($logs) > 0)
             <table class="min-w-full divide-y divide-gray-300">
             <thead>
                 <tr>
@@ -126,8 +127,13 @@
             <div class="mt-5 pt-3">
                 {!! $logs->render() !!}
             </div>
+            @else
+                <div class="text-xs mb-5">
+                    最近の更新はありません。
+                </div>
+            @endif
             <div class="text-xs text-blue-500">
-                <a href="{{ route('deploy_log.index') }}">全件を見る</a>
+                <a href="{{ route('deploy_log.index') }}">全期間分のログを見る</a>
             </div>
         </div>
         </div>
