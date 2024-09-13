@@ -36,12 +36,12 @@ class ReleaseNote
 
     public function background_by_md() : string
     {
-        return (new HtmlHelper())->markdown_to_html($this->background);
+        return HtmlHelper::markdown_to_html($this->background);
     }
 
     public function content_by_md() : string
     {
-        return (new HtmlHelper())->markdown_to_html($this->content);
+        return HtmlHelper::markdown_to_html($this->content);
     }
 
     public function getDiffTime() : string

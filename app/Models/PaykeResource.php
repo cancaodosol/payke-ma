@@ -59,7 +59,7 @@ class PaykeResource extends Model
 
     public function memo_by_md() : string
     {
-        return (new HtmlHelper())->markdown_to_html($this->memo);
+        return HtmlHelper::markdown_to_html($this->memo);
     }
 
     public function diff_time_from_now() : string

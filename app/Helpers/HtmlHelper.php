@@ -9,7 +9,7 @@ class HtmlHelper
     }
 
     // 参考記事：https://shkn.hatenablog.com/entry/2019/05/06/025657
-    public function markdown_to_html($markdownText)
+    static public function markdown_to_html($markdownText)
     {
         $Parsedown = new \Parsedown();
         $Parsedown->setSafeMode(true);
