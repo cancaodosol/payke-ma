@@ -112,7 +112,7 @@ class PaykeUser extends Model
     const validation_rules = [
         'payke_host_db_id' => 'required'
         ,'payke_resource_id' => 'required'
-        ,'user_app_name' => 'required|alpha_num'
+        ,'user_app_name' => 'required|alpha_dash'
         ,'user_name' => 'required'
         ,'email_address' => 'required'
     ];
