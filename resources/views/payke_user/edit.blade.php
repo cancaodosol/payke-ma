@@ -23,7 +23,7 @@
             <x-forms.list name="payke_host_db_id" value="{{ $user->host_db_id() }}" label="サーバー / DB" :list="$host_dbs" addPageLink="{{ route('payke_db.create') }}"/>
             <x-forms.list name="payke_resource_id" value="{{ $user->payke_resource_id }}" label="Paykeバージョン" :list="$resources" addPageLink="{{ route('payke_resource.index') }}"/>
             <x-forms.input name="deploy_setting_no" value="{{ $user->deploy_setting_no }}" label="連携設定No"/>
-            <x-forms.input name="user_app_name" value="{{ $user->user_app_name }}" label="公開アプリ名" example="例) tarotaro7" pattern="^[0-9a-zA-Z]+$" explain="この名前が、サブディレクトリ名となります。英数字のみ使用可能です。"/>
+            <x-forms.input name="user_app_name" value="{{ $user->user_app_name }}" label="公開アプリ名" example="例) tarotaro7" pattern="^[0-9a-zA-Z\d_-]+$" explain="この名前が、サブディレクトリ名となります。英数字のみ使用可能です。"/>
             <x-forms.checkbox name="enable_affiliate" value="{{ $user->enable_affiliate }}" label="アフィリエイト機能" cbText="有効にする"/>
             <x-forms.input name="user_name" value="{{ $user->user_name }}" label="利用者名" explain="管理画面に表示する名前です。"/>
             <x-forms.input name="email_address" value="{{ $user->email_address }}" label="メールアドレス" example="xxxxx@xxxxx.com"/>
