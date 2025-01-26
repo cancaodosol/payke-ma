@@ -24,4 +24,17 @@ class SecurityHelperTest extends TestCase
         $r1 = SecurityHelper::create_seed();
         print("{$r1}\n");
     }
+
+    /**
+     * create_seed test.
+     */
+    public function test_preg_match(): void
+    {
+        $r1 = "https://hiderin.xyz/payke6/admin/users";
+        $this->assertTrue(str_ends_with($r1, "/users"));
+
+        $r2 = "https://hiderin.xyz/payke6/admin/users/login";
+        $this->assertFalse(str_ends_with($r2, "/users"));
+    }
+
 }
