@@ -55,6 +55,12 @@ class OrderRequest extends FormRequest
         return $this->type() == "payment.succeeded";
     }
 
+    // 支払い失敗時
+    public function is_type_payment_failed(): bool
+    {
+        return $this->type() == "payment.failed";
+    }
+
     // [3]継続決済の支払停止時
     public function is_type_payment_stopped(): bool
     {
@@ -83,6 +89,7 @@ class OrderRequest extends FormRequest
     {
         if($this->is_type_paid_or_registered()) return $this->data()["id"];
         if($this->is_type_payment_succeeded()) return $this->data()["order_id"];
+        if($this->is_type_payment_failed()) return $this->data()["id"];
         if($this->is_type_payment_stopped()) return $this->data()["id"];
         if($this->is_type_payment_restarted()) return $this->data()["id"];
         if($this->is_type_order_canceled()) return $this->data()["id"];
