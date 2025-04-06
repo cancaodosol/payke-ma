@@ -131,12 +131,19 @@ class IndexController extends Controller
 
                 dd($user);
             case ':eclogs_view' :
+                $printLogs = [];
                 if(count($searchWords) == 2){
-                    $logs = PaykeEcOrder::where("order_id", $searchWords[1])->get();
-                    dd($logs);
+                    $logs = PaykeEcOrder::where("order_id", $searchWords[1])->orderBy('created_at', "desc")->get();
+                    foreach ($logs as $log) {
+                        $printLogs[] = sprintf("%s [ %s ] orderId: %s, userId: %s, %s", $log->created_at, $log->type_name(), $log->order_id, $log->payke_user_id, $log->raw);
+                    }
+                    dd($printLogs);
                 }
-                $logs = PaykeEcOrder::all();
-                dd($logs);
+                $logs = PaykeEcOrder::orderBy('created_at', "desc")->get();
+                foreach ($logs as $log) {
+                    $printLogs[] = sprintf("%s [ %s ] orderId: %s, userId: %s", $log->created_at, $log->type_name(), $log->order_id, $log->payke_user_id);
+                }
+                dd($printLogs);
             case ':get_order_api' :
                 if(count($searchWords) != 2) dd(":get_order_api <order_id>");
                 $aSer = new PaykeApiService();
