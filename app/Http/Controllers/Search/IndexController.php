@@ -141,7 +141,7 @@ class IndexController extends Controller
                 }
                 $logs = PaykeEcOrder::orderBy('created_at', "desc")->get();
                 foreach ($logs as $log) {
-                    $printLogs[] = sprintf("%s [ %s ] orderId: %s, userId: %s", $log->created_at, $log->type_name(), $log->order_id, $log->payke_user_id);
+                    $printLogs[] = sprintf("%s [ %s ] orderId: %s, userId: %s, %s", $log->created_at, $log->type_name(), $log->order_id, $log->payke_user_id, $log->raw);
                 }
                 dd($printLogs);
             case ':get_order_api' :
