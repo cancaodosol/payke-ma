@@ -89,7 +89,7 @@ class OrderRequest extends FormRequest
     {
         if($this->is_type_paid_or_registered()) return $this->data()["id"];
         if($this->is_type_payment_succeeded()) return $this->data()["order_id"];
-        if($this->is_type_payment_failed()) return $this->data()["id"];
+        if($this->is_type_payment_failed()) return $this->data()["order_id"];
         if($this->is_type_payment_stopped()) return $this->data()["id"];
         if($this->is_type_payment_restarted()) return $this->data()["id"];
         if($this->is_type_order_canceled()) return $this->data()["id"];
