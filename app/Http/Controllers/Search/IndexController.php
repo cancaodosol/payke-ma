@@ -44,6 +44,13 @@ use function Laravel\Prompts\search;
 
 class IndexController extends Controller
 {
+    protected $deployLogService;
+
+    public function __construct(DeployLogService $deployLogService)
+    {
+        $this->deployLogService = $deployLogService;
+    }
+
     public function __invoke(Request $request, Mailer $mailer)
     {
         $inputSearchWord = (string) $request->input('searchWord');
@@ -156,8 +163,15 @@ class IndexController extends Controller
                 if(count($searchWords) != 3) dd(":send_login_email <payke_user_id> <password>");
                 $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $password = $searchWords[2];
-                $mailer->to($pUser->User->email)
-                    ->send(new PaykeEcOrderdMail($pUser, $pUser->User->email, $password, route("login")));
+                $paykeEcOrderdMail = new PaykeEcOrderdMail($pUser, $pUser->User->email, $password, route("login"));
+                $mailer->to($pUser->User->email)->send($paykeEcOrderdMail);
+                
+                // ログ保存。
+                $subject = $paykeEcOrderdMail->subject;
+                $body = $paykeEcOrderdMail->render();
+                $this->deployLogService->write_other_log($pUser, "ログインメール送信", "Paykeのログインメールを送信しました。", null, "",
+                    ["< 宛先 >", $pUser->User->email, "< 件名 >", $subject, "< 本文 >", $body]
+                );
                 return;
             case ':create_admin_user' :
                 if(count($searchWords) != 2) dd(":create_admin_user <payke_user_id>");
