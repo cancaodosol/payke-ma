@@ -179,14 +179,26 @@ class IndexController extends Controller
                 $pUser->save();
                 dd($pUser);
             case ':users_view' :
+                $data = [];
                 if(count($searchWords) > 1)
                 {
                     $user = User::where('id', $searchWords[1])->firstOrFail();
                     dd($user);
                 }else{
-                    $users = User::all();
-                    dd($users);
+                    $users = User::orderBy('created_at', 'desc')->get();
                 }
+                foreach($users as $user)
+                {
+                    $data[] = sprintf("%d[%d]%s %s %s",
+                        $user->role, 
+                        $user->id,
+                        $user->created_at,
+                        $user->name,
+                        $user->email,
+                    );
+                }
+                dd($data);
+
             case ':unlock' :
                 $user = PaykeUser::where('id', $searchWords[1])->firstOrFail();
                 $deploy = new DeployService();
