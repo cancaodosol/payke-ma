@@ -191,6 +191,11 @@ class IndexController extends Controller
                 $user = User::where('id', $searchWords[2])->firstOrFail();
                 $pUser->user_id = $user->id;
                 $pUser->save();
+
+                // ログ保存。
+                $this->deployLogService->write_other_log($pUser, "ログインユーザー紐付け", "ログインユーザーの紐付けをしました。", null, "",
+                    ["< PaykeユーザーID >", $pUser->id, "< ユーザーID >", $user->id, "< ユーザー名 >", $user->name, "< メールアドレス >", $user->email]
+                );
                 dd($pUser);
             case ':users_view' :
                 $data = [];
