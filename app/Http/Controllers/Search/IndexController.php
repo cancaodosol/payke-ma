@@ -153,10 +153,11 @@ class IndexController extends Controller
                 $mailser->send_to_admin("メール送信テスト", "管理ユーザー向けのメールをテスト的に送ってみました。");
                 return;
             case ':send_login_email' :
-                if(count($searchWords) != 2) dd(":send_login_email <payke_user_id>");
+                if(count($searchWords) != 3) dd(":send_login_email <payke_user_id> <password>");
                 $pUser = PaykeUser::where('id', $searchWords[1])->firstOrFail();
-                $mailer->to("test@test.com")
-                    ->send(new PaykeEcOrderdMail($pUser, $pUser->user_name, "XXXXXpasswordXXXXX", route("login")));
+                $password = $searchWords[2];
+                $mailer->to($pUser->User->email)
+                    ->send(new PaykeEcOrderdMail($pUser, $pUser->User->email, $password, route("login")));
                 return;
             case ':create_admin_user' :
                 if(count($searchWords) != 2) dd(":create_admin_user <payke_user_id>");
